@@ -1,0 +1,7 @@
+[user]
+	name = Hengyang Zhao
+	email = hzhao@ece.ucr.edu
+[color]
+	ui = auto
+[core]
+	editor = vim

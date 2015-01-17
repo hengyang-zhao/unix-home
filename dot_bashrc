@@ -1,0 +1,225 @@
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# for examples
+
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+alias -- -='cd ..'
+
+alias c='screen -x hengyang || screen -S hengyang'
+alias e='emacs'
+alias f='fuser -v'
+alias g='grep -in'
+alias h='head'
+alias j='jobs -l'
+alias k='lookup'
+alias l='ls -hltr'
+alias n='sudo netstat -ntlp'
+alias p='ps -ef'
+alias s='less -R'
+alias t='tail'
+alias v='vim'
+
+if [ `uname` == Linux ]; then
+    alias o='xdg-open'
+elif [ `uname` == Darwin ]; then
+    alias o='open'
+fi
+
+# verbose and interactive moving, removing, copying
+alias rm='rm -vi'
+alias cp='cp -vi'
+alias mv='mv -vi'
+alias vi='vim'
+alias emacs='emacs -nw'
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+    . /etc/bash_completion
+fi
+
+### my verbose command line prompt
+# begin
+PS1='$(
+
+# save the return value of the last command
+t=$?
+
+# if you are root, then you get a red name
+if [ $UID -eq 0 ]; then
+    echo -ne "\[\e[1;31m\]\u@\h\[\e[0m\]"
+else
+    echo -ne "\[\e[32m\]\u@\h\[\e[0m\]"
+fi
+
+# if there are background jobs, give the total count
+if [ \j -gt 0 ]; then
+    echo -ne " \[\e[33m\]&\j\[\e[0m\]"
+fi
+
+# if this is not buttom level shell, give the depth
+if [ $SHLVL -gt 1 ]; then
+    echo -ne " \[\e[35m\]^$((SHLVL-1))\[\e[0m\]"
+fi
+
+# of course, print the current working directory
+echo -ne " \[\e[1;34m\]\w\[\e[0m\]"
+
+# if the return value is not OK, tell it
+if [ $t -ne 0 ]; then
+    echo -ne " \[\e[31m\]<$t>\[\e[0m\]"
+fi
+
+# finally a highlighted prompt symbol on a new line
+if [ $UID -eq 0 ]; then
+    echo -ne "\n\[\e[1m\]#\[\e[0m\] "
+else
+    echo -ne "\n\[\e[1m\]$\[\e[0m\] "
+fi
+)' # end of my prompt
+
+# Umask
+#
+# /etc/profile sets 022, removing write perms to group + others.
+# Set a more restrictive umask: i.e. no exec perms for others:
+# umask 027
+# Paranoid: neither group nor others have any perms:
+# umask 077
+
+# Functions
+# This function defines a 'cd' replacement function capable of keeping,
+# displaying and accessing history of visited directories, up to 10 entries.
+# To use it, uncomment it, source this file and try 'cd --'.
+# acd_func 1.0.5, 10-nov-2004
+# Petar Marinov, http:/geocities.com/h2428, this is public domain
+__cd_func()
+{
+  local x2 the_new_dir adir index
+  local -i cnt
+
+  if [[ $1 ==  "--" ]]; then
+    dirs -v
+    return 0
+  fi
+
+  the_new_dir=$1
+  [[ -z $1 ]] && the_new_dir=$HOME
+
+  if [[ ${the_new_dir:0:1} == '-' ]]; then
+    #
+    # Extract dir N from dirs
+    index=${the_new_dir:1}
+    [[ -z $index ]] && index=1
+    adir=$(dirs +$index)
+    [[ -z $adir ]] && return 1
+    the_new_dir=$adir
+  fi
+
+  #
+  # '~' has to be substituted by ${HOME}
+  [[ ${the_new_dir:0:1} == '~' ]] && the_new_dir="${HOME}${the_new_dir:1}"
+
+  #
+  # Now change to the new dir and add to the top of the stack
+  pushd "${the_new_dir}" > /dev/null
+  [[ $? -ne 0 ]] && return 1
+  the_new_dir=$(pwd)
+
+  #
+  # Trim down everything beyond 11th entry
+  popd -n +11 2>/dev/null 1>/dev/null
+
+  #
+  # Remove any other occurence of this dir, skipping the top of the stack
+  for ((cnt=1; cnt <= 10; cnt++)); do
+    x2=$(dirs +${cnt} 2>/dev/null)
+    [[ $? -ne 0 ]] && return 0
+    [[ ${x2:0:1} == '~' ]] && x2="${HOME}${x2:1}"
+    if [[ "${x2}" == "${the_new_dir}" ]]; then
+      popd -n +$cnt 2>/dev/null 1>/dev/null
+      cnt=cnt-1
+    fi
+  done
+
+  return 0
+}
+alias cd=__cd_func
+
+__define() {
+    if [ 0 -eq $# ]; then
+        echo "usage: define <word>" >&2
+        return 255
+    fi
+    declare e=`echo -ne "\e["`;
+    dict "$@" | \
+        sed "s/\<\($1\)\>/${e}7;33m\1${e}0m/gI" - | \
+        sed "s/^\(From \)\(.*\):$/${e}1m\1${e}4m\2${e}0m${e}1m:${e}0m/g" - | \
+        less -r
+}
+alias d=__define
+
+__bc_calc()
+{
+    if [ $# -eq 0 ]; then
+        bc -l
+        return
+    fi
+    if [ "$1" = "-h" ]; then
+        echo "obase=16;ibase=16;$2" | bc -lq
+        return
+    fi
+    if [ "$1" = "-h2d" ]; then
+        echo "ibase=16;$2" | bc -lq
+        return
+    fi
+    if [ "$1" = "-d2h" ]; then
+        echo "obase=16;$2" | bc -lq
+        return
+    fi
+    echo "$1" | bc -lq
+}
+alias b=__bc_calc
+
+__maxima_calc()
+{
+    if [ $# -eq 0 ]; then
+        maxima
+        return
+    fi
+    maxima -b $1
+    #maxima --very-quiet -r "$1\;"
+}
+alias m=__maxima_calc
+
