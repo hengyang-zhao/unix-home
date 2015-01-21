@@ -1,19 +1,18 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# for examples
-
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
 # don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
 HISTCONTROL=ignoreboth
 
 # append to the history file, don't overwrite it
 shopt -s histappend
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+# unlimited command history
+HISTSIZE=-1
+HISTFILESIZE=-1
+
+# add time stamp for history command
+HISTTIMEFORMAT="%Y-%m-%d %T  "
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -46,6 +45,7 @@ alias s='less -R'
 alias t='tail'
 alias v='vim'
 
+# graphical open shortcut
 if [ `uname` == Linux ]; then
     alias o='xdg-open'
 elif [ `uname` == Darwin ]; then
@@ -70,8 +70,7 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-### my verbose command line prompt
-# begin
+# my verbose command line prompt
 PS1='$(
 
 # save the return value of the last command
@@ -103,7 +102,7 @@ if [ $t -ne 0 ]; then
 fi
 
 # if the return value is not OK, tell it
-echo -ne " \[\e[2m\]`date`\[\e[0m\]"
+echo -ne " \[\e[2m\]`date +\"%m-%d-%Y %T\"`\[\e[0m\]"
 
 # finally a highlighted prompt symbol on a new line
 if [ $UID -eq 0 ]; then
