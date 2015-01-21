@@ -79,9 +79,9 @@ t=$?
 
 # if you are root, then you get a red name
 if [ $UID -eq 0 ]; then
-    echo -ne "\[\e[1;31m\]\u@\h\[\e[0m\]"
+    echo -ne "\[\e[1;31m\]\u@`hostname`\[\e[0m\]"
 else
-    echo -ne "\[\e[32m\]\u@\h\[\e[0m\]"
+    echo -ne "\[\e[32m\]\u@`hostname`\[\e[0m\]"
 fi
 
 # if there are background jobs, give the total count
