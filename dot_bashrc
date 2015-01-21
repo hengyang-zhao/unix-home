@@ -102,6 +102,9 @@ if [ $t -ne 0 ]; then
     echo -ne " \[\e[31m\]<$t>\[\e[0m\]"
 fi
 
+# if the return value is not OK, tell it
+echo -ne " \[\e[2m\]`date`\[\e[0m\]"
+
 # finally a highlighted prompt symbol on a new line
 if [ $UID -eq 0 ]; then
     echo -ne "\n\[\e[1m\]#\[\e[0m\] "
