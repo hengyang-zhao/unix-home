@@ -8,8 +8,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # unlimited command history
-HISTSIZE=-1
-HISTFILESIZE=-1
+HISTSIZE=
+HISTFILESIZE=
 
 # add time stamp for history command
 HISTTIMEFORMAT="%Y-%m-%d %T  "
