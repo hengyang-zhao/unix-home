@@ -128,5 +128,10 @@ map <Leader>d :call Lookup()<CR>
 nmap <C-h> zh
 nmap <C-L> zl
 
+nmap <Up> <C-y>
+nmap <Down> <C-e>
+nmap <Left> 4zh
+nmap <Right> 4zl
+
 au BufNewFile,BufRead *.cu set cindent
 
