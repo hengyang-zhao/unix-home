@@ -83,6 +83,9 @@ else
     echo -ne "\[\e[32m\]\u@`hostname`\[\e[0m\]"
 fi
 
+# time stamp
+echo -ne " \[\e[2m\]`date +\"%m-%d-%Y %T\"`\[\e[0m\]"
+
 # if there are background jobs, give the total count
 if [ \j -gt 0 ]; then
     echo -ne " \[\e[33m\]&\j\[\e[0m\]"
@@ -100,9 +103,6 @@ echo -ne " \[\e[1;34m\]\w\[\e[0m\]"
 if [ $t -ne 0 ]; then
     echo -ne " \[\e[31m\]<$t>\[\e[0m\]"
 fi
-
-# if the return value is not OK, tell it
-echo -ne " \[\e[2m\]`date +\"%m-%d-%Y %T\"`\[\e[0m\]"
 
 # finally a highlighted prompt symbol on a new line
 if [ $UID -eq 0 ]; then
@@ -177,7 +177,15 @@ __cd_func()
 
   return 0
 }
-alias cd=__cd_func
+
+__verbose_cd() {
+    if __cd_func "$1"; then
+        if [ "$1" != -- ]; then
+            ls
+        fi
+    fi
+}
+alias cd='__verbose_cd'
 
 __define() {
     if [ 0 -eq $# ]; then
