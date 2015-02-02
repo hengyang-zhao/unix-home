@@ -50,6 +50,10 @@ if [ `uname` == Linux ]; then
     alias o='xdg-open'
 elif [ `uname` == Darwin ]; then
     alias o='open'
+    alias ls='ls -G'
+elif [ `uname` == FreeBSD ]; then
+    alias o='xdg-open'
+    alias ls='ls -G'
 fi
 
 # verbose and interactive moving, removing, copying
