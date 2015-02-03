@@ -296,9 +296,9 @@ function __stop_vm() {
 
 function __query_vm() {
     if ! [ $1 ]; then
-        echo ---- registered guests ----
+        echo $'\033[1m'---- registered guests ----$'\033[0m'
         vboxmanage list vms
-        echo ---- running guests ----
+        echo $'\033[1m'---- running guests ----$'\033[0m'
         vboxmanage list runningvms
         return 0
     fi
