@@ -237,3 +237,85 @@ __maxima_calc()
 }
 alias m=__maxima_calc
 
+function __start_vm() {
+    if ! [ $1 ]; then
+        echo "usage: __start_vm <guest-name>"
+        return 1
+    fi
+
+    vboxmanage list vms | grep "\<$1\>" &> /dev/null
+    if ! [ 0 = $? ]; then
+        echo virtualbox guest "$1" does not exist.
+        return -1
+    fi
+
+    __query_vm "$1" &> /dev/null
+    if [ 0 = $? ]; then
+        echo virtualbox guest "$1" is already running.
+    else
+        vboxmanage startvm "$1" --type headless
+    fi
+}
+
+function __stop_vm() {
+    if ! [ $1 ]; then
+        echo "usage: __stop_vm <guest-name>"
+        return 1
+    fi
+
+    vboxmanage list vms | grep "\<$1\>" &> /dev/null
+    if ! [ 0 = $? ]; then
+        echo virtualbox guest "$1" does not exist.
+        return -1
+    fi
+
+    __query_vm "$1" &> /dev/null
+    if [ 0 = $? ]; then
+
+        for i in {20..1}; do
+
+            vboxmanage controlvm "$1" acpipowerbutton &> /dev/null
+            __query_vm "$1" &> /dev/null
+            if [ 0 = $? ]; then
+                echo waiting for guest $1 to stop "($i times to retry)"
+                sleep 5
+            else
+                echo guest $1 is stopped.
+                return 0
+            fi
+        done
+
+        echo force shutting down guest $1...
+        vboxmanage controlvm "$1" poweroff &> /dev/null
+        __query_vm "$1"
+
+    else
+        echo virtualbox guest "$1" is already stopped.
+    fi
+}
+
+function __query_vm() {
+    if ! [ $1 ]; then
+        echo ---- registered guests ----
+        vboxmanage list vms
+        echo ---- running guests ----
+        vboxmanage list runningvms
+        return 0
+    fi
+
+    vboxmanage list vms | grep "\<$1\>" &> /dev/null
+    if ! [ 0 = $? ]; then
+        echo virtualbox guest "$1" does not exist.
+        return -1
+    fi
+
+    vboxmanage list runningvms | grep "\<$1\>" &> /dev/null
+    if [ 0 = $? ]; then
+        echo virtualbox guest "$1" is running.
+        return 0
+    else
+        echo virtualbox guest "$1" is stopped.
+        return 1
+    fi
+}
+
