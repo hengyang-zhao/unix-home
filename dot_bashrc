@@ -237,7 +237,8 @@ __maxima_calc()
 }
 alias m=__maxima_calc
 
-function __start_vm() {
+__start_vm()
+{
     if ! [ $1 ]; then
         echo "usage: __start_vm <guest-name>"
         return 1
@@ -257,7 +258,8 @@ function __start_vm() {
     fi
 }
 
-function __stop_vm() {
+__stop_vm()
+{
     if ! [ $1 ]; then
         echo "usage: __stop_vm <guest-name>"
         return 1
@@ -294,7 +296,8 @@ function __stop_vm() {
     fi
 }
 
-function __query_vm() {
+__query_vm()
+{
     if ! [ $1 ]; then
         echo $'\033[1m'---- registered guests ----$'\033[0m'
         vboxmanage list vms
@@ -318,4 +321,5 @@ function __query_vm() {
         return 1
     fi
 }
+alias lsvm='__query_vm'
 
