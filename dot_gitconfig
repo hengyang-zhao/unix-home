@@ -5,3 +5,6 @@
 	ui = auto
 [core]
 	editor = vim
+
+# vim: set ft=gitconfig:
+

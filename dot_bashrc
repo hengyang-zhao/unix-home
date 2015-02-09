@@ -323,3 +323,5 @@ __query_vm()
 }
 alias lsvm='__query_vm'
 
+# vim: set ft=sh:
+

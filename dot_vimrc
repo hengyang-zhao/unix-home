@@ -137,3 +137,4 @@ nmap <Leader>m :make<CR>
 
 au BufNewFile,BufRead *.cu set cindent
 
+" vim: set ft=vim:
