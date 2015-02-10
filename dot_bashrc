@@ -31,7 +31,7 @@ fi
 
 alias -- -='cd ..'
 
-alias c='screen -x hengyang || screen -S hengyang'
+alias c='screen -x main || screen -S main'
 alias e='emacs'
 alias f='fuser -v'
 alias g='grep -in'
