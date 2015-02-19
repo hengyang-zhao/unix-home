@@ -8,3 +8,10 @@
 
 # vim: set ft=gitconfig:
 
+[alias]
+	br = branch
+	co = checkout
+	h = log --pretty=oneline --graph
+	hist = log --graph
+	s = status
+	cb = checkout -b
