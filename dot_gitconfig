@@ -10,7 +10,7 @@
 
 [alias]
 	b = branch
-	br = branch -a
+	br = branch -a -vv
 	co = checkout
 	h = log --pretty=oneline --graph
 	hi = log --graph
