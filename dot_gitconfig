@@ -9,9 +9,10 @@
 # vim: set ft=gitconfig:
 
 [alias]
-	br = branch
+	b = branch
+	br = branch -a
 	co = checkout
 	h = log --pretty=oneline --graph
-	hist = log --graph
-	s = status
+	hi = log --graph
+	s = status -s
 	cb = checkout -b
