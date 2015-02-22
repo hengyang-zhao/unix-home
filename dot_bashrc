@@ -88,7 +88,7 @@ else
 fi
 
 # time stamp
-echo -ne " \[\e[2m\]`date +\"%b-%d-%Y %T\"`\[\e[0m\]"
+# echo -ne " \[\e[2m\]`date +\"%b-%d-%Y %T\"`\[\e[0m\]"
 
 # if there are background jobs, give the total count
 if [ \j -gt 0 ]; then
@@ -322,6 +322,13 @@ __query_vm()
     fi
 }
 alias lsvm='__query_vm'
+
+__red_stderr()
+{
+    #($@ 999>&1 1>&2 2>&999 999>&- | sed -e 's/\(^.*$\)/'$'\033''[31m\1'$'\033''[0m/g')
+    #($@ 999>&1 1>&2 2>&999 999>&- | (sed -e 's/\(^.*$\)/'$'\033''[31m\1'$'\033''[0m/g' 1>&2)) #999>&1 1>&2 2>&999 999>&-
+    $@ 2> >(sed -e 's/\(^.*$\)/'$'\033''[31m\1'$'\033''[0m/g' 1>&2)
+}
 
 # vim: set ft=sh:
 
