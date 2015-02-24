@@ -134,6 +134,7 @@ nmap <Left> 4zh
 nmap <Right> 4zl
 
 nmap <Leader>m :make<CR>
+nmap <Leader>k :tabe %<CR>g]
 
 au BufNewFile,BufRead *.cu set cindent
 
