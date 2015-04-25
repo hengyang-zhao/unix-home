@@ -1,3 +1,5 @@
 escape ^Jj
 
+termcapinfo xterm* ti@:te@
+
 # vim: set ft=screen:
