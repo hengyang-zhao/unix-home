@@ -1,5 +1,7 @@
 escape ^Jj
 
+defscrollback 65536
+
 termcapinfo xterm* ti@:te@
 
 # vim: set ft=screen:
