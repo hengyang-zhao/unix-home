@@ -80,6 +80,9 @@ PS1='$(
 # save the return value of the last command
 t=$?
 
+# clear the previous terminal formatting
+echo -ne "\[\e[0m\]"
+
 # if you are root, then you get a red name
 if [ $UID -eq 0 ]; then
     echo -ne "\[\e[1;31m\]\u@\h\[\e[0m\]"
