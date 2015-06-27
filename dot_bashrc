@@ -32,7 +32,7 @@ fi
 
 alias -- -='cd ..'
 
-alias c='screen -x main || screen -S main'
+alias c=__connect_screen
 alias e='emacs'
 alias f='fuser -v'
 alias g='grep -in'
@@ -332,6 +332,17 @@ __red_stderr()
     #($@ 999>&1 1>&2 2>&999 999>&- | sed -e 's/\(^.*$\)/'$'\033''[31m\1'$'\033''[0m/g')
     #($@ 999>&1 1>&2 2>&999 999>&- | (sed -e 's/\(^.*$\)/'$'\033''[31m\1'$'\033''[0m/g' 1>&2)) #999>&1 1>&2 2>&999 999>&-
     $@ 2> >(sed -e 's/\(^.*$\)/'$'\033''[31m\1'$'\033''[0m/g' 1>&2)
+}
+
+__connect_screen()
+{
+    if test "_$1" = "_"; then
+        screen -x main || screen -S main
+    elif test "_$1" = "_-"; then
+        screen -ls
+    else
+        screen -x $1 || screen -S $1
+    fi
 }
 
 # vim: set ft=sh:
