@@ -1,3 +1,5 @@
+# vim: set ft=gitconfig:
+#
 [user]
 	name = Hengyang Zhao
 	email = hzhao@ece.ucr.edu
@@ -5,8 +7,6 @@
 	ui = auto
 [core]
 	editor = vim
-
-# vim: set ft=gitconfig:
 
 [alias]
 	b = branch
