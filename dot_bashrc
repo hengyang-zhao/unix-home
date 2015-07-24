@@ -109,6 +109,19 @@ if [ $SHLVL -gt 1 ]; then
     fi
 fi
 
+gbr=`git rev-parse --abbrev-ref HEAD 2>/dev/null`
+if [ _"$gbr" != _ ]; then
+    if [ "$gbr" = HEAD ]; then
+        gbr=`git rev-parse HEAD 2>/dev/null | head -c8`
+    fi
+    groot=$(basename $(git rev-parse --show-toplevel))
+
+    if [ ${#groot} -gt 12 ]; then
+        groot="${groot: 0:5}~${groot: -2:2}"
+    fi
+    echo -ne " \[\e[33m\]$groot[$gbr]\[\e[0m\]"
+fi
+
 # of course, print the current working directory
 echo -ne " \[\e[1;34m\]\w\[\e[0m\]"
 
