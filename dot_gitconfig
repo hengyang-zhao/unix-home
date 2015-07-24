@@ -16,3 +16,5 @@
 	hi = log --graph
 	s = status -s
 	cb = checkout -b
+[push]
+	default = current
