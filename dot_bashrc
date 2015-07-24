@@ -117,7 +117,7 @@ if [ _"$gbr" != _ ]; then
     groot=$(basename $(git rev-parse --show-toplevel))
 
     if [ ${#groot} -gt 12 ]; then
-        groot="${groot: 0:5}~${groot: -2:2}"
+        groot="${groot: 0:8}..${groot: -2:2}"
     fi
     echo -ne " \[\e[33m\]$groot[$gbr]\[\e[0m\]"
 fi
