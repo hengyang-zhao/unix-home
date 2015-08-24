@@ -1,3 +1,7 @@
+if [ -f ~/.bash_env ]; then
+    source ~/.bash_env
+fi
+
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
