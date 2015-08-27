@@ -360,9 +360,9 @@ alias lsvm='__query_vm'
 
 __red_stderr()
 {
-    #($@ 999>&1 1>&2 2>&999 999>&- | sed -e 's/\(^.*$\)/'$'\033''[31m\1'$'\033''[0m/g')
-    #($@ 999>&1 1>&2 2>&999 999>&- | (sed -e 's/\(^.*$\)/'$'\033''[31m\1'$'\033''[0m/g' 1>&2)) #999>&1 1>&2 2>&999 999>&-
-    $@ 2> >(sed -e 's/\(^.*$\)/'$'\033''[31m\1'$'\033''[0m/g' 1>&2)
+    #("$@" 999>&1 1>&2 2>&999 999>&- | sed -e 's/\(^.*$\)/'$'\033''[31m\1'$'\033''[0m/g')
+    #("$@" 999>&1 1>&2 2>&999 999>&- | (sed -e 's/\(^.*$\)/'$'\033''[31m\1'$'\033''[0m/g' 1>&2)) #999>&1 1>&2 2>&999 999>&-
+    "$@" 2> >(sed -e 's/\(^.*$\)/'$'\033''[31m\1'$'\033''[0m/g' 1>&2)
 }
 
 __connect_screen()
@@ -391,6 +391,28 @@ __cambridge_org_lookup() {
     word=`echo $@ | xargs | sed -e 's/ /-/g'`
     urlhead='http://dictionary.cambridge.org/us/dictionary/english-chinese-traditional'
     xdg-open "$urlhead/$word" &>/dev/null
+}
+alias dialog='dialog --keep-tite --ascii-lines'
+alias vim=__vim_wrapper
+__vim_wrapper() {
+    needs_sudo=no
+    for i in "$@"; do
+        if [ -f "$i" ]; then
+            perm=`stat -c'%U:%G %A' "$i"`
+            if ! [ -w "$i" ]; then
+                dialog --title "Permission warning" --yesno "File '$i' ($perm) does not have write permission for current user ($USER). Would you like to re-run the command with sudo prepended?" 12 60
+                if [ $? -eq 0 ]; then
+                    needs_sudo=yes
+                fi
+            fi
+        fi
+    done
+
+    if [ $needs_sudo = yes ]; then
+        sudo 'vim' "$@"
+    else
+        'vim' "$@"
+    fi
 }
 
 # vim: set ft=sh:
