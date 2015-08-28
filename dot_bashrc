@@ -104,6 +104,11 @@ else
     echo -ne "\[\e[32m\]\u@\h\[\e[0m\]"
 fi
 
+# if the return value is not OK, tell the errno
+if [ $t -ne 0 ]; then
+    echo -ne " \[\e[31m\]<$t>\[\e[0m\]"
+fi
+
 # time stamp
 # echo -ne " \[\e[2m\]`date +\"%b-%d-%Y %T\"`\[\e[0m\]"
 
@@ -137,11 +142,6 @@ fi
 
 # of course, print the current working directory
 echo -ne " \[\e[1;34m\]\w\[\e[0m\]"
-
-# if the return value is not OK, tell it
-if [ $t -ne 0 ]; then
-    echo -ne " \[\e[31m\]<$t>\[\e[0m\]"
-fi
 
 # finally a highlighted prompt symbol on a new line
 if [ $UID -eq 0 ]; then
