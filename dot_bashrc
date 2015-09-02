@@ -355,66 +355,37 @@ __red_stderr()
     "$@" 2> >(sed -e 's/\(^.*$\)/'$'\033''[31m\1'$'\033''[0m/g' 1>&2)
 }
 
-alias C=__screen_wrapper
-__screen_wrapper() {
-
-    if [ -n "$STY" ]; then
-        echo "You are already inside screen $STY."
-        return
-    fi
-
-    if [ -n "$1" ]; then
-        screen -x $1 || screen -S $1
-        return
-    fi
-
-    tfile=`mktemp --suffix=.screen_wrapper`
-    CREATE_MSG="No available screens to attach. To create a new one and attach into it, please type the name and then click OK:"
-    ATTACH_MSG="Please select a screen entry and then click OK to attach:"
-
-    screen -q -ls
-    errno=$?
-
-    if [ $errno -le 10 ]; then
-        dialog --title " Create New Screen " --inputbox "$CREATE_MSG" 0 60 main 2>$tfile
-        cat $tfile
-        if [ -n "$(< $tfile)" ]; then
-            screen -S "$(< $tfile)"
-        fi
-    else
-        entries=$(screen -ls | grep -E '^\s' | nl | sed -e 's/^\s*\(\S\+\)\s\+\(\S\+\)\s\+\(\S\+\)\s*$/\1 "\2 \3"/g')
-        eval dialog --title '" Attach Screen "' --menu "'$ATTACH_MSG'" 0 60 0 `echo $entries` 2>$tfile
-
-        if [ -n "$(< $tfile)" ]; then
-            sname=$(screen -ls | grep -E '^\s' | sed -e 's/^\s*\(\S\+\)\s\+\(\S\+\)\s*$/\1/g' | sed -e "$(< $tfile)q;d")
-            screen -x "$sname"
-        fi
-    fi
-
-    'rm' -f $tfile
-}
-
 alias c=__connect_screen
 __connect_screen()
 {
-    if test "_$1" = "_"; then
-        screen -x main || screen -S main
-    elif test "_$1" = "_-"; then
-        screen -ls
-    elif test "_$1" = "_^"; then
-        sname=`__connect_screen - | head -2 | tail -1 | cut -f2`
-        echo ${sname}
-        sname="${sname#"${sname%%[![:space:]]*}"}"   # remove leading whitespace characters
-        sname="${sname%"${sname##*[![:space:]]}"}"   # remove trailing whitespace characters
-        echo ${sname}
-        if test "_${sname}" = "_"; then
-            echo "No background screen available."
-        else
-            __connect_screen ${sname}
-        fi
-    else
-        screen -x $1 || screen -S $1
+    if [ -n "$STY" ]; then
+        echo '*** Nested screen is forbidden here ***'
+        return
     fi
+
+    case "_$1" in
+        _)
+            screen -x main || screen -S main
+            ;;
+        _:)
+            screen -ls
+            ;;
+        _::)
+            screen -q -ls
+            errno=$?
+
+            if [ $errno -le 10 ]; then
+                echo '*** No available screens to attach. ***'
+                return
+            fi
+
+            scrno=`screen -ls | sed -e '2q;d' | sed 's/^\s*\([0-9]\+\).*$/\1/g'`
+            screen -x $scrno
+            ;;
+        *)
+            screen -x "$1" || screen -S "$1"
+            ;;
+    esac
 }
 
 __cambridge_org_lookup() {
