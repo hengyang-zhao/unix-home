@@ -355,7 +355,7 @@ __red_stderr()
     "$@" 2> >(sed -e 's/\(^.*$\)/'$'\033''[31m\1'$'\033''[0m/g' 1>&2)
 }
 
-alias c=__screen_wrapper
+alias C=__screen_wrapper
 __screen_wrapper() {
 
     if [ -n "$STY" ]; then
@@ -392,6 +392,29 @@ __screen_wrapper() {
     fi
 
     'rm' -f $tfile
+}
+
+alias c=__connect_screen
+__connect_screen()
+{
+    if test "_$1" = "_"; then
+        screen -x main || screen -S main
+    elif test "_$1" = "_-"; then
+        screen -ls
+    elif test "_$1" = "_^"; then
+        sname=`__connect_screen - | head -2 | tail -1 | cut -f2`
+        echo ${sname}
+        sname="${sname#"${sname%%[![:space:]]*}"}"   # remove leading whitespace characters
+        sname="${sname%"${sname##*[![:space:]]}"}"   # remove trailing whitespace characters
+        echo ${sname}
+        if test "_${sname}" = "_"; then
+            echo "No background screen available."
+        else
+            __connect_screen ${sname}
+        fi
+    else
+        screen -x $1 || screen -S $1
+    fi
 }
 
 __cambridge_org_lookup() {
