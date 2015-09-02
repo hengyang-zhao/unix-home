@@ -45,7 +45,6 @@ fi
 
 alias -- -='cd ..'
 
-alias c=__connect_screen
 alias e='emacs'
 alias f='fuser -v'
 alias g='grep -in'
@@ -70,12 +69,14 @@ elif [ `uname` == FreeBSD ]; then
     alias ls='ls -G'
 fi
 
-# verbose and interactive moving, removing, copying
+# auto parameters
 alias rm='rm -vi'
 alias cp='cp -vi'
 alias mv='mv -vi'
 alias vi='vim'
 alias emacs='emacs -nw'
+alias sudo='sudo -E'
+alias dialog='dialog --keep-tite --ascii-lines'
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
@@ -217,6 +218,7 @@ __cd_func()
   return 0
 }
 
+alias cd='__verbose_cd'
 __verbose_cd() {
     if __cd_func "$1"; then
         if [ "$1" != -- ]; then
@@ -224,8 +226,8 @@ __verbose_cd() {
         fi
     fi
 }
-alias cd='__verbose_cd'
 
+alias d=__define
 __define() {
     if [ 0 -eq $# ]; then
         echo "usage: define <word>" >&2
@@ -237,8 +239,8 @@ __define() {
             -e "s/^\(From \)\(.*\):$/${e}1m\1${e}4m\2${e}0m${e}1m:${e}0m/g" | \
         less -r
 }
-alias d=__define
 
+alias b=__bc_calc
 __bc_calc()
 {
     if [ $# -eq 0 ]; then
@@ -259,18 +261,6 @@ __bc_calc()
     fi
     echo "$1" | bc -lq
 }
-alias b=__bc_calc
-
-__maxima_calc()
-{
-    if [ $# -eq 0 ]; then
-        maxima
-        return
-    fi
-    maxima -b $1
-    #maxima --very-quiet -r "$1\;"
-}
-alias m=__maxima_calc
 
 __start_vm()
 {
@@ -331,6 +321,7 @@ __stop_vm()
     fi
 }
 
+alias lsvm='__query_vm'
 __query_vm()
 {
     if ! [ $1 ]; then
@@ -356,7 +347,6 @@ __query_vm()
         return 1
     fi
 }
-alias lsvm='__query_vm'
 
 __red_stderr()
 {
@@ -365,26 +355,43 @@ __red_stderr()
     "$@" 2> >(sed -e 's/\(^.*$\)/'$'\033''[31m\1'$'\033''[0m/g' 1>&2)
 }
 
-__connect_screen()
-{
-    if test "_$1" = "_"; then
-        screen -x main || screen -S main
-    elif test "_$1" = "_-"; then
-        screen -ls
-    elif test "_$1" = "_^"; then
-        sname=`__connect_screen - | head -2 | tail -1 | cut -f2`
-        echo ${sname}
-        sname="${sname#"${sname%%[![:space:]]*}"}"   # remove leading whitespace characters
-        sname="${sname%"${sname##*[![:space:]]}"}"   # remove trailing whitespace characters
-        echo ${sname}
-        if test "_${sname}" = "_"; then
-            echo "No background screen available."
-        else
-            __connect_screen ${sname}
+alias c=__screen_wrapper
+__screen_wrapper() {
+
+    if [ -n "$STY" ]; then
+        echo "You are already inside screen $STY."
+        return
+    fi
+
+    if [ -n "$1" ]; then
+        screen -x $1 || screen -S $1
+        return
+    fi
+
+    tfile=`mktemp --suffix=.screen_wrapper`
+    CREATE_MSG="No available screens to attach. To create a new one and attach into it, please type the name and then click OK:"
+    ATTACH_MSG="Please select a screen entry and then click OK to attach:"
+
+    screen -q -ls
+    errno=$?
+
+    if [ $errno -le 10 ]; then
+        dialog --title " Create New Screen " --inputbox "$CREATE_MSG" 0 60 main 2>$tfile
+        cat $tfile
+        if [ -n "$(< $tfile)" ]; then
+            screen -S "$(< $tfile)"
         fi
     else
-        screen -x $1 || screen -S $1
+        entries=$(screen -ls | grep -E '^\s' | nl | sed -e 's/^\s*\(\S\+\)\s\+\(\S\+\)\s\+\(\S\+\)\s*$/\1 "\2 \3"/g')
+        eval dialog --title '" Attach Screen "' --menu "'$ATTACH_MSG'" 0 60 0 `echo $entries` 2>$tfile
+
+        if [ -n "$(< $tfile)" ]; then
+            sname=$(screen -ls | grep -E '^\s' | sed -e 's/^\s*\(\S\+\)\s\+\(\S\+\)\s*$/\1/g' | sed -e "$(< $tfile)q;d")
+            screen -x "$sname"
+        fi
     fi
+
+    'rm' -f $tfile
 }
 
 __cambridge_org_lookup() {
@@ -392,7 +399,7 @@ __cambridge_org_lookup() {
     urlhead='http://dictionary.cambridge.org/us/dictionary/english-chinese-traditional'
     xdg-open "$urlhead/$word" &>/dev/null
 }
-alias dialog='dialog --keep-tite --ascii-lines'
+
 alias vim=__vim_wrapper
 __vim_wrapper() {
     needs_sudo=no
