@@ -4,4 +4,6 @@ defscrollback 65536
 
 termcapinfo xterm* ti@:te@
 
+altscreen on
+
 # vim: set ft=screen:
