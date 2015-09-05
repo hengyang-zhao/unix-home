@@ -43,19 +43,12 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+# one-letter shortcuts
 alias -- -='cd ..'
-
-alias e='emacs'
-alias f='fuser -v'
-alias g='grep -in'
-alias h='head'
+alias g='grep -Ein'
 alias j='jobs -l'
-alias k='lookup'
 alias l='ls -hltr'
-alias n='sudo netstat -ntlp'
 alias p='ps -ef'
-alias s='less -R'
-alias t='tail'
 alias v='vim'
 
 # graphical open shortcut
