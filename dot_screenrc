@@ -1,5 +1,7 @@
 escape ^Jj
 
+startup_message off
+
 defscrollback 65536
 
 termcapinfo xterm* ti@:te@
