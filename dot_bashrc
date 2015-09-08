@@ -358,7 +358,7 @@ __connect_screen()
 
     case "_$1" in
         _)
-            screen -x main || screen -S main
+            screen -q -x main || screen -S main
             ;;
         _:)
             screen -ls
@@ -376,7 +376,7 @@ __connect_screen()
             screen -x $scrno
             ;;
         *)
-            screen -x "$1" || screen -S "$1"
+            screen -q -x "$1" || screen -S "$1"
             ;;
     esac
 }
