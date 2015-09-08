@@ -6,4 +6,8 @@ termcapinfo xterm* ti@:te@
 
 altscreen on
 
+vbell off
+
+term xterm-256color
+
 # vim: set ft=screen:
