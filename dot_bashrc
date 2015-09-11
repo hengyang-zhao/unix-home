@@ -387,29 +387,5 @@ __cambridge_org_lookup() {
     xdg-open "$urlhead/$word" &>/dev/null
 }
 
-alias vim=__vim_wrapper
-__vim_wrapper() {
-    needs_sudo=no
-    for i in "$@"; do
-        if [ -f "$i" ]; then
-            perm=`stat -c'%U:%G %A' "$i"`
-            if ! [ -w "$i" ]; then
-                dialog --title "Permission warning" --yesno "File '$i' ($perm) does not have write permission for current user ($USER). Would you like to re-run the command with sudo prepended?" 8 60
-                if [ $? -eq 0 ]; then
-                    needs_sudo=yes
-                    break
-                fi
-            fi
-        fi
-    done
-
-    if [ $needs_sudo = yes ]; then
-        echo sudo -E 'vim' "$@"
-        sudo -E 'vim' "$@"
-    else
-        'vim' "$@"
-    fi
-}
-
 # vim: set ft=sh:
 
