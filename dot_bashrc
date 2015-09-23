@@ -131,12 +131,16 @@ if [ _"$gbr" != _ ]; then
     if [ "$gbr" = HEAD ]; then
         gbr=`git rev-parse HEAD 2>/dev/null | head -c8`
     fi
-    groot=$(basename $(git rev-parse --show-toplevel))
+    groot=$(basename //$(git rev-parse --show-toplevel) 2>/dev/null)
 
     if [ ${#groot} -gt 12 ]; then
         groot="${groot: 0:8}\`${groot: -3:3}"
     fi
-    echo -ne " \[\e[33m\]$groot[$gbr]\[\e[0m\]"
+    if [ "${groot}" = / ]; then
+        echo -ne " \[\e[33m\](.git)\[\e[0m\]"
+    else
+        echo -ne " \[\e[33m\]$groot[$gbr]\[\e[0m\]"
+    fi
 fi
 
 # of course, print the current working directory
