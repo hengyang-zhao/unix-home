@@ -126,20 +126,23 @@ if [ $SHLVL -gt 1 ]; then
     fi
 fi
 
-gbr=`git rev-parse --abbrev-ref HEAD 2>/dev/null`
-if [ _"$gbr" != _ ]; then
-    if [ "$gbr" = HEAD ]; then
-        gbr=`git rev-parse HEAD 2>/dev/null | head -c8`
-    fi
-    groot=$(basename ///$(git rev-parse --show-toplevel) 2>/dev/null)
+# git info
+if which git >/dev/null; then
+    gbr=`git rev-parse --abbrev-ref HEAD 2>/dev/null`
+    if [ _"$gbr" != _ ]; then
+        if [ "$gbr" = HEAD ]; then
+            gbr=`git rev-parse HEAD 2>/dev/null | head -c8`
+        fi
+        groot=$(basename ///$(git rev-parse --show-toplevel) 2>/dev/null)
 
-    if [ ${#groot} -gt 12 ]; then
-        groot="${groot: 0:8}\`${groot: -3:3}"
-    fi
-    if [ "${groot}" = / ]; then
-        echo -ne " \[\e[33m\](.git)\[\e[0m\]"
-    else
-        echo -ne " \[\e[33m\]$groot[$gbr]\[\e[0m\]"
+        if [ ${#groot} -gt 12 ]; then
+            groot="${groot: 0:8}\`${groot: -3:3}"
+        fi
+        if [ "${groot}" = / ]; then
+            echo -ne " \[\e[33m\](.git)\[\e[0m\]"
+        else
+            echo -ne " \[\e[33m\]$groot[$gbr]\[\e[0m\]"
+        fi
     fi
 fi
 
@@ -235,6 +238,9 @@ __define() {
         echo "usage: define <word>" >&2
         return 255
     fi
+
+    which dict >/dev/null || return 1
+
     declare e=`echo $'\033'[`;
     dict "$@" | \
         sed -e "s/\<\($1\)\>/${e}7;33m\1${e}0m/g" \
@@ -245,6 +251,8 @@ __define() {
 alias b=__bc_calc
 __bc_calc()
 {
+    which bc >/dev/null || return 1
+
     if [ $# -eq 0 ]; then
         bc -l
         return
@@ -266,6 +274,8 @@ __bc_calc()
 
 __start_vm()
 {
+    which vboxmanage >/dev/null || return 1
+
     if ! [ $1 ]; then
         echo "usage: __start_vm <guest-name>"
         return 1
@@ -287,6 +297,8 @@ __start_vm()
 
 __stop_vm()
 {
+    which vboxmanage >/dev/null || return 1
+
     if ! [ $1 ]; then
         echo "usage: __stop_vm <guest-name>"
         return 1
@@ -326,6 +338,8 @@ __stop_vm()
 alias lsvm='__query_vm'
 __query_vm()
 {
+    which vboxmanage >/dev/null || return 1
+
     if ! [ $1 ]; then
         echo $'\033[1m'---- registered guests ----$'\033[0m'
         vboxmanage list vms
@@ -360,6 +374,8 @@ __red_stderr()
 alias c=__connect_screen
 __connect_screen()
 {
+    which screen >/dev/null || return 1
+
     if [ -n "$STY" ]; then
         echo '*** Nested screen is forbidden here ***'
         return
@@ -391,6 +407,8 @@ __connect_screen()
 }
 
 __cambridge_org_lookup() {
+    which xdg-open >/dev/null || return 1
+
     word=`echo $@ | xargs | sed -e 's/ /-/g'`
     urlhead='http://dictionary.cambridge.org/us/dictionary/english-chinese-traditional'
     xdg-open "$urlhead/$word" &>/dev/null
