@@ -148,16 +148,13 @@ if has("cscope")
 
     set csre
 
-    " add any cscope database in current directory
-    if filereadable("cscope.out")
-        cs add cscope.out
-    " else add the database pointed to by environment variable
-    elseif $CSCOPE_DB != ""
-        cs add $CSCOPE_DB
+    if $CSCOPE_DB != ""
+        for csdb in split($CSCOPE_DB, ":")
+            if filereadable(csdb)
+                execute("cs add " . csdb)
+            endif
+        endfor
     endif
-
-    " show msg when any other cscope db added
-    set cscopeverbose
 
     nmap <Leader><Leader>s :cs find s <C-R>=expand("<cword>")<CR><CR>
     nmap <Leader><Leader>g :cs find g <C-R>=expand("<cword>")<CR><CR>
