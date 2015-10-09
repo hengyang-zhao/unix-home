@@ -1,3 +1,7 @@
+if [ -f /etc/bashrc ]; then
+    source /etc/bashrc
+fi
+
 # Env plug-ins
 if [ -d ~/.bash_env ]; then
     for i in ~/.bash_env/*.sh ; do
