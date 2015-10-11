@@ -144,9 +144,11 @@ if has("cscope")
 
     " check cscope for definition of a symbol before checking ctags: set to 1
     " if you want the reverse search order.
-    set csto=0
+    set cscopetagorder=0
 
-    set csre
+    if exists("&cscoperelative")
+        set cscoperelative
+    endif
 
     if $CSCOPE_DB != ""
         for csdb in split($CSCOPE_DB, ":")
