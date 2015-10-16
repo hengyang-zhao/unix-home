@@ -1,3 +1,11 @@
+# unix-home bashrc project
+
+if [ _$UNIX_HOME_BASHRC = _yes ]; then
+    return
+else
+    UNIX_HOME_BASHRC=yes
+fi
+
 if [ -f /etc/bashrc ]; then
     source /etc/bashrc
 fi
@@ -416,6 +424,11 @@ __cambridge_org_lookup() {
     word=`echo $@ | xargs | sed -e 's/ /-/g'`
     urlhead='http://dictionary.cambridge.org/us/dictionary/english-chinese-traditional'
     xdg-open "$urlhead/$word" &>/dev/null
+}
+
+__rerc() {
+    UNIX_HOME_BASHRC=no
+    source ~/.bashrc
 }
 
 # vim: set ft=sh:
