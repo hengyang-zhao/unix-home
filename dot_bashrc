@@ -139,7 +139,7 @@ if [ $SHLVL -gt 1 ]; then
 fi
 
 # git info
-if which git >/dev/null; then
+if which git &>/dev/null; then
     gbr=`git rev-parse --abbrev-ref HEAD 2>/dev/null`
     if [ _"$gbr" != _ ]; then
         if [ "$gbr" = HEAD ]; then
