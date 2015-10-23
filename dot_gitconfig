@@ -13,7 +13,7 @@
 	br = branch -a -vv
 	co = checkout
     f = log --pretty=fuller
-    h = log --pretty=format:'%C(yellow)%h%C(reset)%C(blue)%d%C(reset) %C(white)%s%C(reset) %C(dim)-- %an (%cr)%C(reset)' --graph --abbrev-commit
+    h = log --pretty=format:'%C(yellow)%h%C(reset)%C(blue)%d%C(reset) %C(white)%s%C(reset) %C(dim)-- %an (%ar)%C(reset)' --graph --abbrev-commit
 	hi = log --graph
 	s = status -s
 	cb = checkout -b
