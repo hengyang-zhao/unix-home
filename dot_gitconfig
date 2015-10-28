@@ -17,5 +17,6 @@
 	hi = log --graph
 	s = status -s
 	cb = checkout -b
+    re = remote -v
 [push]
 	default = current
