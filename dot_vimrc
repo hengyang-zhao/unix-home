@@ -101,8 +101,8 @@ set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\
 nmap <C-p> :tabprevious<CR>
 nmap <C-n> :tabnext<CR>
 
-nmap <Leader>sd :%s/ \+$//g<CR>
-nmap <Leader>ss / \+$<CR>
+nmap <Leader>sd :%s/\s\+$//g<CR>
+nmap <Leader>ss /\s\+$<CR>
 
 nmap <Leader>t~ :tabedit ~/<CR>
 nmap <Leader>t. :tabedit .<CR>
