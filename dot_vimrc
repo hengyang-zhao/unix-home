@@ -107,6 +107,7 @@ nmap <Leader>ss /\s\+$<CR>
 nmap <Leader>t~ :tabedit ~/<CR>
 nmap <Leader>t. :tabedit .<CR>
 nmap <Leader>tn :tabedit<CR>
+nmap <Leader>to :tabonly<CR>
 
 nmap <Leader>h~ :split ~/<CR>
 nmap <Leader>h. :split .<CR>
