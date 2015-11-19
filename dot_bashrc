@@ -11,8 +11,8 @@ if [ -f /etc/bashrc ]; then
 fi
 
 # Env plug-ins
-if [ -d ~/.bash_env ]; then
-    for i in ~/.bash_env/*.sh ; do
+if [ -d ~/.site_env ]; then
+    for i in ~/.site_env/*.sh ; do
         if [ -r "$i" ]; then
             if [ "${-#*i}" != "$-" ]; then
                 . "$i"
