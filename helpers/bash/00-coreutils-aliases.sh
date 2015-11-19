@@ -23,7 +23,6 @@ if [ `uname` == Linux ]; then
     alias o='xdg-open'
 elif [ `uname` == Darwin ]; then
     alias o='open'
-    source ~/unix-home/darwin_aliases
 elif [ `uname` == FreeBSD ]; then
     alias o='xdg-open'
     alias ls='ls -G'
