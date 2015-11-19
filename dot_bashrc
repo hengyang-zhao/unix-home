@@ -352,7 +352,61 @@ __connect_screen()
     esac
 }
 
-__rerc() {
+alias __append='__update_export --append'
+alias __prepend='__update_export --prepend'
+__update_export()
+{
+    case "$1" in
+        --append)
+            action=append
+            shift
+            ;;
+        --prepend)
+            action=prepend
+            shift
+            ;;
+        --)
+            action=append
+            shift
+            ;;
+        -*)
+            echo Unsupported action: $1
+            return
+            ;;
+        *)
+            action=append
+            ;;
+    esac
+
+    [ -z "$1" ] && return 1
+    [ -z "$2" ] && return 2
+
+    varname=$1
+    newvalue=$2
+
+    varvalue=`eval echo '$'$varname`
+
+    [ "$varvalue" = '$' ] && varvalue=
+
+    for i in `echo $varvalue | cut -d: -f1- --output-delimiter=' '`; do
+        [ "$newvalue" = "$i" ] && return 3
+    done
+
+    if [ -z $varvalue ]; then
+        export $varname=$newvalue
+    else
+        if [ $action = append ]; then
+            export $varname=$varvalue:$newvalue
+        elif [ $action = prepend ]; then
+            export $varname=$newvalue:$varvalue
+        else
+            echo __update_export is kidding you
+        fi
+    fi
+}
+
+__rerc()
+{
     UNIX_HOME_BASHRC=no
     source ~/.bashrc
 }
