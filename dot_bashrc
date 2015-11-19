@@ -10,19 +10,6 @@ if [ -f /etc/bashrc ]; then
     source /etc/bashrc
 fi
 
-# Env plug-ins
-if [ -d ~/.site_env ]; then
-    for i in ~/.site_env/*.sh ; do
-        if [ -r "$i" ]; then
-            if [ "${-#*i}" != "$-" ]; then
-                . "$i"
-            else
-                . "$i" >/dev/null 2>&1
-            fi
-        fi
-    done
-fi
-
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
@@ -410,6 +397,19 @@ __rerc()
     UNIX_HOME_BASHRC=no
     source ~/.bashrc
 }
+
+# Env plug-ins
+if [ -d ~/.site_env ]; then
+    for i in ~/.site_env/*.sh ; do
+        if [ -r "$i" ]; then
+            if [ "${-#*i}" != "$-" ]; then
+                . "$i"
+            else
+                . "$i" >/dev/null 2>&1
+            fi
+        fi
+    done
+fi
 
 # vim: set ft=sh:
 
