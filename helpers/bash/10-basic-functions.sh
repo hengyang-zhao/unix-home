@@ -114,7 +114,7 @@ __update_export()
 
     [ "$varvalue" = '$' ] && varvalue=
 
-    for i in `echo $varvalue | cut -d: -f1- --output-delimiter=' '`; do
+    for i in `echo $varvalue | sed -e 's/:/ /g'`; do
         [ "$newvalue" = "$i" ] && return 3
     done
 
