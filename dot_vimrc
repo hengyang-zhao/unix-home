@@ -100,6 +100,7 @@ set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\
 
 nmap <C-p> :tabprevious<CR>
 nmap <C-n> :tabnext<CR>
+nmap <C-x> :close<CR>
 
 nmap <Leader>sd :%s/\s\+$//g<CR>
 nmap <Leader>ss /\s\+$<CR>
