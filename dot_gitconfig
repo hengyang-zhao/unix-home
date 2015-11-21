@@ -1,10 +1,17 @@
 # vim: set ft=gitconfig:
 #
-[user]
-	name = Hengyang Zhao
-	email = hzhao@ece.ucr.edu
+ 
+# PLEASE PUT USER SPECS INTO ~/.site_env/gitconfig
+#
+#[user]
+#	name = Dr. Who
+#	email = dr.who@example.com
+#
+
+
 [color]
 	ui = auto
+
 [core]
 	editor = vim
 
@@ -19,5 +26,9 @@
 	cb = checkout -b
     re = remote -v
     cl = clone --recursive
+
 [push]
 	default = current
+
+[include]
+    path = ~/.site_env/gitconfig
