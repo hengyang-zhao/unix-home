@@ -100,7 +100,8 @@ set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\
 
 nmap <C-p> :tabprevious<CR>
 nmap <C-n> :tabnext<CR>
-nmap <C-x> :close<CR>
+
+nmap <Leader>x :close<CR>
 
 nmap <Leader>sd :%s/\s\+$//g<CR>
 nmap <Leader>ss /\s\+$<CR>
@@ -108,15 +109,16 @@ nmap <Leader>ss /\s\+$<CR>
 nmap <Leader>t~ :tabedit ~/<CR>
 nmap <Leader>t. :tabedit .<CR>
 nmap <Leader>tn :tabedit<CR>
+nmap <Leader>tt :tabedit %<CR>
 nmap <Leader>to :tabonly<CR>
 
 nmap <Leader>h~ :split ~/<CR>
 nmap <Leader>h. :split .<CR>
-nmap <Leader>hn :split<CR>
+nmap <Leader>hh :split<CR>
 
 nmap <Leader>v~ :vsplit ~/<CR>
 nmap <Leader>v. :vsplit .<CR>
-nmap <Leader>vn :vsplit<CR>
+nmap <Leader>vv :vsplit<CR>
 
 function Lookup()
     let l:word = expand("<cword>")
