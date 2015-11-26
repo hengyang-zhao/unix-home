@@ -81,7 +81,7 @@ command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
 
 colorscheme koehler
 
-set mouse=
+set mouse=a
 set ruler
 set number
 set nowrap
