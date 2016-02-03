@@ -14,9 +14,9 @@ fi
 
 # if you are root, then you get a red name
 if [ $UID -eq 0 ]; then
-    echo -ne "\[\e[1;31m\]\u@\h$s:$$\[\e[0m\]"
+    echo -ne "\[\e[1;31m\]\u@\h$s\[\e[0m\]"
 else
-    echo -ne "\[\e[32m\]\u@\h$s:$$\[\e[0m\]"
+    echo -ne "\[\e[32m\]\u@\h$s\[\e[0m\]"
 fi
 
 # if the return value is not OK, tell the errno
