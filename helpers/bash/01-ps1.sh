@@ -3,8 +3,27 @@ PS1='$(
 
 # save the return value of the last command
 t=$?
+ts=$(date +"%b-%d-%Y %T")
 
 # clear the previous terminal formatting
+echo -ne "\[\e[0m\]"
+
+# if the return value is not OK, tell the errno
+if [ $t -ne 0 ]; then
+    echo -ne "\[\e[4;31m\]"
+    if [ \# -gt 1 ]; then
+        printf "%${COLUMNS}s\n" "Error occured on $ts [ Code $t ]"
+    else
+        printf "%${COLUMNS}s\n"
+    fi
+else
+    echo -ne "\[\e[4;90m\]"
+    if [ \# -gt 1 ]; then
+        printf "%${COLUMNS}s\n" "Finished on $ts [ Status OK ]"
+    else
+        printf "%${COLUMNS}s\n"
+    fi
+fi
 echo -ne "\[\e[0m\]"
 
 # if we are under schroot
@@ -18,14 +37,6 @@ if [ $UID -eq 0 ]; then
 else
     echo -ne "\[\e[32m\]\u@\h$s\[\e[0m\]"
 fi
-
-# if the return value is not OK, tell the errno
-if [ $t -ne 0 ]; then
-    echo -ne " \[\e[31m\]<$t>\[\e[0m\]"
-fi
-
-# time stamp
-# echo -ne " \[\e[2m\]`date +\"%b-%d-%Y %T\"`\[\e[0m\]"
 
 # if there are background jobs, give the total count
 if [ \j -gt 0 ]; then
