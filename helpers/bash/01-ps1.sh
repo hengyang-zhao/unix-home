@@ -4,6 +4,7 @@ PS1='$(
 # save the return value of the last command
 t=$?
 ts=$(date +"%b-%d-%Y %T")
+cwd=$(pwd -P)
 
 # clear the previous terminal formatting
 echo -ne "\[\e[0m\]"
@@ -74,7 +75,11 @@ if which git &>/dev/null; then
 fi
 
 # of course, print the current working directory
-echo -ne " \[\e[1;34m\]\w\[\e[0m\]"
+echo -ne " \[\e[34m\]\w\[\e[0m\]"
+
+if [ "$cwd" != "$(pwd)" ]; then
+    echo -ne "\n\[\e[2;34m\](Physical: $cwd)\[\e[0m\] "
+fi
 
 # finally a highlighted prompt symbol on a new line
 echo -ne "\n\[\e[1m\]\$\[\e[0m\] "
