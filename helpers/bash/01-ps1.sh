@@ -3,6 +3,8 @@ PS1='$(
 
 # save the return value of the last command
 t=$?
+
+# record status
 ts=$(date +"%b-%d-%Y %T")
 cwd=$(pwd -P)
 
@@ -32,7 +34,7 @@ if [ -n "$debian_chroot" ]; then
     s="($debian_chroot)"
 fi
 
-# if you are root, then you get a red name
+# if we are root, then print a red name
 if [ $UID -eq 0 ]; then
     echo -ne "\[\e[1;31m\]\u@\h$s\[\e[0m\]"
 else
@@ -41,7 +43,7 @@ fi
 
 # if there are background jobs, give the total count
 if [ \j -gt 0 ]; then
-    echo -ne " \[\e[33m\]&\j\[\e[0m\]"
+    echo -ne " \[\e[1;33m\]&\j\[\e[0m\]"
 fi
 
 # if this is not buttom level shell, give the depth
@@ -54,7 +56,7 @@ if [ $SHLVL -gt 1 ]; then
     fi
 fi
 
-# git info
+# git branch name ( "(.git)" is displayed if we are in the .git)
 if which git &>/dev/null; then
     gbr=`git rev-parse --abbrev-ref HEAD 2>/dev/null`
     if [ _"$gbr" != _ ]; then
@@ -77,6 +79,7 @@ fi
 # of course, print the current working directory
 echo -ne " \[\e[34m\]\w\[\e[0m\]"
 
+# physical pwd, only shown if different from regular pwd
 if [ "$cwd" != "$(pwd)" ]; then
     echo -ne "\n\[\e[2;34m\](Physical: $cwd)\[\e[0m\] "
 fi
