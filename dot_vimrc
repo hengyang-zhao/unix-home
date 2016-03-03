@@ -137,7 +137,8 @@ nmap <Down> <C-e>
 nmap <Left> 4zh
 nmap <Right> 4zl
 
-nmap <Leader>m :make<CR>
+nmap <Leader>mm :make<CR>
+nmap <Leader>mv :make view<CR>
 nmap <Leader>k :tabe %<CR>g]
 
 " Cscope conf. Modified from Jason Duell jduell@alumni.princeton.edu
