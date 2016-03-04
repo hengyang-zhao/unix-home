@@ -43,7 +43,7 @@ fi
 
 # if there are background jobs, give the total count
 if [ \j -gt 0 ]; then
-    echo -ne " \[\e[1;33m\]&\j\[\e[0m\]"
+    echo -ne " \[\e[1;5;33m\]&\j\[\e[0m\]"
 fi
 
 # if this is not buttom level shell, give the depth
