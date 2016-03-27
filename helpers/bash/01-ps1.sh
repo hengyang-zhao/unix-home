@@ -1,8 +1,15 @@
 # my verbose command line prompt
 PS1='$(
 
-# save the return value of the last command
-t=$?
+# save the return value of the last commands
+eno=${PIPESTATUS[@]}
+sok=OK
+for i in $eno; do
+    if [ $i -ne 0 ]; then
+        sok=ERR
+        break
+    fi
+done
 
 # record status
 ts=$(date +"%b-%d-%Y %T")
@@ -12,17 +19,17 @@ cwd=$(pwd -P)
 echo -ne "\[\e[0m\]"
 
 # if the return value is not OK, tell the errno
-if [ $t -ne 0 ]; then
-    echo -ne "\[\e[4;31m\]"
+if [ $sok = OK ]; then
+    echo -ne "\[\e[4;90m\]"
     if [ \# -gt 1 ]; then
-        printf "%${COLUMNS}s\n" "Error occured on $ts [ Code $t ]"
+        printf "%${COLUMNS}s\n" "Finished on $ts [ Status OK ]"
     else
         printf "%${COLUMNS}s\n"
     fi
 else
-    echo -ne "\[\e[4;90m\]"
+    echo -ne "\[\e[4;31m\]"
     if [ \# -gt 1 ]; then
-        printf "%${COLUMNS}s\n" "Finished on $ts [ Status OK ]"
+        printf "%${COLUMNS}s\n" "Error occured on $ts [ Code $eno ]"
     else
         printf "%${COLUMNS}s\n"
     fi
@@ -81,7 +88,7 @@ echo -ne " \[\e[34m\]\w\[\e[0m\]"
 
 # physical pwd, only shown if different from regular pwd
 if [ "$cwd" != "$(pwd)" ]; then
-    echo -ne "\n\[\e[2;34m\](Physical: $cwd)\[\e[0m\] "
+    echo -ne "\n\[\e[2;34m\](Physical: $cwd)\[\e[0m\]"
 fi
 
 # finally a highlighted prompt symbol on a new line
