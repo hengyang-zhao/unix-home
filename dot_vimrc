@@ -86,10 +86,11 @@ set ruler
 set number
 set nowrap
 
-set tabstop=4
-set shiftwidth=4
+" Wow!
+set tabstop=8
+set shiftwidth=8
 set shiftround
-set expandtab
+set noexpandtab
 
 set autoindent
 
