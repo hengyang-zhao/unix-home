@@ -26,6 +26,7 @@
 	cb = checkout -b
     re = remote -v
     cl = clone --recursive
+    wdiff = diff --color-words
 
 [push]
 	default = current
