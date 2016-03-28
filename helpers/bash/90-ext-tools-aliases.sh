@@ -12,7 +12,7 @@ __define() {
         less -r
 }
 
-alias b=__bc_calc
+__has bc && alias b=__bc_calc
 __bc_calc()
 {
     if [ $# -eq 0 ]; then
