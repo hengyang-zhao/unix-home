@@ -1,6 +1,6 @@
 # vim: set ft=gitconfig:
 #
- 
+
 # PLEASE PUT USER SPECS INTO ~/.site_env/gitconfig
 #
 #[user]
@@ -19,17 +19,17 @@
 	b = branch
 	br = branch -a -vv
 	co = checkout
-    f = log --pretty=fuller
-    h = log --pretty=format:'%C(yellow)%h%C(reset)%C(blue)%d%C(reset) %C(white)%s%C(reset) %C(dim)-- %an (%ar)%C(reset)' --graph --abbrev-commit
+	f = log --pretty=fuller
+	h = log --pretty=format:'%C(yellow)%h%C(reset)%C(blue)%d%C(reset) %C(white)%s%C(reset) %C(dim)-- %an (%ar)%C(reset)' --graph --abbrev-commit
 	hi = log --graph
 	s = status -s
 	cb = checkout -b
-    re = remote -v
-    cl = clone --recursive
-    wdiff = diff --color-words
+	re = remote -v
+	cl = clone --recursive
+	wdiff = diff --color-words
 
 [push]
 	default = current
 
 [include]
-    path = ~/.site_env/gitconfig
+	path = ~/.site_env/gitconfig

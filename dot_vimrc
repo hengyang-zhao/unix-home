@@ -13,7 +13,7 @@
 
 " When started as "evim", evim.vim will already have done these settings.
 if v:progname =~? "evim"
-  finish
+	finish
 endif
 
 " Use Vim settings, rather then Vi settings (much better!).
@@ -24,9 +24,9 @@ set nocompatible
 set backspace=indent,eol,start
 
 if has("vms")
-  set nobackup		" do not keep a backup file, use versions instead
+	set nobackup		" do not keep a backup file, use versions instead
 else
-  set backup		" keep a backup file
+	set backup		" keep a backup file
 endif
 set history=50		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
@@ -36,46 +36,46 @@ set incsearch		" do incremental searching
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
+	syntax on
+	set hlsearch
 endif
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
 
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
-  filetype plugin indent on
+	" Enable file type detection.
+	" Use the default filetype settings, so that mail gets 'tw' set to 72,
+	" 'cindent' is on in C files, etc.
+	" Also load indent files, to automatically do language-dependent indenting.
+	filetype plugin indent on
 
-  " Put these in an autocmd group, so that we can delete them easily.
-  augroup vimrcEx
-  au!
+	" Put these in an autocmd group, so that we can delete them easily.
+	augroup vimrcEx
+		au!
 
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
+		" For all text files set 'textwidth' to 78 characters.
+		autocmd FileType text setlocal textwidth=78
 
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it when the position is invalid or when inside an event handler
-  " (happens when dropping a file on gvim).
-  autocmd BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
+		" When editing a file, always jump to the last known cursor position.
+		" Don't do it when the position is invalid or when inside an event handler
+		" (happens when dropping a file on gvim).
+		autocmd BufReadPost *
+					\ if line("'\"") > 0 && line("'\"") <= line("$") |
+					\   exe "normal g`\"" |
+					\ endif
 
-  augroup END
+	augroup END
 
 else
 
-  set autoindent		" always set autoindenting on
+	set autoindent		" always set autoindenting on
 
 endif " has("autocmd")
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
 command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-	 	\ | wincmd p | diffthis
+			\ | wincmd p | diffthis
 "
 " END OF DEFAULT VIMRC FILE
 
@@ -122,10 +122,10 @@ nmap <Leader>v. :vsplit .<CR>
 nmap <Leader>vv :vsplit<CR>
 
 function Lookup()
-    let l:word = expand("<cword>")
-    let l:tmpfile = tempname()
-    call system('dict "' . word . '" > ' . tmpfile)
-    execute("tabedit " . tmpfile)
+	let l:word = expand("<cword>")
+	let l:tmpfile = tempname()
+	call system('dict "' . word . '" > ' . tmpfile)
+	execute("tabedit " . tmpfile)
 endfunction
 
 map <Leader>d :call Lookup()<CR>
@@ -145,60 +145,60 @@ nmap <Leader>k :tabe %<CR>g]
 " Cscope conf. Modified from Jason Duell jduell@alumni.princeton.edu
 if has("cscope")
 
-    " use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
-    set cscopetag
+	" use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
+	set cscopetag
 
-    " check cscope for definition of a symbol before checking ctags: set to 1
-    " if you want the reverse search order.
-    set cscopetagorder=0
+	" check cscope for definition of a symbol before checking ctags: set to 1
+	" if you want the reverse search order.
+	set cscopetagorder=0
 
-    if exists("&cscoperelative")
-        set cscoperelative
-    endif
+	if exists("&cscoperelative")
+		set cscoperelative
+	endif
 
-    if $CSCOPE_DB != ""
-        for csdb in split($CSCOPE_DB, ":")
-            if filereadable(csdb)
-                execute("cs add " . csdb)
-            endif
-        endfor
-    endif
+	if $CSCOPE_DB != ""
+		for csdb in split($CSCOPE_DB, ":")
+			if filereadable(csdb)
+				execute("cs add " . csdb)
+			endif
+		endfor
+	endif
 
-    nmap <Leader><Leader>S :cs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>G :cs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>C :cs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>T :cs find t <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>E :cs find e <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>F :cs find f <C-R>=expand("<cfile>")<CR><CR>
-    nmap <Leader><Leader>I :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-    nmap <Leader><Leader>D :cs find d <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>S :cs find s <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>G :cs find g <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>C :cs find c <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>T :cs find t <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>E :cs find e <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>F :cs find f <C-R>=expand("<cfile>")<CR><CR>
+	nmap <Leader><Leader>I :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+	nmap <Leader><Leader>D :cs find d <C-R>=expand("<cword>")<CR><CR>
 
-    nmap <Leader><Leader>sv :vert scs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>gv :vert scs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>cv :vert scs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>tv :vert scs find t <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>ev :vert scs find e <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>fv :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
-    nmap <Leader><Leader>iv :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-    nmap <Leader><Leader>dv :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>sv :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>gv :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>cv :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>tv :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>ev :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>fv :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
+	nmap <Leader><Leader>iv :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+	nmap <Leader><Leader>dv :vert scs find d <C-R>=expand("<cword>")<CR><CR>
 
-    nmap <Leader><Leader>sh :scs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>gh :scs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>ch :scs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>th :scs find t <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>eh :scs find e <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>fh :scs find f <C-R>=expand("<cfile>")<CR><CR>
-    nmap <Leader><Leader>ih :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-    nmap <Leader><Leader>dh :scs find d <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>sh :scs find s <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>gh :scs find g <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>ch :scs find c <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>th :scs find t <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>eh :scs find e <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>fh :scs find f <C-R>=expand("<cfile>")<CR><CR>
+	nmap <Leader><Leader>ih :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+	nmap <Leader><Leader>dh :scs find d <C-R>=expand("<cword>")<CR><CR>
 
-    nmap <Leader><Leader>st :tab scs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>gt :tab scs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>ct :tab scs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>tt :tab scs find t <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>et :tab scs find e <C-R>=expand("<cword>")<CR><CR>
-    nmap <Leader><Leader>ft :tab scs find f <C-R>=expand("<cfile>")<CR><CR>
-    nmap <Leader><Leader>it :tab scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-    nmap <Leader><Leader>dt :tab scs find d <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>st :tab scs find s <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>gt :tab scs find g <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>ct :tab scs find c <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>tt :tab scs find t <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>et :tab scs find e <C-R>=expand("<cword>")<CR><CR>
+	nmap <Leader><Leader>ft :tab scs find f <C-R>=expand("<cfile>")<CR><CR>
+	nmap <Leader><Leader>it :tab scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+	nmap <Leader><Leader>dt :tab scs find d <C-R>=expand("<cword>")<CR><CR>
 
 endif " End of cscope conf
 

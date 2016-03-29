@@ -7,9 +7,9 @@ echo Creating symlinks for resource files:
 
 cd ~
 for f in $PROJ_DIR/dot_*; do
-    f=`basename "$f"`
-    echo ~/.${f#dot_} '->' $PROJ_DIR/$f
-    ln -sf $PROJ_DIR/$f .${f#dot_}
+	f=`basename "$f"`
+	echo ~/.${f#dot_} '->' $PROJ_DIR/$f
+	ln -sf $PROJ_DIR/$f .${f#dot_}
 done
 
 mkdir -p $ENV_DIR
@@ -25,8 +25,8 @@ read EMAIL
 
 cat > $ENV_DIR/gitconfig << EOF
 [user]
-    name = $NAME
-    email = $EMAIL
+name = $NAME
+email = $EMAIL
 EOF
 
 echo "Generated file $ENV_DIR/gitconfig"
