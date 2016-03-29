@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 PROJ_DIR=`pwd`
 ENV_DIR=~/.site_env
