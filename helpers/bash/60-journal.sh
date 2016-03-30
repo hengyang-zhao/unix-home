@@ -19,12 +19,12 @@ __journal_view_whole() {
 
 __journal_exists && alias U=__journal_commit
 __journal_commit() {
-	echo Automatically add and commit journal repo $JOURNAL_PATH:
-	echo The current status is:
+	echo "Automatically add and commit journal repo $JOURNAL_PATH:"
+	echo "The current status is:"
 	echo
 	(builtin cd $JOURNAL_PATH && git s)
 	echo
-	echo Does it look okay to commit all? [yes\|NO]
+	echo "Does it look okay to commit all files under entries/ ? [yes|NO]"
 	read ans
 
 	while [ "${ans,,}" != yes ] && [ "${ans,,}" != no ]; do
@@ -32,22 +32,22 @@ __journal_commit() {
 			ans=NO
 			continue
 		fi
-		echo Please answer YES or NO \(default\):
+		echo "Please answer YES or NO (default):"
 		read ans
 	done
 
 	if [ "${ans,,}" = no ]; then
-		echo Cancelled by user
+		echo "Cancelled by user"
 		return 1
 	fi
 
 	TMPBRANCH=_auto_
 
 	(builtin cd $JOURNAL_PATH && \
-		git add . && \
+		git add entries && \
 		git branch $TMPBRANCH && \
 		git checkout $TMPBRANCH && \
-		git commit -m "Automatic journal update" && \
+		git commit -m "Automatic entries update"$'\n\n'"From $(hostname -f)" && \
 		git checkout master && \
 		git pull origin master && \
 		git merge $TMPBRANCH && \
