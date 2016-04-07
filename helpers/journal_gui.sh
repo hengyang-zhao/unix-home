@@ -11,7 +11,7 @@ case "$1" in
 		gedit $(${JOURNAL_PATH}/get_today.sh)
 
 		notify-send "Today's journal: compiling"
-		if make -C ${JOURNAL_PATH} today; then
+		if make -iC ${JOURNAL_PATH} today; then
 			notify-send "Today's journal: sucessfully compiled"
 		else
 			notify-send "Today's journal: compilation failed"
