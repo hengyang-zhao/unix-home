@@ -48,5 +48,8 @@ if [ -d ~/unix-home/helpers/bash ]; then
 	done
 fi
 
+PROMPT_COMMAND=__do_after_command
+trap __do_before_command DEBUG
+
 # vim: set ft=sh:
 

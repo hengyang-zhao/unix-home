@@ -1,4 +1,9 @@
 # my verbose command line prompt
+
+declare -i __command_sno_last_seen=0
+declare -i __command_sno=0
+declare __allow_hrule=no
+
 PS1='$(
 
 # save the return value of the last commands
@@ -18,23 +23,18 @@ cwd=$(pwd -P)
 # clear the previous terminal formatting
 echo -ne "\[\e[0m\]"
 
-# if the return value is not OK, tell the errno
-if [ $sok = OK ]; then
-	echo -ne "\[\e[4;90m\]"
-	if [ \# -gt 1 ]; then
+if [ $__allow_hrule = yes ]; then
+
+	# if the return value is not OK, tell the errno
+	if [ $sok = OK ]; then
+		echo -ne "\[\e[4;2;32m\]"
 		printf "%${COLUMNS}s\n" "Finished on $ts [ Status OK ]"
 	else
-		printf "%${COLUMNS}s\n"
-	fi
-else
-	echo -ne "\[\e[4;31m\]"
-	if [ \# -gt 1 ]; then
+		echo -ne "\[\e[4;31m\]"
 		printf "%${COLUMNS}s\n" "Error occured on $ts [ Code $eno ]"
-	else
-		printf "%${COLUMNS}s\n"
 	fi
+	echo -ne "\[\e[0m\]"
 fi
-echo -ne "\[\e[0m\]"
 
 # if we are under schroot
 if [ -n "$debian_chroot" ]; then
@@ -95,3 +95,21 @@ fi
 echo -ne "\n\[\e[1m\]\$\[\e[0m\] "
 
 )' # end of my prompt
+
+__do_before_command() {
+	if [ "$BASH_COMMAND" = __do_after_command ]; then
+		return
+	fi
+	__command_executed=$BASH_COMMAND
+	echo -e "\e[90m-> $BASH_COMMAND\e[0m"
+	__command_sno+=1
+}
+
+__do_after_command() {
+	if [ $__command_sno_last_seen -lt $__command_sno ]; then
+		__command_sno_last_seen=$__command_sno
+		__allow_hrule=yes
+	else
+		__allow_hrule=no
+	fi
+}
