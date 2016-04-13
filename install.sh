@@ -17,16 +17,32 @@ mkdir -p $ENV_DIR
 echo
 echo "Collecting user information for git configuration file:"
 
-echo -n "Please enter your full name: "
-read NAME
+git_name=$(git config --get user.name)
+if [ -z "$git_name" ]; then
+	echo -n "Please enter your full name: "
+else
+	echo -n "Please enter your full name [$git_name]: "
+fi
+read name
+if [ -z "$name" ]; then
+	name="$git_name"
+fi
 
-echo -n "Please enter your main E-mail address: "
-read EMAIL
+git_email=$(git config --get user.email)
+if [ -z "$git_email" ]; then
+	echo -n "Please enter your main E-mail address: "
+else
+	echo -n "Please enter your main E-mail address [$git_email]: "
+fi
+read email
+if [ -z "$email" ]; then
+	email="$git_email"
+fi
 
 cat > $ENV_DIR/gitconfig << EOF
 [user]
-name = $NAME
-email = $EMAIL
+	name = $name
+	email = $email
 EOF
 
 echo "Generated file $ENV_DIR/gitconfig"
