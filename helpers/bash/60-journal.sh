@@ -9,7 +9,7 @@ __journal_edit_today() {
 
 __journal_exists && __has latex && alias T=__journal_view_today
 __journal_view_today() {
-	make -C $JOURNAL_PATH today && o $JOURNAL_PATH/main.pdf
+	make -iC $JOURNAL_PATH today && o $JOURNAL_PATH/main.pdf
 }
 
 __journal_exists && __has latex && alias W=__journal_view_whole
