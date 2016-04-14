@@ -73,7 +73,7 @@ alias cd='__verbose_cd'
 __verbose_cd() {
 	if __cd_func "$1"; then
 		if [ "$1" != -- ]; then
-			ls
+			ls >&2
 		fi
 	fi
 }

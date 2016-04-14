@@ -112,7 +112,7 @@ __do_before_command() {
 			cmd_tokens[0]="$cmd_head"
 		fi
 	fi
-	echo -e "\e[90m-> ${cmd_tokens[@]}\e[0m"
+	echo -e "\e[90m-> ${cmd_tokens[@]}\e[0m" >&2
 	__command_sno+=1
 }
 
