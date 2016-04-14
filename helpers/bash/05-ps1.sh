@@ -2,39 +2,11 @@
 
 declare -i __command_sno_last_seen=0
 declare -i __command_sno=0
-declare __allow_hrule=no
 
 PS1='$(
 
-# save the return value of the last commands
-eno=${PIPESTATUS[@]}
-sok=OK
-for i in $eno; do
-	if [ $i -ne 0 ]; then
-		sok=ERR
-		break
-	fi
-done
-
 # record status
-ts=$(date +"%b-%d-%Y %T")
 cwd=$(pwd -P)
-
-# clear the previous terminal formatting
-echo -ne "\[\e[0m\]"
-
-if [ $__allow_hrule = yes ]; then
-
-	# if the return value is not OK, tell the errno
-	if [ $sok = OK ]; then
-		echo -ne "\[\e[4;2;32m\]"
-		printf "%${COLUMNS}s\n" "Finished on $ts [ Status OK ]"
-	else
-		echo -ne "\[\e[4;31m\]"
-		printf "%${COLUMNS}s\n" "Error occured on $ts [ Code $eno ]"
-	fi
-	echo -ne "\[\e[0m\]"
-fi
 
 # if we are under schroot
 if [ -n "$debian_chroot" ]; then
@@ -114,13 +86,34 @@ __do_before_command() {
 	fi
 	echo -e "\e[90m-> ${cmd_tokens[@]}\e[0m" >&2
 	__command_sno+=1
+	__allow_hrule=no
 }
 
 __do_after_command() {
+	eno=${PIPESTATUS[@]}
+	ret=OK
+	for i in $eno; do
+		if [ $i -ne 0 ]; then
+			ret=ERR
+			break
+		fi
+	done
+
+	ts=$(date +"%b-%d-%Y %T")
 	if [ $__command_sno_last_seen -lt $__command_sno ]; then
 		__command_sno_last_seen=$__command_sno
-		__allow_hrule=yes
-	else
-		__allow_hrule=no
+
+		# clear the previous terminal formatting
+		echo -ne "\e[0m"
+
+		# if the return value is not OK, tell the errno
+		if [ $ret = OK ]; then
+			echo -ne "\e[4;2;32m"
+			printf "%${COLUMNS}s\n" "Finished on $ts [ Status OK ]"
+		else
+			echo -ne "\e[4;31m"
+			printf "%${COLUMNS}s\n" "Error occured on $ts [ Code $eno ]"
+		fi
+		echo -ne "\e[0m"
 	fi
 }
