@@ -68,6 +68,10 @@ echo -ne "\n\[\e[1m\]\$\[\e[0m\] "
 
 )' # end of my prompt
 
+__expand_params() {
+	echo $@
+}
+
 __do_before_command() {
 	if [ "$BASH_COMMAND" = __do_after_command ]; then
 		return
@@ -77,16 +81,15 @@ __do_before_command() {
 	read -r -a cmd_tokens <<< $__command_executed
 	enable | grep -q "\<${cmd_tokens[0]}\>"
 	if [ $? -eq 0 ]; then
-		cmd_tokens[0]="builtin(${cmd_tokens[0]})"
+		cmd_tokens[0]="builtin ${cmd_tokens[0]}"
 	else
 		cmd_head=$(which --skip-alias --skip-functions ${cmd_tokens[0]} 2>/dev/null)
 		if [ $? -eq 0 ]; then
 			cmd_tokens[0]="$cmd_head"
 		fi
 	fi
-	echo -e "\e[90m-> ${cmd_tokens[@]}\e[0m" >&2
+	echo -e "\e[90m-> $(__expand_params ${cmd_tokens[@]}) \e[0m" >&2
 	__command_sno+=1
-	__allow_hrule=no
 }
 
 __do_after_command() {
