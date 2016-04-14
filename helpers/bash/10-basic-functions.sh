@@ -71,11 +71,14 @@ __cd_func()
 
 alias cd='__verbose_cd'
 __verbose_cd() {
-	if __cd_func "$1"; then
+	__cd_func "$1"
+	ret=$?
+	if [ $ret -eq 0 ]; then
 		if [ "$1" != -- ]; then
 			ls >&2
 		fi
 	fi
+	return $ret
 }
 
 alias __append='__update_export --append'
