@@ -100,8 +100,19 @@ __do_before_command() {
 	if [ "$BASH_COMMAND" = __do_after_command ]; then
 		return
 	fi
+	local parts
 	__command_executed=$BASH_COMMAND
-	echo -e "\e[90m-> $BASH_COMMAND\e[0m"
+	read -r -a cmd_tokens <<< $__command_executed
+	enable | grep -q "\<${cmd_tokens[0]}\>"
+	if [ $? -eq 0 ]; then
+		cmd_tokens[0]="builtin(${cmd_tokens[0]})"
+	else
+		cmd_head=$(which --skip-alias --skip-functions ${cmd_tokens[0]} 2>/dev/null)
+		if [ $? -eq 0 ]; then
+			cmd_tokens[0]="$cmd_head"
+		fi
+	fi
+	echo -e "\e[90m-> ${cmd_tokens[@]}\e[0m"
 	__command_sno+=1
 }
 
