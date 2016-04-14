@@ -69,7 +69,7 @@ echo -ne "\n\[\e[1m\]\$\[\e[0m\] "
 )' # end of my prompt
 
 __expand_params() {
-	echo $@
+	eval "echo $@"
 }
 
 __do_before_command() {
