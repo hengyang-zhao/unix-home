@@ -68,15 +68,10 @@ echo -ne "\n\[\e[1m\]\$\[\e[0m\] "
 
 )' # end of my prompt
 
-__expand_params() {
-	eval "echo $@"
-}
-
 __do_before_command() {
 	if [ "$BASH_COMMAND" = __do_after_command ]; then
 		return
 	fi
-	local parts
 	__command_executed=$BASH_COMMAND
 	read -r -a cmd_tokens <<< $__command_executed
 	enable | grep -q "\<${cmd_tokens[0]}\>"
@@ -88,7 +83,7 @@ __do_before_command() {
 			cmd_tokens[0]="$cmd_head"
 		fi
 	fi
-	echo -e "\e[90m-> $(__expand_params ${cmd_tokens[@]}) \e[0m" >&2
+	echo -e "\e[90m-> ${cmd_tokens[@]}\e[0m"
 	__command_sno+=1
 }
 
