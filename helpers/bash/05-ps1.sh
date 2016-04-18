@@ -107,10 +107,10 @@ __do_after_command() {
 		# if the return value is not OK, tell the errno
 		if [ $ret = OK ]; then
 			echo -ne "\e[4;2;32m"
-			printf "%${COLUMNS}s\n" "Finished on $ts [ Status OK ]"
+			printf "%${COLUMNS}s\n" "$ts [ Status OK ]"
 		else
 			echo -ne "\e[4;31m"
-			printf "%${COLUMNS}s\n" "Error occured on $ts [ Code $eno ]"
+			printf "%${COLUMNS}s\n" "$ts [ Exception code $eno ]"
 		fi
 		echo -ne "\e[0m"
 	fi
