@@ -44,14 +44,19 @@ __journal_commit() {
 	TMPBRANCH=_auto_
 
 	(builtin cd $JOURNAL_PATH && \
-		git add entries && \
-		git branch $TMPBRANCH && \
-		git checkout $TMPBRANCH && \
-		git commit -m "Automatic entries update"$'\n\n'"From $(hostname -f)" && \
-		git checkout master && \
-		git pull origin master && \
-		git merge $TMPBRANCH && \
-		git branch -d $TMPBRANCH && \
-		git push origin master && \
-		echo Automatic journal update complete)
+		__verbose_do git add entries && \
+		__verbose_do git branch $TMPBRANCH && \
+		__verbose_do git checkout $TMPBRANCH && \
+		__verbose_do git commit -m \'"Automatic entries update"$'\n\n'"From $(hostname -f)"\' && \
+		__verbose_do git checkout master && \
+		__verbose_do git pull origin master && \
+		__verbose_do git merge $TMPBRANCH && \
+		__verbose_do git branch -d $TMPBRANCH && \
+		__verbose_do git push origin master)
+
+	if [ $? -eq 0 ]; then
+		echo Automatic journal update complete
+	else
+		echo Error occured. Please roll back manually.
+	fi
 }
