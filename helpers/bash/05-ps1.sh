@@ -1,6 +1,5 @@
 # my verbose command line prompt
 
-declare -i __command_sno_last_seen=0
 declare -i __command_sno=0
 
 PS1='$(
@@ -73,6 +72,8 @@ __do_before_command() {
 		return
 	fi
 	__command_executed=$BASH_COMMAND
+	__command_sno+=1
+
 	read -r -a cmd_tokens <<< $__command_executed
 	enable | grep -q "\<${cmd_tokens[0]}\>"
 	if [ $? -eq 0 ]; then
@@ -83,8 +84,7 @@ __do_before_command() {
 			cmd_tokens[0]="$cmd_head"
 		fi
 	fi
-	echo -e "\e[90m-> ${cmd_tokens[@]}\e[0m"
-	__command_sno+=1
+	echo -e "\e[90m[$__command_sno] -> ${cmd_tokens[@]} ($(date +"%x %X"))\e[0m"
 }
 
 __do_after_command() {
@@ -97,9 +97,9 @@ __do_after_command() {
 		fi
 	done
 
-	ts=$(date +"%b-%d-%Y %T")
-	if [ $__command_sno_last_seen -lt $__command_sno ]; then
-		__command_sno_last_seen=$__command_sno
+	ts=$(date +"%x %X")
+	if [ $__command_sno -gt 0 ]; then
+		__command_sno=0
 
 		# clear the previous terminal formatting
 		echo -ne "\e[0m"
