@@ -27,7 +27,7 @@ __smart_make()
 	while true; do
 		echo "** Attempting make in $(realpath $dir)"
 		if [ -f $dir/Makefile ] || [ -f $dir/makefile ] || [ -f $dir/GNUmakefile ]; then
-			$(which --skip-alias make) -C "$dir" $@
+			command make -C "$dir" $@
 			return $?
 		fi
 
