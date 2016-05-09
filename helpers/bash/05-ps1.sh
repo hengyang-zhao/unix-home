@@ -16,7 +16,7 @@ fi
 if [ $UID -eq 0 ]; then
 	echo -ne "\[\e[1;31m\]\u@\h$s\[\e[0m\]"
 else
-	echo -ne "\[\e[32m\]\u@\h$s\[\e[0m\]"
+	echo -ne "\[\e[32m\]\u@${BASH_PS1_HOSTNAME:-\h}$s\[\e[0m\]"
 fi
 
 # if there are background jobs, give the total count
