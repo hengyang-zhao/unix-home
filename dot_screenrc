@@ -4,8 +4,6 @@ startup_message off
 
 defscrollback 65536
 
-termcapinfo xterm* ti@:te@
-
 altscreen on
 
 vbell off
