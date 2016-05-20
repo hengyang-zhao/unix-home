@@ -1,6 +1,7 @@
 # my verbose command line prompt
 
 declare -i __command_sno=0
+declare __command_errno=0
 
 PS1='$(
 
@@ -68,6 +69,7 @@ echo -ne "\n\[\e[1m\]\$\[\e[0m\] "
 )' # end of my prompt
 
 __do_before_command() {
+    __command_errno="${PIPESTATUS[@]}"
 	if [ "$BASH_COMMAND" = __do_after_command ]; then
 		return
 	fi
@@ -88,7 +90,7 @@ __do_before_command() {
 }
 
 __do_after_command() {
-	eno=${PIPESTATUS[@]}
+	eno=$__command_errno
 	ret=OK
 	for i in $eno; do
 		if [ $i -ne 0 ]; then
