@@ -25,13 +25,13 @@ __smart_make()
 {
 	dir=.
 	while true; do
-		echo "** Attempting make in $(realpath $dir)"
+		echo "** Attempting make in $(builtin cd "$dir"; pwd)"
 		if [ -f $dir/Makefile ] || [ -f $dir/makefile ] || [ -f $dir/GNUmakefile ]; then
 			command make -C "$dir" $@
 			return $?
 		fi
 
-		if [ "$(realpath "$dir")" = / ]; then
+		if [ "$(builtin cd "$dir"; pwd)" = / ]; then
 			__red_echo "** Cannot find makefile"
 			return 1
 		fi
