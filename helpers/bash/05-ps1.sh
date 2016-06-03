@@ -77,7 +77,7 @@ __do_before_command() {
 	__command_sno+=1
 
 	read -r -a cmd_tokens <<< $__command_executed
-	enable | grep -q "\<${cmd_tokens[0]}\>"
+	enable | grep -q "\<\\${cmd_tokens[0]}\>"
 	if [ $? -eq 0 ]; then
 		cmd_tokens[0]="builtin ${cmd_tokens[0]}"
 	else
