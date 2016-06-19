@@ -60,7 +60,7 @@ echo -ne " \[\e[1;34m\]\w\[\e[0m\]"
 
 # physical pwd, only shown if different from regular pwd
 if [ "$cwd" != "$(pwd)" ]; then
-	echo -ne "\n\[\e[2;34m\](Physical: $cwd)\[\e[0m\]"
+	echo -ne "\n\[\e[90m\](Physical: $cwd)\[\e[0m\]"
 fi
 
 # finally a highlighted prompt symbol on a new line
