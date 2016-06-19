@@ -86,7 +86,7 @@ __do_before_command() {
 			cmd_tokens[0]="$cmd_head"
 		fi
 	fi
-	echo -e "\e[90m[$__command_sno] -> ${cmd_tokens[@]} ($(date +"%x %X"))\e[0m"
+	echo $'\033[90m'"[$__command_sno] -> ${cmd_tokens[@]} ($(date +"%x %X"))"$'\033[0m'
 }
 
 __do_after_command() {
@@ -104,16 +104,16 @@ __do_after_command() {
 		__command_sno=0
 
 		# clear the previous terminal formatting
-		echo -ne "\e[0m"
+		echo -n $'\033[0m'
 
 		# if the return value is not OK, tell the errno
 		if [ $ret = OK ]; then
-			echo -ne "\e[4;2;32m"
+			echo -n $'\033[4;2;32m'
 			printf "%${COLUMNS}s\n" "$ts [ Status OK ]"
 		else
-			echo -ne "\e[4;31m"
+			echo -n $'\033[4;31m'
 			printf "%${COLUMNS}s\n" "$ts [ Exception code $eno ]"
 		fi
-		echo -ne "\e[0m"
+		echo -n $'\033[0m'
 	fi
 }
