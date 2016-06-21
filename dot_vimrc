@@ -79,7 +79,7 @@ command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
 "
 " END OF DEFAULT VIMRC FILE
 
-colorscheme koehler
+silent! colorscheme koehler
 
 if has("mouse")
     set mouse=a
