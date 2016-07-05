@@ -1,0 +1,7 @@
+public class HelloWorld {
+	public static void main(String[] args) {
+		System.out.println("Hello, world!");
+	}
+}
+
+// vim: set ft=java ts=4 sw=4 sr noet:
