@@ -39,8 +39,8 @@ fi
 source ~/.site_env/bash/my_rc_home.sh
 
 # Auxiliary scripts
-if [ -d $MY_RC_HOME/helpers/bash ]; then
-	for i in $MY_RC_HOME/helpers/bash/*.sh ; do
+if [ -d $MY_RC_HOME/bashrc.d ]; then
+	for i in $MY_RC_HOME/bashrc.d/*.sh ; do
 		if [ -r "$i" ]; then
 			if [ "${-#*i}" != "$-" ]; then
 				. "$i"
