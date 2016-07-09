@@ -95,10 +95,10 @@ echo "  Registered MY_RC_HOME=$MY_RC_HOME in file $SITE_BASH_DIR/my_rc_home.sh"
 echo
 echo "Creating symlinks for resource files:"
 
-for f in $DOT_FILES_DIR/dot_*; do
+for f in $DOT_FILES_DIR/*; do
 	f=`basename "$f"`
-	echo "  symlink ~/.${f#dot_} -> $DOT_FILES_DIR/$f"
-    (builtin cd; ln -sf $DOT_FILES_DIR/$f .${f#dot_})
+	echo "  symlink ~/.$f -> $DOT_FILES_DIR/$f"
+	(builtin cd; ln -sf $DOT_FILES_DIR/$f .${f#dot_})
 done
 
 echo
