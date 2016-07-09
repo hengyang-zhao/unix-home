@@ -74,21 +74,17 @@ endif " has("autocmd")
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
-command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-			\ | wincmd p | diffthis
-"
-" END OF DEFAULT VIMRC FILE
+command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis
 
 silent! colorscheme koehler
 
 if has("mouse")
     set mouse=a
 endif
-set ruler
+
 set number
 set nowrap
 
-" Wow!
 set tabstop=4
 set shiftwidth=4
 set shiftround
@@ -101,112 +97,6 @@ set showmatch
 set formatoptions+=mM
 set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-14.(%l,%c%V%)\ %P
 
-nmap <C-p> :tabprevious<CR>
-nmap <C-n> :tabnext<CR>
-
-nmap <Leader>x :close<CR>
-
-nmap <Leader>sd :%s/\s\+$//g<CR>
-nmap <Leader>ss /\s\+$<CR>
-
-nmap <Leader>t~ :tabedit ~/<CR>
-nmap <Leader>t. :tabedit .<CR>
-nmap <Leader>tn :tabedit<CR>
-nmap <Leader>tt :tabedit %<CR>
-nmap <Leader>to :tabonly<CR>
-
-nmap <Leader>h~ :split ~/<CR>
-nmap <Leader>h. :split .<CR>
-nmap <Leader>hh :split<CR>
-
-nmap <Leader>v~ :vsplit ~/<CR>
-nmap <Leader>v. :vsplit .<CR>
-nmap <Leader>vv :vsplit<CR>
-
-function Lookup()
-	let l:word = expand("<cword>")
-	let l:tmpfile = tempname()
-	call system('dict "' . word . '" > ' . tmpfile)
-	execute("tabedit " . tmpfile)
-endfunction
-
-map <Leader>d :call Lookup()<CR>
-
-nmap <C-h> zh
-nmap <C-L> zl
-
-nmap <Up> <C-y>
-nmap <Down> <C-e>
-nmap <Left> 4zh
-nmap <Right> 4zl
-
-nmap <Leader>mm :make<CR>
-nmap <Leader>mv :make view<CR>
-nmap <Leader>k :tabe %<CR>g]
-
-" Cscope conf. Modified from Jason Duell jduell@alumni.princeton.edu
-if has("cscope")
-
-	" use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
-	set cscopetag
-
-	" check cscope for definition of a symbol before checking ctags: set to 1
-	" if you want the reverse search order.
-	set cscopetagorder=0
-
-	if exists("&cscoperelative")
-		set cscoperelative
-	endif
-
-	if $CSCOPE_DB != ""
-		for csdb in split($CSCOPE_DB, ":")
-			if filereadable(csdb)
-				execute("cs add " . csdb)
-			endif
-		endfor
-	endif
-
-	nmap <Leader><Leader>S :cs find s <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>G :cs find g <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>C :cs find c <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>T :cs find t <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>E :cs find e <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>F :cs find f <C-R>=expand("<cfile>")<CR><CR>
-	nmap <Leader><Leader>I :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-	nmap <Leader><Leader>D :cs find d <C-R>=expand("<cword>")<CR><CR>
-
-	nmap <Leader><Leader>sv :vert scs find s <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>gv :vert scs find g <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>cv :vert scs find c <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>tv :vert scs find t <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>ev :vert scs find e <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>fv :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
-	nmap <Leader><Leader>iv :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-	nmap <Leader><Leader>dv :vert scs find d <C-R>=expand("<cword>")<CR><CR>
-
-	nmap <Leader><Leader>sh :scs find s <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>gh :scs find g <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>ch :scs find c <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>th :scs find t <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>eh :scs find e <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>fh :scs find f <C-R>=expand("<cfile>")<CR><CR>
-	nmap <Leader><Leader>ih :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-	nmap <Leader><Leader>dh :scs find d <C-R>=expand("<cword>")<CR><CR>
-
-	nmap <Leader><Leader>st :tab scs find s <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>gt :tab scs find g <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>ct :tab scs find c <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>tt :tab scs find t <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>et :tab scs find e <C-R>=expand("<cword>")<CR><CR>
-	nmap <Leader><Leader>ft :tab scs find f <C-R>=expand("<cfile>")<CR><CR>
-	nmap <Leader><Leader>it :tab scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-	nmap <Leader><Leader>dt :tab scs find d <C-R>=expand("<cword>")<CR><CR>
-
-endif " End of cscope conf
-
-autocmd BufNewFile,BufRead *.cu set cindent
-
-set cinoptions=>s,e0,n0,f0,{0,}0,^0,L-1,:0,=s,l0,b0,g0,hs,N-s,ps,ts,is,+s,c3,C0,/0,(2s,us,U0,w0,W0,k0,m0,j0,J0,)20,*70,#0
 set shell=/bin/sh
 
 for rc in split(globpath("$MY_RC_HOME/vimrc.d/", "*.vim"), '\n')
