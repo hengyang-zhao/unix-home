@@ -1,6 +1,6 @@
 # Site scripts
-if [ -d ~/.site_env ]; then
-	for i in ~/.site_env/*.sh ; do
+if [ -d ~/.site_env/bash ]; then
+	for i in ~/.site_env/bash/*.sh ; do
 		if [ -r "$i" ]; then
 			if [ "${-#*i}" != "$-" ]; then
 				. "$i"

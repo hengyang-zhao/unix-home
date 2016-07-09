@@ -1,10 +1,10 @@
 #!/bin/bash
 
-if ! [ -f ~/.site_env/journal.sh ]; then
+if ! [ -f ~/.site_env/bash/journal.sh ]; then
 	exit 1
 fi
 
-source ~/.site_env/journal.sh
+source ~/.site_env/bash/journal.sh
 
 case "$1" in
 	--edit-today)

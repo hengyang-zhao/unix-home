@@ -8,7 +8,7 @@ __create_file_using_template() {
     test -e "$fname" && return 2
 
     local ext="${1##*.}"
-    local tname="$HOME/unix-home/helpers/templates/$ext.template"
+    local tname="$MY_RC_HOME/templates/$ext.template"
 
     test -e "$tname" || return 3
 

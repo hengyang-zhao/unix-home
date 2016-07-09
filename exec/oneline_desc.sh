@@ -21,9 +21,9 @@ case $KERNEL in
         memFreeGB=`expr $memFreeKB / 1024 / 1024`
         memFreePct=`expr $memFreeKB \* 100 / $memTotalKB`%
         loadAvg1Min=`sed 's/^\([0-9\.]\+\) .*$/\1/g' /proc/loadavg`
-        gnuScreenCnt=`screen -ls | grep -E '[0-9]\.' | wc -l`
+        gnuScreenCnt=`which screen &>/dev/null && screen -ls | grep -E '[0-9]\.' | wc -l`
 
-        printf "$FORMAT" $HOST "$cpuFreq x $cpuCores" "$memFreeGB/$memTotalGB" $memFreePct $loadAvg1Min $gnuScreenCnt
+        printf "$FORMAT" $HOST "$cpuFreq x $cpuCores" "$memFreeGB/$memTotalGB" $memFreePct $loadAvg1Min ${gnuScreenCnt:=0}
         ;;
 
     *)

@@ -1,14 +1,6 @@
 # vim: set ft=gitconfig:
 #
 
-# PLEASE PUT USER SPECS INTO ~/.site_env/gitconfig
-#
-#[user]
-#	name = Dr. Who
-#	email = dr.who@example.com
-#
-
-
 [color]
 	ui = auto
 
@@ -32,4 +24,4 @@
 	default = current
 
 [include]
-	path = ~/.site_env/gitconfig
+	path = ~/.site_env/git/gitconfig

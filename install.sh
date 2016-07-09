@@ -1,62 +1,105 @@
 #!/bin/bash
 
-PROJ_DIR=`pwd`
-ENV_DIR=~/.site_env
+MY_RC_HOME=$(builtin cd $(dirname "$0"); builtin pwd)
 
-echo Creating symlinks for resource files:
+DOT_FILES_DIR=$MY_RC_HOME/dot_files
+SITE_ENV_DIR=$HOME/.site_env
 
-cd ~
-for f in $PROJ_DIR/dot_*; do
-	f=`basename "$f"`
-	echo ~/.${f#dot_} '->' $PROJ_DIR/$f
-	ln -sf $PROJ_DIR/$f .${f#dot_}
+SITE_GIT_DIR=$SITE_ENV_DIR/git
+SITE_GITCONFIG_FILE=$SITE_GIT_DIR/gitconfig
+
+SITE_VIM_DIR=$SITE_ENV_DIR/vim
+SITE_BASH_DIR=$SITE_ENV_DIR/bash
+
+#
+# ~/.site_env/*
+#
+
+echo
+echo "Creating site specific resource file directories:"
+
+for subdir in $SITE_GIT_DIR $SITE_VIM_DIR $SITE_BASH_DIR; do
+	echo "  new directory $subdir"
+	mkdir -p $subdir
 done
 
-mkdir -p $ENV_DIR
+#
+# Git
+#
 
 echo
 echo "Collecting user information for git configuration file:"
 
-git_name=$(git config --get user.name)
-if [ -z "$git_name" ]; then
+GIT_NAME_OLD=$(git config --get user.name)
+if [ -z "$GIT_NAME_OLD" ]; then
 	echo -n "Please enter your full name: "
 else
-	echo -n "Please enter your full name [$git_name]: "
+	echo -n "Please enter your full name [$GIT_NAME_OLD]: "
 fi
-read name
-if [ -z "$name" ]; then
-	name="$git_name"
+read GIT_NAME
+if [ -z "$GIT_NAME" ]; then
+	GIT_NAME="$GIT_NAME_OLD"
 fi
 
-git_email=$(git config --get user.email)
-if [ -z "$git_email" ]; then
+GIT_EMAIL_OLD=$(git config --get user.email)
+if [ -z "$GIT_EMAIL_OLD" ]; then
 	echo -n "Please enter your main E-mail address: "
 else
-	echo -n "Please enter your main E-mail address [$git_email]: "
+	echo -n "Please enter your main E-mail address [$GIT_EMAIL_OLD]: "
 fi
-read email
-if [ -z "$email" ]; then
-	email="$git_email"
+read GIT_EMAIL
+if [ -z "$GIT_EMAIL" ]; then
+	GIT_EMAIL="$GIT_EMAIL_OLD"
 fi
 
-cat > $ENV_DIR/gitconfig << EOF
+cat > $SITE_GITCONFIG_FILE << EOF
 [user]
-	name = $name
-	email = $email
+	name = $GIT_NAME
+	email = $GIT_EMAIL
 EOF
 
-echo "Generated file $ENV_DIR/gitconfig"
+echo "Generated file $SITE_GITCONFIG_FILE"
+
+#
+# Journal
+#
 
 echo
 echo -n "Please enter the full path of your journal directory [~/journal]:"
-read JOURNAL
+read JOURNAL_PATH
 
-cat > $ENV_DIR/journal.sh << EOF
-export JOURNAL_PATH=${JOURNAL:=~/journal}
+cat > $SITE_BASH_DIR/journal.sh << EOF
+export JOURNAL_PATH=${JOURNAL_PATH:=~/journal}
 EOF
 
-echo "Generated file $ENV_DIR/journal.sh"
-echo "Please later clone your journal to $ENV_DIR/journal.sh"
+echo "Generated file $SITE_BASH_DIR/journal.sh"
+echo "Please later clone your journal to $SITE_BASH_DIR/journal.sh"
+
+#
+# export MY_RC_HOME
+#
+
+echo
+echo "Registering MY_RC_HOME environment variable:"
+
+cat > $SITE_BASH_DIR/my_rc_home.sh << EOF
+export MY_RC_HOME=$MY_RC_HOME
+EOF
+
+echo "  Registered MY_RC_HOME=$MY_RC_HOME in file $SITE_BASH_DIR/my_rc_home.sh"
+
+#
+# Symlinks
+#
+
+echo
+echo "Creating symlinks for resource files:"
+
+for f in $DOT_FILES_DIR/dot_*; do
+	f=`basename "$f"`
+	echo "  symlink ~/.${f#dot_} -> $DOT_FILES_DIR/$f"
+    (builtin cd; ln -sf $DOT_FILES_DIR/$f .${f#dot_})
+done
 
 echo
 echo "<> <> <>  W E L C O M E   H O M E  <> <> <>"
