@@ -1,4 +1,4 @@
-function Lookup()
+function! Lookup()
 	let l:word = expand("<cword>")
 	let l:tmpfile = tempname()
 	call system('dict "' . word . '" > ' . tmpfile)
