@@ -10,6 +10,7 @@ SITE_GITCONFIG_FILE=$SITE_GIT_DIR/gitconfig
 
 SITE_VIM_DIR=$SITE_ENV_DIR/vim
 SITE_BASH_DIR=$SITE_ENV_DIR/bash
+SITE_CSH_DIR=$SITE_ENV_DIR/csh
 
 #
 # ~/.site_env/*
@@ -18,7 +19,7 @@ SITE_BASH_DIR=$SITE_ENV_DIR/bash
 echo
 echo "Creating site specific resource file directories:"
 
-for subdir in $SITE_GIT_DIR $SITE_VIM_DIR $SITE_BASH_DIR; do
+for subdir in $SITE_GIT_DIR $SITE_VIM_DIR $SITE_BASH_DIR $SITE_CSH_DIR; do
 	echo "  new directory $subdir"
 	mkdir -p $subdir
 done
@@ -85,8 +86,12 @@ echo "Registering MY_RC_HOME environment variable:"
 cat > $SITE_BASH_DIR/my_rc_home.sh << EOF
 export MY_RC_HOME=$MY_RC_HOME
 EOF
-
 echo "  Registered MY_RC_HOME=$MY_RC_HOME in file $SITE_BASH_DIR/my_rc_home.sh"
+
+cat > $SITE_CSH_DIR/my_rc_home.csh << EOF
+setenv MY_RC_HOME $MY_RC_HOME
+EOF
+echo "  Registered MY_RC_HOME=$MY_RC_HOME in file $SITE_CSH_DIR/my_rc_home.csh"
 
 #
 # Symlinks
