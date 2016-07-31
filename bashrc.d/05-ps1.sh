@@ -28,11 +28,11 @@ fi
 # if this is not buttom level shell, give the depth
 if [ $SHLVL -gt 1 ]; then
 	echo -ne " \[\e[35m\]^$((SHLVL-1))\[\e[0m\]"
+fi
 
-	# if we are in a (GNU) screen, tell it
-	if [ -n "$STY" ]; then
-		echo -ne " \[\e[36m\]*${STY#*.}*\[\e[0m\]"
-	fi
+# if we are in a (GNU) screen, print the session name
+if [ -n "$STY" ]; then
+    echo -ne " \[\e[36m\]*${STY#*.}*\[\e[0m\]"
 fi
 
 # git branch name ( "(.git)" is displayed if we are in the .git)
