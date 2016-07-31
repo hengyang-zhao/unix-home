@@ -93,3 +93,27 @@ __connect_screen()
 			;;
 	esac
 }
+
+__has tmux && alias t=__connect_tmux
+__connect_tmux()
+{
+    case "_$1" in
+        _)
+            if tmux has-session -t main &>/dev/null; then
+                tmux attach -t main
+            else
+                tmux new -s main
+            fi
+            ;;
+        _:)
+            tmux ls
+            ;;
+        *)
+            if tmux has-session -t "$1" &>/dev/null; then
+                tmux attach -t "$1"
+            else 
+                tmux new -s "$1"
+            fi
+            ;;
+    esac
+}
