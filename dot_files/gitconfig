@@ -23,4 +23,5 @@
 	default = current
 
 [include]
+	path = ~/.site_env/git/user
 	path = ~/.site_env/git/gitconfig
