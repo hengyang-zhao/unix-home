@@ -110,10 +110,10 @@ __update_export()
 	[ -z "$1" ] && return 1
 	[ -z "$2" ] && return 2
 
-	varname=$1
-	newvalue=$2
+	varname="$1"
+	newvalue="$2"
 
-	varvalue=`eval echo '$'$varname`
+	varvalue="`eval echo '$'$varname`"
 
 	[ "$varvalue" = '$' ] && varvalue=
 
@@ -121,13 +121,13 @@ __update_export()
 		[ "$newvalue" = "$i" ] && return 3
 	done
 
-	if [ -z $varvalue ]; then
-		export $varname=$newvalue
+	if [ -z "$varvalue" ]; then
+		export $varname="$newvalue"
 	else
 		if [ $action = append ]; then
-			export $varname=$varvalue:$newvalue
+			export $varname="$varvalue":"$newvalue"
 		elif [ $action = prepend ]; then
-			export $varname=$newvalue:$varvalue
+			export $varname="$newvalue":"$varvalue"
 		else
 			echo __update_export is kidding you
 		fi
