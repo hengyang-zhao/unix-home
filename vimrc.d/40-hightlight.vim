@@ -1,4 +1,5 @@
 highlight ColorColumn ctermbg=DarkGray
+highlight Comment cterm=italic
 set cursorline
 
 " Change Color when entering Insert Mode
