@@ -107,8 +107,8 @@ __make_darwin_aliases() {
 
 __alias_gnu_utils() {
 	orig_cmd="$1"
-	gnu_prefix=${__DARWIN_GNU_UTILS_PREFIX:-g} # use / if no prefix
-	gnu_cmd=$__DARWIN_GNU_UTILS_PATH/$gnu_prefix$orig_cmd
+	gnu_prefix=${DARWIN_GNU_UTILS_PREFIX:-g} # use / if no prefix
+	gnu_cmd=$DARWIN_GNU_UTILS_HOME/$gnu_prefix$orig_cmd
 	if [ -x $gnu_cmd ]; then
 		if [ -n "$2" ]; then
 			gnu_cmd="$gnu_cmd $2"
@@ -117,7 +117,7 @@ __alias_gnu_utils() {
 	fi
 }
 
-if [ -n "$__DARWIN_GNU_UTILS_PATH" ]; then
+if [ -n "$DARWIN_GNU_UTILS_HOME" ]; then
 	__make_darwin_aliases
 fi
 
