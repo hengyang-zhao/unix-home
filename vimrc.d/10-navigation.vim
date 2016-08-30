@@ -23,8 +23,10 @@ nmap <Leader>vv :vsplit<CR>
 nmap <C-h> zh
 nmap <C-L> zl
 
-nmap <Up> <C-y>
-nmap <Down> <C-e>
+nmap <Up> 3<C-y>
+nmap <Down> 3<C-e>
 nmap <Left> 4zh
 nmap <Right> 4zl
 
+imap <C-f> <C-o>l
+imap <C-b> <C-o>h
