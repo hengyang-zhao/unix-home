@@ -17,6 +17,38 @@ This set of configuration scripts/rc-files are supposed to be deployed on a fres
 
 Run script `install.sh`. You can `cd` into the directory or not --- things will go where they should go. During the installation, your git information will be collected, which includes your full name and email address.
 
+## Multilevel rc
+
+RC files are applied in 3 levels. We have the following reasons to to this:
+
+  - We want handy default configurations that can be easily pulled from remote repo;
+  - We also need to add site-specific configurations;
+  - We don't want site-specific configurations and default configurations go same file, which causes problems when `git push/pull`;
+  - When configuration file goes big, we want split it into functional parts;
+  - We want to easily enable/disable some configurations;
+  - And many more reasons.
+
+For example, bash uses the following source file tree:
+
+  - `$HOME/.bashrc -> $UNIX_HOME/dot_files/bashrc`
+    - `$UNIX_HOME/bashrc.d/00-coreutils-aliases.sh`
+    - `$UNIX_HOME/bashrc.d/05-ps1.sh`
+    - `$UNIX_HOME/bashrc.d/10-basic-functions.sh`
+    - `$UNIX_HOME/bashrc.d/15-templates.sh`
+    - `$UNIX_HOME/bashrc.d/50-site-env.sh`
+      - `$HOME/.site_env/bash/*.sh`
+    - `$UNIX_HOME/bashrc.d/60-journal.sh`
+    - `$UNIX_HOME/bashrc.d/90-ext-tools-aliases.sh`
+    - `$UNIX_HOME/bashrc.d/91-fragiles.sh`
+    - `$UNIX_HOME/bashrc.d/92-fragile-exec.sh`
+    - `$UNIX_HOME/bashrc.d/95-darwin-spec.sh`
+
+All `*.sh` files under `$HOME/.site_env/bash` are considered as site-specific
+files and won't be under version control.
+
+Please check `$HOME/.site_env/` out after installation to see what other
+configurations supporting multilevel RC.
+
 ## Features
 
 ### Bash prompt
@@ -24,6 +56,9 @@ Run script `install.sh`. You can `cd` into the directory or not --- things will 
 A fancy command prompt:
 
  - username@hostname comes first in green (or red if you are root).
+
+   - Host name can be customized only for bash by adding `export
+     BASH_PS1_HOSTNAME=your-host-name` in one of your site-specific RC files.
 
  - Yellow flashing "&N" indicates the number of background processes, hidden if N == 0.
 
@@ -80,31 +115,3 @@ Limited support.
 
 Limited support. A slightly engineered prompt and multilevel rc.
 
-## Multilevel rc
-
-RC files are applied in 3 levels. We have the following reasons to to this:
-
-  - We want handy default configurations that can be easily pulled from remote repo;
-  - We also need to add site-specific configurations;
-  - We don't want site-specific configurations and default configurations go same file, which causes problems when `git push/pull`;
-  - When configuration file goes big, we want split it into functional parts;
-  - We want to easily enable/disable some configurations;
-  - And many more reasons.
-
-For example, bash uses the following source file tree:
-
-  - `~.bashrc -> $UNIX_HOME/dot_files/bashrc`
-    - `$UNIX_HOME/bashrc.d/00-coreutils-aliases.sh`
-    - `$UNIX_HOME/bashrc.d/05-ps1.sh`
-    - `$UNIX_HOME/bashrc.d/10-basic-functions.sh`
-    - `$UNIX_HOME/bashrc.d/15-templates.sh`
-    - `$UNIX_HOME/bashrc.d/50-site-env.sh`
-      - `$HOME/.site_env/bash/*.sh`
-    - `$UNIX_HOME/bashrc.d/60-journal.sh`
-    - `$UNIX_HOME/bashrc.d/90-ext-tools-aliases.sh`
-    - `$UNIX_HOME/bashrc.d/91-fragiles.sh`
-    - `$UNIX_HOME/bashrc.d/92-fragile-exec.sh`
-    - `$UNIX_HOME/bashrc.d/95-darwin-spec.sh`
-
-All `*.sh` files under `$HOME/.site_env/bash` are considered as site-specific
-files and won't be under version control.
