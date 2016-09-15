@@ -1,4 +1,4 @@
-# vim: set ft=gitconfig:
+# vim: set ft=gitconfig noet ts=8 sw=8:
 #
 
 [color]
@@ -11,7 +11,7 @@
 	b = branch
 	br = branch -a -vv
 	co = checkout
-        h = log --pretty=format:'%C(bold)%s%C(reset)%C(auto)%d%C(reset)%n%C(auto)%h%C(reset) -- %C(bold blue)%an (%ar)%C(reset)%n' --graph --abbrev-commit
+	h = log --pretty=format:'%C(bold)%s%C(reset)%C(red)%d%C(reset)%n%C(yellow)%h%C(reset) -- %C(bold blue)%an (%ar)%C(reset)%n' --graph --abbrev-commit
 	hi = log --graph
 	s = status -s
 	cb = checkout -b
