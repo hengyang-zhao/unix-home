@@ -17,3 +17,4 @@ endfunction
 autocmd InsertEnter * call EnterInsertModeHighlight()
 autocmd InsertLeave * call LeaveInsertModeHighlight()
 
+let g:loaded_matchparen = 0
