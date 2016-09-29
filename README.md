@@ -1,29 +1,28 @@
-# unix-home
-Configuration scripts of UNIX environment --- home feelings!
+# unix-home Configuration scripts of UNIX environment --- home feelings!
 
 ## Before installation
 
-This set of configuration scripts/rc-files are supposed to be deployed on a fresh created home directory. If you already have some old rc files, please make backups! Effected files list:
+This set of configuration scripts/rc-files are supposed to be deployed on a
+fresh created home directory. If you already have some old rc files, please
+make backups! Effected files list:
 
-    .bash_profile
-    .bashrc
-    .cshrc
-    .gitconfig
-    .screenrc
-    .tmux.conf
-    .vimrc
+    .bash_profile .bashrc .cshrc .gitconfig .screenrc .tmux.conf .vimrc
 
 ## Installation
 
-Run script `install.sh`. You can `cd` into the directory or not --- things will go where they should go. During the installation, your git information will be collected, which includes your full name and email address.
+Run script `install.sh`. You can `cd` into the directory or not --- things will
+go where they should go. During the installation, your git information will be
+collected, which includes your full name and email address.
 
 ## Multilevel rc
 
 RC files are applied in 3 levels. We have the following reasons to to this:
 
-  - We want handy default configurations that can be easily pulled from remote repo;
+  - We want handy default configurations that can be easily pulled from remote
+    repo;
   - We also need to add site-specific configurations;
-  - We don't want site-specific configurations and default configurations go same file, which causes problems when `git push/pull`;
+  - We don't want site-specific configurations and default configurations go
+    same file, which causes problems when `git push/pull`;
   - When configuration file goes big, we want split it into functional parts;
   - We want to easily enable/disable some configurations;
   - And many more reasons.
@@ -60,11 +59,13 @@ A fancy command prompt:
    - Host name can be customized only for bash by adding `export
      BASH_PS1_HOSTNAME=your-host-name` in one of your site-specific RC files.
 
- - Yellow flashing "&N" indicates the number of background processes, hidden if N == 0.
+ - Yellow flashing "&N" indicates the number of background processes, hidden if
+   N == 0.
 
  - Magenta "^N" indicates the shell level ($SHLVL), hidden if N == 0.
 
- - git-repo-root-dir-name[current-branch] indicates current git context, hidden if not in any repo, "(git)" if in `.git` directory.
+ - git-repo-root-dir-name[current-branch] indicates current git context, hidden
+   if not in any repo, "(git)" if in `.git` directory.
 
  - Blue cwd followed by a line break.
 
@@ -74,30 +75,43 @@ A fancy command prompt:
 
  - YOUR COMMAND goes here.
 
- - Each pipe level command appears here, fully expanded in absolute path and begin-of-execution timestamp, in very dary color.
+ - Each pipe level command appears here, fully expanded in absolute path and
+   begin-of-execution timestamp, in very dary color.
 
- - Command status and complete timestamp. Red exception code of each pipe level if not all zero, otherwise green.
+ - Command status and complete timestamp. Red exception code of each pipe level
+   if not all zero, otherwise green.
+
+### Extra shell variables during sourcing ~/.bashrc
+
+ - To override the hostname part in PS1, export a customized
+   `BASH_PS1_HOSTNAME` in `~/.site_env/bash/*.sh`.
+
+ - On some platforms (MacOS, Solaris, etc.) GNU coreutils commands are prefixed
+   by `g`. To alias them back to regular usage (e.g., `alias ls=gls` etc.),
+   export `GNU_COREUTILS_HOME=</path/to/gnu-coreutils>`. If your GNU coreutils
+   have their own prefixes other than `g`, export
+   `GNU_COREUTILS_PREFIX=<customized-prefix>` to override.
+
+ - To attach tmux at the end of bash initialization, export `AUTO_ATTACH_TMUX`
+   to enable this.
 
 ### Tmux appearance enhancement
 
-Session name, hostname, date/time, system load in status bar. Colors adjusted. Red window tab indicates prefix key activation.
+Session name, hostname, date/time, system load in status bar. Colors adjusted.
+Red window tab indicates prefix key activation.
 
-Remapped keys:
+Important remapped keys:
 
-    Prefix key: Ctrl+J
-    Vertical split: Prefix |
-    Horizontal split: Prefix -
-    Show pane number: Prefix Space
+    Prefix key: Ctrl+J Vertical split: Prefix | Horizontal split: Prefix - Show
+    pane number: Prefix Space
 
 ### Git configurations
 
 Supports git command line aliases:
 
-    # a fancy git log
-    git h
+    # a fancy git log git h
 
-    # git status -stwo-
-    git s
+    # git status -stwo- git s
 
     # Many others please see dot_files/gitconfig
 
