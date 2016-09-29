@@ -1,0 +1,14 @@
+INSTALL
+
+1. DO BACKUP your old configuration files! Following files will be destoried:
+
+    .bash_profile
+    .bashrc
+    .cshrc
+    .gitconfig
+    .screenrc
+    .tmux.conf
+    .vimrc
+   
+
+2. Run install.sh. You will be asked for basic information to be used in git.
