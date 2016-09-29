@@ -1,4 +1,6 @@
-# unix-home Configuration scripts of UNIX environment --- home feelings!
+# unix-home
+
+Configuration scripts of UNIX environment --- home feelings!
 
 ## Before installation
 
@@ -109,17 +111,17 @@ Important remapped keys:
 
 Supports git command line aliases:
 
-    # a fancy git log git h
+ - a better git log `git h`
+ 
+ - `git status -s # aliased to git s`
+ 
+ - Many others please see `dot_files/gitconfig`
 
-    # git status -stwo- git s
-
-    # Many others please see dot_files/gitconfig
-
-Multilevel rc.
+Multilevel rc is supported.
 
 ### Vim configurations
 
-Key mappings and multilevel rc.
+Key mappings and multilevel rc support.
 
 ### Screen configurations
 
