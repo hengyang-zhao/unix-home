@@ -51,7 +51,7 @@ if [ -d $MY_RC_HOME/bashrc.d ]; then
 	done
 fi
 
-if [ "$AUTO_ATTACH_TMUX" = yes ] && [ -z "$TMUX" ]; then
+if __has tmux && [ "$AUTO_ATTACH_TMUX" = yes ] && [ -z "$TMUX" ]; then
     exec tmux new -As main
 else
     PROMPT_COMMAND=__do_after_command
