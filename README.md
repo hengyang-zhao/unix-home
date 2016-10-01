@@ -2,6 +2,8 @@
 
 Configuration scripts of UNIX environment --- home feelings!
 
+![alt tag](https://github.com/hengyang-zhao/unix-home/blob/master/images/full-demo.gif)
+
 ## Before installation
 
 This set of configuration scripts/rc-files are supposed to be deployed on a
