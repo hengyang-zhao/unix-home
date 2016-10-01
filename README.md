@@ -1,4 +1,4 @@
-# unix-home
+# unix-home: A non-trivial management of *nix rc/dot -files
 
 Configuration scripts of UNIX environment --- home feelings!
 
