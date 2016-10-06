@@ -7,12 +7,14 @@ function! EnterInsertModeHighlight()
     highlight CursorLineNr ctermfg=White ctermbg=Magenta
 endfunction
 
-function! LeaveInsertModeHighlight()
+function! EnterNormalModeHighlight()
     set colorcolumn=
-    highlight CursorLineNr ctermfg=None ctermbg=None
+    highlight CursorLineNr ctermfg=Yellow ctermbg=DarkGray
 endfunction
 
 autocmd InsertEnter * call EnterInsertModeHighlight()
-autocmd InsertLeave * call LeaveInsertModeHighlight()
+autocmd InsertLeave * call EnterNormalModeHighlight()
+
+call EnterNormalModeHighlight()
 
 let g:loaded_matchparen = 0
