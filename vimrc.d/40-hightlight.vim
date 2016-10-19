@@ -9,7 +9,7 @@ endfunction
 
 function! LeaveInsertModeHighlight()
     set colorcolumn=
-    highlight CursorLineNr ctermfg=None ctermbg=None
+    highlight CursorLineNr ctermfg=Yellow ctermbg=None
 endfunction
 
 autocmd InsertEnter * call EnterInsertModeHighlight()
