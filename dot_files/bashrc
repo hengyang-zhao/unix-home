@@ -51,12 +51,16 @@ if [ -d $MY_RC_HOME/bashrc.d ]; then
 	done
 fi
 
-if __has tmux && [ "$AUTO_ATTACH_TMUX" = yes ] && [ -z "$TMUX" ]; then
+if [ "$FORCE_TMUX" = yes ] && [ -z "$TMUX" ]; then
     exec tmux new -As main
-else
-    PROMPT_COMMAND=__do_after_command
-    trap __do_before_command DEBUG
+elif [ "$FORCE_TMUX" = no ]; then
+    :
+elif __has tmux && [ "$AUTO_ATTACH_TMUX" = yes ] && [ -z "$TMUX" ]; then
+    exec tmux new -As main
 fi
+
+PROMPT_COMMAND=__do_after_command
+trap __do_before_command DEBUG
 
 
 # vim: set ft=sh:
