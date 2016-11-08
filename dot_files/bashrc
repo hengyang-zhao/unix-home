@@ -55,7 +55,7 @@ if [ "$FORCE_TMUX" = yes ] && [ -z "$TMUX" ]; then
     exec tmux new -As main
 elif [ "$FORCE_TMUX" = no ]; then
     :
-elif __has tmux && [ "$AUTO_ATTACH_TMUX" = yes ] && [ -z "$TMUX" ]; then
+elif __has tmux && [ "$AUTO_ATTACH_TMUX" = yes ] && [ -z "$TMUX" ] && [ -n "$SSH_CONNECTION" ]; then
     exec tmux new -As main
 fi
 
