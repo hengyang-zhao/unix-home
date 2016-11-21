@@ -47,14 +47,16 @@ __connect_tmux()
     esac
 }
 
+__has ssh && alias s=__ssh
 __ssh()
 {
     ssh -t $@ env SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash
 }
 
+__has ssh && alias snt=__ssh_no_tmux
 __ssh_no_tmux()
 {
-    ssh ssh -t $@ env FORCE_TMUX=no SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash
+    ssh -t $@ env FORCE_TMUX=no SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash
 }
 
 __update_ssh_connection_chain()
@@ -62,6 +64,8 @@ __update_ssh_connection_chain()
     if [ -z "$SSH_CONNECTION_CHAIN" ]; then
         SSH_CONNECTION_CHAIN=$(__bash_ps1_hostname)
     else
+        [ -n "$TMUX" ] && return
+
         local ssh_conn_tokens=($SSH_CONNECTION)
         SSH_CONNECTION_CHAIN="$SSH_CONNECTION_CHAIN ${ssh_conn_tokens[1]} ${ssh_conn_tokens[3]} $(__bash_ps1_hostname)"
     fi
