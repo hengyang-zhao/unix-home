@@ -12,6 +12,40 @@ __bash_ps1_hostname()
     fi
 }
 
+__pretty_ssh_connection_chain()
+{
+    local items=($SSH_CONNECTION_CHAIN)
+    local result=""
+
+    local hostname_color=$'\033[32m'
+    local punct_color=$'\033[2;32m'
+    local underscored=$'\033[4m'
+    local reset=$'\033[0m'
+
+    result+="$punct_color[$reset"
+
+    declare -i i=0
+    while [ $i -lt ${#items[@]} ]; do
+        case $(expr $i % 3) in
+            0)
+                [ $(expr $i + 1) = ${#items[@]} ] && result+=$underscored
+                result+="$hostname_color${items[i]}$reset"
+                ;;
+            1)
+                result+="${punct_color}:${items[i]}$reset"
+                ;;
+            2)
+                result+="${punct_color}>-<${items[i]}:$reset"
+                ;;
+        esac
+        i+=1
+    done
+
+    result+="$punct_color]$reset"
+
+    echo $hostname_color$result$reset
+}
+
 PS1='$(
 
 # record status

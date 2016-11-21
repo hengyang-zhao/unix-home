@@ -47,16 +47,16 @@ __connect_tmux()
     esac
 }
 
-__has ssh && alias s=__ssh
+__has ssh && alias ssh=__ssh
 __ssh()
 {
-    ssh -t $@ env SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash
+    command ssh -t $@ env SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash
 }
 
-__has ssh && alias snt=__ssh_no_tmux
+__has ssh && alias ssh-no-tmux=__ssh_no_tmux
 __ssh_no_tmux()
 {
-    ssh -t $@ env FORCE_TMUX=no SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash
+    command ssh -t $@ env FORCE_TMUX=no SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash
 }
 
 __update_ssh_connection_chain()
@@ -71,35 +71,5 @@ __update_ssh_connection_chain()
     fi
 }
 
-__pretty_ssh_connection_chain()
-{
-    local items=($SSH_CONNECTION_CHAIN)
-    local result=""
-    local hicolor=$'\033[32m'
-    local dimcolor=$'\033[2;32m'
-    local rstcolor=$'\033[0m'
-
-    result+="$dimcolor[$rstcolor"
-
-    declare -i i=0
-    while [ $i -lt ${#items[@]} ]; do
-        case $(expr $i % 3) in
-            0)
-                result+="$hicolor${items[i]}$rstcolor"
-                ;;
-            1)
-                result+="${dimcolor}:${items[i]}$rstcolor"
-                ;;
-            2)
-                result+="${dimcolor}>-<${items[i]}:$rstcolor"
-                ;;
-        esac
-        i+=1
-    done
-
-    result+="$dimcolor]$rstcolor"
-
-    echo $hicolor$result$rstcolor
-}
-__has ssh && __update_ssh_connection_chain
+__do_once && __update_ssh_connection_chain
 
