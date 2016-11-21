@@ -3,6 +3,15 @@
 declare -i __command_sno=0
 declare __command_errno=0
 
+__bash_ps1_hostname()
+{
+    if [ -z "$BASH_PS1_HOSTNAME" ]; then
+        echo $(hostname -s)
+    else
+        echo $BASH_PS1_HOSTNAME
+    fi
+}
+
 PS1='$(
 
 # record status
@@ -15,9 +24,9 @@ fi
 
 # if we are root, then print a red name
 if [ $UID -eq 0 ]; then
-	echo -ne "\[\e[1;31m\]\u@${BASH_PS1_HOSTNAME:-\h}\[\e[35m\]$s\[\e[0m\]"
+    echo -ne "\[\e[1;31m\]\u@$(__pretty_ssh_connection_chain)\[\e[35m\]$s\[\e[0m\]"
 else
-	echo -ne "\[\e[32m\]\u@${BASH_PS1_HOSTNAME:-\h}\[\e[36m\]$s\[\e[0m\]"
+    echo -ne "\[\e[32m\]\u@$(__pretty_ssh_connection_chain)\[\e[36m\]$s\[\e[0m\]"
 fi
 
 # if there are background jobs, give the total count
