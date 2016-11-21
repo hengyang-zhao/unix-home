@@ -50,13 +50,13 @@ __connect_tmux()
 __has ssh && alias ssh=__ssh
 __ssh()
 {
-    command ssh -t $@ env SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash
+    command ssh -t $@ exec env SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash -l
 }
 
 __has ssh && alias ssh-no-tmux=__ssh_no_tmux
 __ssh_no_tmux()
 {
-    command ssh -t $@ env FORCE_TMUX=no SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash
+    command ssh -t $@ exec env FORCE_TMUX=no SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash -l
 }
 
 __update_ssh_connection_chain()

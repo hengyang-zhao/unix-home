@@ -58,9 +58,9 @@ fi
 
 # if we are root, then print a red name
 if [ $UID -eq 0 ]; then
-    echo -ne "\[\e[1;31m\]\u@$(__pretty_ssh_connection_chain)\[\e[35m\]$s\[\e[0m\]"
+    echo -ne "\[\e[1;31m\]\u\[\e[0m\]@$(__pretty_ssh_connection_chain)\[\e[35m\]$s\[\e[0m\]"
 else
-    echo -ne "\[\e[36m\]\u@$(__pretty_ssh_connection_chain)\[\e[36m\]$s\[\e[0m\]"
+    echo -ne "\[\e[36m\]\u\[\e[0m\]@$(__pretty_ssh_connection_chain)\[\e[36m\]$s\[\e[0m\]"
 fi
 
 # if there are background jobs, give the total count
