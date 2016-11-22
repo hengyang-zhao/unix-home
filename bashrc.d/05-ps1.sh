@@ -35,7 +35,7 @@ __pretty_ssh_connection_chain()
                 result+="${punct_color}:${items[i]}$reset"
                 ;;
             2)
-                result+="${punct_color}>-<${items[i]}:$reset"
+                result+="${punct_color}]-[${items[i]}:$reset"
                 ;;
         esac
         i+=1
