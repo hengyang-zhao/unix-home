@@ -56,7 +56,7 @@ fi
 __do_once && BASHRC_APPLIED=yes
 
 if __has tmux; then
-    if [ "$FORCE_TMUX" = yes ]; then
+    if [ "$FORCE_TMUX" = yes ] && [ -z "$TMUX" ]; then
         exec tmux new -As main
     elif [ "$FORCE_TMUX" = no ]; then
         :
@@ -67,7 +67,6 @@ fi
 
 PROMPT_COMMAND=__do_after_command
 trap __do_before_command DEBUG
-
 
 # vim: set ft=sh:
 
