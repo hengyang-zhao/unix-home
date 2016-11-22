@@ -22,7 +22,7 @@ __connect_screen()
 				return
 			fi
 
-			scrno=`screen -ls | sed -e '2q;d' | sed 's/^\s*\([0-9]\+\).*$/\1/g'`
+	  		scrno=`screen -ls | sed -e '2q;d' | sed 's/^\s*\([0-9]\+\).*$/\1/g'`
 			screen -x $scrno
 			;;
 		*)
@@ -36,13 +36,13 @@ __connect_tmux()
 {
     case "_$1" in
         _)
-            tmux new -As main
+            [ "$TMUX_ATTACHED" != yes ] && tmux new -As main
             ;;
         _:)
             tmux ls
             ;;
         *)
-            tmux new -As "$1"
+            [ "$TMUX_ATTACHED" != yes ] && tmux new -As "$1"
             ;;
     esac
 }
@@ -50,13 +50,19 @@ __connect_tmux()
 __has ssh && alias ssh=__ssh
 __ssh()
 {
-    command ssh -t $@ exec env SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash -l
+    command ssh -t $@ exec env TMUX_ATTACHED="'$TMUX_ATTACHED'" SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash -l
 }
 
 __has ssh && alias ssh-no-tmux=__ssh_no_tmux
 __ssh_no_tmux()
 {
-    command ssh -t $@ exec env FORCE_TMUX=no SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash -l
+    command ssh -t $@ exec env FORCE_TMUX=no TMUX_ATTACHED="'$TMUX_ATTACHED'" SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash -l
+}
+
+__has ssh && alias ssh-tmux=__ssh_tmux
+__ssh_tmux()
+{
+    command ssh -t $@ exec env FORCE_TMUX=yes TMUX_ATTACHED="'$TMUX_ATTACHED'" SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash -l
 }
 
 __update_ssh_connection_chain()
@@ -71,5 +77,13 @@ __update_ssh_connection_chain()
     fi
 }
 
+__update_tmux_status()
+{
+    if [ "$TMUX_ATTACHED" = yes ] || [ -n "$TMUX" ]; then
+        TMUX_ATTACHED=yes
+    fi
+}
+
 __do_once && __update_ssh_connection_chain
+__do_once && __update_tmux_status
 
