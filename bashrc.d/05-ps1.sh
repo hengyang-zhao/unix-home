@@ -119,9 +119,18 @@ __do_before_command() {
 	__command_executed=$BASH_COMMAND
 	__command_sno+=1
 
-	read -r -a cmd_tokens <<< $__command_executed
-	enable -a | \grep -q "enable ${cmd_tokens[0]}"
-	if [ $? -eq 0 ]; then
+    local cmd_tokens=($__command_executed)
+    local is_builtin=no
+
+	while read -r line; do
+        enabled_tokens=($line)
+        if test "${enabled_tokens[1]}" = "${cmd_tokens[0]}"; then
+            is_builtin=yes
+            break
+        fi
+    done <<< "$(builtin enable)"
+
+	if [ $is_builtin = yes ]; then
 		cmd_tokens[0]="builtin ${cmd_tokens[0]}"
 	else
 		cmd_head=$(which --skip-alias --skip-functions ${cmd_tokens[0]} 2>/dev/null)
