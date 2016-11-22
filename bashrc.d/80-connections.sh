@@ -67,10 +67,9 @@ __ssh_tmux()
 
 __update_ssh_connection_chain()
 {
-    if [ -z "$SSH_CONNECTION_CHAIN" ]; then
+    if [ -n "$TMUX" ] || [ -z "$SSH_CONNECTION_CHAIN" ]; then
         SSH_CONNECTION_CHAIN=$(__bash_ps1_hostname)
     else
-        [ -n "$TMUX" ] && return
 
         local ssh_conn_tokens=($SSH_CONNECTION)
         SSH_CONNECTION_CHAIN="$SSH_CONNECTION_CHAIN ${ssh_conn_tokens[1]} ${ssh_conn_tokens[3]} $(__bash_ps1_hostname)"
