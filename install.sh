@@ -35,9 +35,9 @@ echo "Collecting user information for git configuration file:"
 
 GIT_NAME_OLD=$(git config --get user.name)
 if [ -z "$GIT_NAME_OLD" ]; then
-	echo -n "Please enter your full name: "
+	echo -n "  Please enter your full name: "
 else
-	echo -n "Please enter your full name [$GIT_NAME_OLD]: "
+	echo -n "  Please enter your full name [$GIT_NAME_OLD]: "
 fi
 read GIT_NAME
 if [ -z "$GIT_NAME" ]; then
@@ -46,9 +46,9 @@ fi
 
 GIT_EMAIL_OLD=$(git config --get user.email)
 if [ -z "$GIT_EMAIL_OLD" ]; then
-	echo -n "Please enter your main E-mail address: "
+	echo -n "  Please enter your main E-mail address: "
 else
-	echo -n "Please enter your main E-mail address [$GIT_EMAIL_OLD]: "
+	echo -n "  Please enter your main E-mail address [$GIT_EMAIL_OLD]: "
 fi
 read GIT_EMAIL
 if [ -z "$GIT_EMAIL" ]; then
@@ -63,15 +63,16 @@ cat > $SITE_GITUSER_FILE << EOF
 	email = $GIT_EMAIL
 EOF
 
-echo "Generated file $SITE_GITUSER_FILE"
+echo "  Generated file $SITE_GITUSER_FILE"
 
 touch $SITE_GITCONFIG_FILE
-echo "Generated file $SITE_GITCONFIG_FILE"
+echo "  Generated file $SITE_GITCONFIG_FILE"
 
 #
 # TMux
 #
 
+echo
 touch $SITE_TMUX_DIR/tmux.conf
 echo "Generated file $SITE_TMUX_DIR/tmux.conf"
 
@@ -110,5 +111,5 @@ for f in $DOT_FILES_DIR/*; do
 done
 
 echo
-echo "<> <> <>  W E L C O M E   H O M E  <> <> <>"
+echo "Installation done."
 echo
