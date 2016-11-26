@@ -31,7 +31,7 @@ __pretty_ssh_connection_chain()
 
     result+="$minor_color[$reset"
 
-    declare -i i=0
+    local -i i=0
     while [ $i -lt ${#items[@]} ]; do
         case $(expr $i % 3) in
             0)
@@ -136,6 +136,7 @@ __do_before_command() {
 
     local cmd_tokens=($__command_executed)
     local is_builtin=no
+    local enabled_tokens cmd_head
 
 	while read -r line; do
         enabled_tokens=($line)

@@ -86,6 +86,7 @@ alias __prepend='__update_export --prepend'
 __update_export()
 {
     local IFS=$' \t\n'
+    local action
 	case "$1" in
 		--append)
 			action=append
