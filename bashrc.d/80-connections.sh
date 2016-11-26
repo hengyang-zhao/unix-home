@@ -67,6 +67,7 @@ __ssh_tmux()
 
 __update_ssh_connection_chain()
 {
+    local IFS=$' \t\n'
     if [ -n "$TMUX" ] || [ -z "$SSH_CONNECTION_CHAIN" ]; then
         SSH_CONNECTION_CHAIN=$(__bash_ps1_hostname)
     else

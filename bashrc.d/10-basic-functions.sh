@@ -72,7 +72,7 @@ __cd_func()
 alias cd='__verbose_cd'
 __verbose_cd() {
 	__cd_func "$1"
-	ret=$?
+	local ret=$?
 	if [ $ret -eq 0 ]; then
 		if [ "$1" != -- ]; then
 			ls >&2
@@ -85,6 +85,7 @@ alias __append='__update_export --append'
 alias __prepend='__update_export --prepend'
 __update_export()
 {
+    local IFS=$' \t\n'
 	case "$1" in
 		--append)
 			action=append
@@ -110,10 +111,10 @@ __update_export()
 	[ -z "$1" ] && return 1
 	[ -z "$2" ] && return 2
 
-	varname="$1"
-	newvalue="$2"
+	local varname="$1"
+	local newvalue="$2"
 
-	varvalue="`eval echo '$'$varname`"
+	local varvalue="`eval echo '$'$varname`"
 
 	[ "$varvalue" = '$' ] && varvalue=
 

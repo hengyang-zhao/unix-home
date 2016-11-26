@@ -14,6 +14,7 @@ __bash_ps1_hostname()
 
 __pretty_ssh_connection_chain()
 {
+    local IFS=$' \t\n'
     local items=($SSH_CONNECTION_CHAIN)
     local result=""
 
@@ -112,6 +113,8 @@ echo -ne "\n\[\e[1m\]\$\[\e[0m\] "
 )' # end of my prompt
 
 __do_before_command() {
+    local IFS=$' \t\n'
+
     __command_errno="${PIPESTATUS[@]}"
 	if [ "$BASH_COMMAND" = __do_after_command ]; then
 		return
@@ -142,8 +145,10 @@ __do_before_command() {
 }
 
 __do_after_command() {
-	eno=$__command_errno
-	ret=OK
+	local eno=$__command_errno
+	local ret=OK
+    local IFS=$' \t\n'
+
 	for i in $eno; do
 		if [ $i -ne 0 ]; then
 			ret=ERR
@@ -151,7 +156,7 @@ __do_after_command() {
 		fi
 	done
 
-	ts=$(date +"%x %X")
+	local ts=$(date +"%x %X")
 	if [ $__command_sno -gt 0 ]; then
 		__command_sno=0
 
