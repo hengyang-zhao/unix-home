@@ -12,6 +12,12 @@ __bash_ps1_hostname()
     fi
 }
 
+__pretty_non_default_ifs() {
+    if [ -v IFS ] && [ "$IFS" != $' \t\n' ]; then
+        printf $'\033[1m(IFS: \033[4m%q\033[24m)\033[0m ' "$IFS"
+    fi
+}
+
 __pretty_ssh_connection_chain()
 {
     local IFS=$' \t\n'
@@ -107,8 +113,14 @@ if [ "$cwd" != "$(pwd)" ]; then
 	echo -ne "\n\[\e[90m\](Physical: $cwd)\[\e[0m\]"
 fi
 
+# a new line
+echo
+
 # finally a highlighted prompt symbol on a new line
-echo -ne "\n\[\e[1m\]\$\[\e[0m\] "
+echo -ne "\[\e[1m\]\$\[\e[0m\] "
+
+# print IFS if it is non-default
+__pretty_non_default_ifs
 
 )' # end of my prompt
 
