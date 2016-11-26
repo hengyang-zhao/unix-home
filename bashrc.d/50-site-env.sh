@@ -1,19 +1,20 @@
 # Site scripts
 
-function __source_site_rc() {
+__source_site_rc() {
+    local IFS=$' \t\n'
+    local rcfile
+
     if [ -d ~/.site_env/bash ]; then
-        local IFS=$' \t\n'
-        for i in ~/.site_env/bash/*.sh ; do
-            if [ -r "$i" ]; then
-                if [ "${-#*i}" != "$-" ]; then
-                    . "$i"
+        for rcfile in ~/.site_env/bash/*.sh ; do
+            if [ -r "$rcfile" ]; then
+                if [ "${-#*rcfile}" != "$-" ]; then
+                    . "$rcfile"
                 else
-                    . "$i" >/dev/null 2>&1
+                    . "$rcfile" >/dev/null 2>&1
                 fi
             fi
         done
     fi
 }
-
 __source_site_rc
 

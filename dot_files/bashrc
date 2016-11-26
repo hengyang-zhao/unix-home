@@ -41,17 +41,21 @@ alias __do_once='[ "$BASHRC_APPLIED" != yes ]'
 source ~/.site_env/bash/my_rc_home.sh
 
 # Auxiliary scripts
-if [ -d $MY_RC_HOME/bashrc.d ]; then
-	for i in $MY_RC_HOME/bashrc.d/*.sh ; do
-		if [ -r "$i" ]; then
-			if [ "${-#*i}" != "$-" ]; then
-				. "$i"
-			else
-				. "$i" >/dev/null 2>&1
-			fi
-		fi
-	done
-fi
+__source_repo_rc() {
+    local rcfile
+    if [ -d $MY_RC_HOME/bashrc.d ]; then
+        for rcfile in $MY_RC_HOME/bashrc.d/*.sh ; do
+            if [ -r "$rcfile" ]; then
+                if [ "${-#*rcfile}" != "$-" ]; then
+                    . "$rcfile"
+                else
+                    . "$rcfile" >/dev/null 2>&1
+                fi
+            fi
+        done
+    fi
+}
+__source_repo_rc
 
 __do_once && BASHRC_APPLIED=yes
 

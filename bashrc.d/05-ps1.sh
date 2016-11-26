@@ -1,7 +1,7 @@
 # my verbose command line prompt
 
-declare -i __command_sno=0
-declare __command_errno=0
+declare -ig __command_sno=0
+declare -g __command_errno=0
 
 __bash_ps1_hostname()
 {
@@ -158,12 +158,13 @@ __do_before_command() {
 }
 
 __do_after_command() {
-	local eno=$__command_errno
+	local errnos=$__command_errno
+    local eno
 	local ret=OK
     local IFS=$' \t\n'
 
-	for i in $eno; do
-		if [ $i -ne 0 ]; then
+	for eno in $errnos; do
+		if [ $eno -ne 0 ]; then
 			ret=ERR
 			break
 		fi
@@ -182,7 +183,7 @@ __do_after_command() {
 			printf "%${COLUMNS}s\n" "$ts [ Status OK ]"
 		else
 			echo -n $'\033[4;31m'
-			printf "%${COLUMNS}s\n" "$ts [ Exception code $eno ]"
+			printf "%${COLUMNS}s\n" "$ts [ Exception code $errnos ]"
 		fi
 		echo -n $'\033[0m'
 	fi

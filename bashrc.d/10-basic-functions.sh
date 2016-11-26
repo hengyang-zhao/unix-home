@@ -119,6 +119,7 @@ __update_export()
 
 	[ "$varvalue" = '$' ] && varvalue=
 
+    local i
 	for i in `echo $varvalue | sed -e 's/:/ /g'`; do
 		[ "$newvalue" = "$i" ] && return 3
 	done

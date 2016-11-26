@@ -5,7 +5,7 @@ __define() {
 		return 255
 	fi
 
-	declare e=`echo $'\033'[`;
+	local e=$'\033[';
 	dict "$@" | \
 		sed -e "s/\<\($1\)\>/${e}7;33m\1${e}0m/g" \
 		-e "s/^\(From \)\(.*\):$/${e}1m\1${e}4m\2${e}0m${e}1m:${e}0m/g" | \
