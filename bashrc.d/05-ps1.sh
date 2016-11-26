@@ -13,7 +13,7 @@ __bash_ps1_hostname()
 }
 
 __pretty_non_default_ifs() {
-    if [ -v IFS ] && [ "$IFS" != $' \t\n' ]; then
+    if [ "$IFS" != $' \t\n' ]; then
         printf $'\033[1m(IFS: \033[4m%q\033[24m)\033[0m ' "$IFS"
     fi
 }
