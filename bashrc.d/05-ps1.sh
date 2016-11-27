@@ -87,7 +87,7 @@ if [ -n "$STY" ]; then
 fi
 
 # git branch name ( "(.git)" is displayed if we are in the .git)
-if which git &>/dev/null; then
+if type git &>/dev/null; then
 	gbr=`git rev-parse --abbrev-ref HEAD 2>/dev/null`
 	if [ -n "$gbr" ]; then
 		if [ "$gbr" = HEAD ]; then
@@ -136,26 +136,23 @@ __do_before_command() {
 	fi
 	__command_sno+=1
 
-    local cmd_tokens cmd_head enabled_tokens enabled_line
-
     read -r -a cmd_tokens <<< "$BASH_COMMAND"
+    case $(type -t "${cmd_tokens[0]}") in
+        file|alias)
+            # even we got alias here, it has already been resolved
+            cmd_tokens[0]=$(type -P "${cmd_tokens[0]}")
+            ;;
+        builtin)
+            cmd_tokens[0]="builtin ${cmd_tokens[0]}"
+            ;;
+        function)
+            cmd_tokens[0]="function ${cmd_tokens[0]}"
+            ;;
+        *)
+            cmd_tokens[0]="(?) ${cmd_tokens[0]}"
+            ;;
+    esac
 
-    local is_builtin=no
-    while read -r -a enabled_tokens; do
-        if [ "${enabled_tokens[1]}" = "${cmd_tokens[0]}" ]; then
-            is_builtin=yes
-            break
-        fi
-    done <<< "$(builtin enable)"
-
-    if [ "$is_builtin" = yes ]; then
-        cmd_tokens[0]="builtin ${cmd_tokens[0]}"
-    else
-        cmd_head=$(which --skip-alias --skip-functions ${cmd_tokens[0]} 2>/dev/null)
-        if [ $? -eq 0 ]; then
-            cmd_tokens[0]="$cmd_head"
-        fi
-    fi
     echo $'\033[90m'"[$__command_sno] -> ${cmd_tokens[@]} ($(date +"%x %X"))"$'\033[0m'
 }
 
