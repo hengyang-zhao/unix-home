@@ -58,10 +58,12 @@ configurations supporting multilevel RC.
 
 A fancy command prompt:
 
- - username@hostname comes first in green (or red if you are root).
+ - username@[hostname]. User name comes in green (or red if you are root).
 
    - Host name can be customized only for bash by adding `export
      BASH_PS1_HOSTNAME=your-host-name` in one of your site-specific RC files.
+
+   - OpenSSH session will be indicated by displaying [hostname] as a chain.
 
  - Yellow flashing "&N" indicates the number of background processes, hidden if
    N == 0.
@@ -76,6 +78,8 @@ A fancy command prompt:
  - Physical full pwd (if `$(pwd)` != `$(pwd -P)`) which is very dark.
 
  - Highlighted "$" (or "#" if you are root).
+
+ - If IFS is not in default, it's value is printed here.
 
  - YOUR COMMAND goes here.
 
