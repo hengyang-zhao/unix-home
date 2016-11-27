@@ -68,12 +68,22 @@ __ssh_tmux()
 __update_ssh_connection_chain()
 {
     local IFS=$' \t\n'
+    local ps1_hostname=$(__bash_ps1_hostname)
+
     if [ -n "$TMUX" ] || [ -z "$SSH_CONNECTION_CHAIN" ]; then
-        SSH_CONNECTION_CHAIN=$(__bash_ps1_hostname)
+        SSH_CONNECTION_CHAIN=$ps1_hostname
     else
 
         local ssh_conn_tokens=($SSH_CONNECTION)
-        SSH_CONNECTION_CHAIN="$SSH_CONNECTION_CHAIN ${ssh_conn_tokens[1]} ${ssh_conn_tokens[3]} $(__bash_ps1_hostname)"
+        local ssh_conn_chain_tokens=($SSH_CONNECTION_CHAIN)
+
+        if [ "${#ssh_conn_chain_tokens[@]}" -gt 1 ] && [ "${ssh_conn_chain_tokens[-1]}" = "$ps1_hostname" ] \
+                && [ "${ssh_conn_chain_tokens[-2]}" = "${ssh_conn_tokens[3]}" ] \
+                && [ "${ssh_conn_chain_tokens[-3]}" = "${ssh_conn_tokens[1]}" ]; then
+            return
+        fi
+
+        SSH_CONNECTION_CHAIN="$SSH_CONNECTION_CHAIN ${ssh_conn_tokens[1]} ${ssh_conn_tokens[3]} $ps1_hostname"
     fi
 }
 
