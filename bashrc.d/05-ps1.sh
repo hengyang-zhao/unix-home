@@ -125,9 +125,11 @@ __pretty_non_default_ifs
 )' # end of my prompt
 
 __do_before_command() {
-    local IFS=$' \t\n'
 
+    # This assignment must be done first
     __command_errno="${PIPESTATUS[@]}"
+
+    local IFS=$' \t\n'
 	if [ "$BASH_COMMAND" = __do_after_command ]; then
 		return
 	fi
