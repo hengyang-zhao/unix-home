@@ -7,11 +7,7 @@ __source_site_rc() {
     if [ -d ~/.site_env/bash ]; then
         for rcfile in ~/.site_env/bash/*.sh ; do
             if [ -r "$rcfile" ]; then
-                if [ "${-#*rcfile}" != "$-" ]; then
-                    . "$rcfile"
-                else
-                    . "$rcfile" >/dev/null 2>&1
-                fi
+                . "$rcfile"
             fi
         done
     fi

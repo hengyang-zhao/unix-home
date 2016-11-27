@@ -46,11 +46,7 @@ __source_repo_rc() {
     if [ -d $MY_RC_HOME/bashrc.d ]; then
         for rcfile in $MY_RC_HOME/bashrc.d/*.sh ; do
             if [ -r "$rcfile" ]; then
-                if [ "${-#*rcfile}" != "$-" ]; then
-                    . "$rcfile"
-                else
-                    . "$rcfile" >/dev/null 2>&1
-                fi
+                . "$rcfile"
             fi
         done
     fi
