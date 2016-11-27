@@ -136,27 +136,43 @@ __do_before_command() {
 	fi
 	__command_sno+=1
 
-    local cmd_tokens=($BASH_COMMAND)
+    local is_head=yes
     local is_builtin=no
     local enabled_tokens cmd_head
+    local builtin_list="$(builtin enable)"
 
-	while read -r line; do
-        enabled_tokens=($line)
-        if test "${enabled_tokens[1]}" = "${cmd_tokens[0]}"; then
-            is_builtin=yes
-            break
+	echo -n $'\033[90m'"[$__command_sno] -> "
+
+    (set -o noglob; for token in $BASH_COMMAND; do
+
+        if [ "$is_head" = yes ]; then
+
+            while read -r line; do
+                enabled_tokens=($line)
+                if [ "${enabled_tokens[1]}" = "$token" ]; then
+                    is_builtin=yes
+                    break
+                fi
+            done <<< "$builtin_list"
+
+            if [ "$is_builtin" = yes ]; then
+                echo -n "builtin $token "
+            else
+                cmd_head=$(which --skip-alias --skip-functions ${token} 2>/dev/null)
+                if [ $? -eq 0 ]; then
+                    echo -n "$cmd_head "
+                else
+                    echo -n "$token "
+                fi
+            fi
+
+            is_head=no
+        else
+            echo -n "$token "
         fi
-    done <<< "$(builtin enable)"
+    done)
 
-	if [ $is_builtin = yes ]; then
-		cmd_tokens[0]="builtin ${cmd_tokens[0]}"
-	else
-		cmd_head=$(which --skip-alias --skip-functions ${cmd_tokens[0]} 2>/dev/null)
-		if [ $? -eq 0 ]; then
-			cmd_tokens[0]="$cmd_head"
-		fi
-	fi
-	echo $'\033[90m'"[$__command_sno] -> ${cmd_tokens[@]} ($(date +"%x %X"))"$'\033[0m'
+	echo "($(date +"%x %X"))"$'\033[0m'
 }
 
 __do_after_command() {
