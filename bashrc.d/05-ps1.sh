@@ -64,7 +64,7 @@ if [ -n "$debian_chroot" ]; then
 fi
 
 # if we are root, then print a red name
-if [ $UID -eq 0 ]; then
+if [ "$UID" -eq 0 ]; then
     echo -ne "\[\e[1;31m\]\u\[\e[0m\e[2;32m\]@$(__pretty_ssh_connection_chain)\[\e[35m\]$s\[\e[0m\]"
 else
     echo -ne "\[\e[36m\]\u\[\e[0m\e[2;32m\]@$(__pretty_ssh_connection_chain)\[\e[36m\]$s\[\e[0m\]"
@@ -76,7 +76,7 @@ if [ \j -gt 0 ]; then
 fi
 
 # if this is not buttom level shell, give the depth
-if [ $SHLVL -gt 1 ]; then
+if [ "$SHLVL" -gt 1 ]; then
 	echo -ne " \[\e[35m\]^$((SHLVL-1))\[\e[0m\]"
 fi
 
@@ -88,16 +88,16 @@ fi
 # git branch name ( "(.git)" is displayed if we are in the .git)
 if which git &>/dev/null; then
 	gbr=`git rev-parse --abbrev-ref HEAD 2>/dev/null`
-	if [ _"$gbr" != _ ]; then
+	if [ -n "$gbr" ]; then
 		if [ "$gbr" = HEAD ]; then
 			gbr=`git rev-parse HEAD 2>/dev/null | head -c8`
 		fi
 		groot=$(basename ///$(git rev-parse --show-toplevel) 2>/dev/null)
 
-		if [ ${#groot} -gt 12 ]; then
+		if [ "${#groot}" -gt 12 ]; then
 			groot="${groot: 0:8}\`${groot: -3:3}"
 		fi
-		if [ "${groot}" = / ]; then
+		if [ "$groot" = / ]; then
 			echo -ne " \[\e[33m\](.git)\[\e[0m\]"
 		else
 			echo -ne " \[\e[33m\]$groot[$gbr]\[\e[0m\]"
@@ -133,10 +133,9 @@ __do_before_command() {
 	if [ "$BASH_COMMAND" = __do_after_command ]; then
 		return
 	fi
-	__command_executed=$BASH_COMMAND
 	__command_sno+=1
 
-    local cmd_tokens=($__command_executed)
+    local cmd_tokens=($BASH_COMMAND)
     local is_builtin=no
     local enabled_tokens cmd_head
 
