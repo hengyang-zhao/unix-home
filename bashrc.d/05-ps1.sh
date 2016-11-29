@@ -1,7 +1,7 @@
 # my verbose command line prompt
 
-declare -ig __command_sno=0
-declare -g __command_errno=0
+__command_sno=0
+__command_errno=0
 
 __bash_ps1_hostname()
 {
@@ -134,7 +134,7 @@ __do_before_command() {
 	if [ "$BASH_COMMAND" = __do_after_command ]; then
 		return
 	fi
-	__command_sno+=1
+    __command_sno=$(expr $__command_sno + 1)
 
     read -r -a cmd_tokens <<< "$BASH_COMMAND"
     case $(type -t "${cmd_tokens[0]}") in
