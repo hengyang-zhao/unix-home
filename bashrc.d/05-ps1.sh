@@ -23,35 +23,44 @@ __pretty_ssh_connection_chain()
 {
     local IFS=$' \t\n'
     local items=($SSH_CONNECTION_CHAIN)
-    local result=""
 
-    local major_color=$'\033[32m'
-    local minor_color=$'\033[2;32m'
-    local underscored=$'\033[4m'
-    local reset=$'\033[0m'
+    local major_color minor_color underscored reset
 
-    result+="$minor_color[$reset"
+    if [ "$1" = root ]; then
+        major_color=$'\033[31m'
+        minor_color=$'\033[2;31m'
+        underscored=$'\033[4m'
+        reset=$'\033[0m'
+    else
+        major_color=$'\033[32m'
+        minor_color=$'\033[2;32m'
+        underscored=$'\033[4m'
+        reset=$'\033[0m'
+    fi
+
+    local chain="$major_color$USER$reset$minor_color@$reset"
+    chain+="$minor_color[$reset"
 
     local -i i=0
     while [ $i -lt ${#items[@]} ]; do
         case $(expr $i % 3) in
             0)
-                [ $(expr $i + 1) = ${#items[@]} ] && result+=$underscored
-                result+="$major_color${items[i]}$reset"
+                [ $(expr $i + 1) = ${#items[@]} ] && chain+=$underscored
+                chain+="$major_color${items[i]}$reset"
                 ;;
             1)
-                result+="${minor_color}:${items[i]}$reset"
+                chain+="${minor_color}:${items[i]}$reset"
                 ;;
             2)
-                result+="${minor_color}]${reset}${major_color}->${reset}${minor_color}[${items[i]}:$reset"
+                chain+="${minor_color}]${reset}${major_color}->${reset}${minor_color}[${items[i]}:$reset"
                 ;;
         esac
         i+=1
     done
 
-    result+="$minor_color]$reset"
+    chain+="$minor_color]$reset"
 
-    echo $major_color$result$reset
+    echo $reset$chain$reset
 }
 
 PS1='$(
@@ -66,9 +75,9 @@ fi
 
 # if we are root, then print a red name
 if [ "$UID" -eq 0 ]; then
-    echo -ne "\[\e[1;31m\]\u\[\e[0m\e[2;32m\]@$(__pretty_ssh_connection_chain)\[\e[35m\]$s\[\e[0m\]"
+    echo -ne "$(__pretty_ssh_connection_chain root)\[\e[35m\]$s\[\e[0m\]"
 else
-    echo -ne "\[\e[36m\]\u\[\e[0m\e[2;32m\]@$(__pretty_ssh_connection_chain)\[\e[36m\]$s\[\e[0m\]"
+    echo -ne "$(__pretty_ssh_connection_chain)\[\e[36m\]$s\[\e[0m\]"
 fi
 
 # if there are background jobs, give the total count
