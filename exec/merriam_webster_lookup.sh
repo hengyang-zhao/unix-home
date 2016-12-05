@@ -1,8 +1,16 @@
 #!/bin/bash
 
-word=$(echo $(xsel) | xargs | sed -e 's/ /-/g' | tr '[:upper:]' '[:lower:]')
+
+if [ "$#" = 0 ]; then
+    raw_input="$(echo $(xsel))"
+else
+    raw_input="$@"
+fi
+
+word=$(echo "$raw_input" | xargs | sed -e 's/ /-/g' | tr '[:upper:]' '[:lower:]')
 urlhead='http://www.merriam-webster.com/dictionary'
-exec xdg-open "$urlhead/$word" &>/dev/null
+
+[ -n "$word" ] && exec xdg-open "$urlhead/$word" &>/dev/null
 
 # vim: set ft=sh:
 
