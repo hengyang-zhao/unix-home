@@ -50,19 +50,19 @@ __connect_tmux()
 __has ssh && alias ssh=__ssh
 __ssh()
 {
-    command ssh -t $@ exec env TMUX_ATTACHED="'$TMUX_ATTACHED'" SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash -l
+    command ssh -t $@ exec env TMUX_ATTACHED="'$TMUX_ATTACHED'" SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash
 }
 
 __has ssh && alias ssh-no-tmux=__ssh_no_tmux
 __ssh_no_tmux()
 {
-    command ssh -t $@ exec env FORCE_TMUX=no TMUX_ATTACHED="'$TMUX_ATTACHED'" SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash -l
+    command ssh -t $@ exec env FORCE_TMUX=no TMUX_ATTACHED="'$TMUX_ATTACHED'" SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash
 }
 
 __has ssh && alias ssh-tmux=__ssh_tmux
 __ssh_tmux()
 {
-    command ssh -t $@ exec env FORCE_TMUX=yes TMUX_ATTACHED="'$TMUX_ATTACHED'" SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash -l
+    command ssh -t $@ exec env FORCE_TMUX=yes TMUX_ATTACHED="'$TMUX_ATTACHED'" SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash
 }
 
 __update_ssh_connection_chain()
