@@ -28,12 +28,12 @@ __pretty_ssh_connection_chain()
 
     if [ "$1" = root ]; then
         major_color=$'\033[31m'
-        minor_color=$'\033[2;31m'
+        minor_color=$'\033[38;5;52m'
         underscored=$'\033[4m'
         reset=$'\033[0m'
     else
         major_color=$'\033[32m'
-        minor_color=$'\033[2;32m'
+        minor_color=$'\033[38;5;22m'
         underscored=$'\033[4m'
         reset=$'\033[0m'
     fi
@@ -187,10 +187,10 @@ __do_after_command() {
 
 		# if the return value is not OK, tell the errno
 		if [ $ret = OK ]; then
-			echo -n $'\033[4;2;32m'
+			echo -n $'\033[4;38;5;22m'
 			printf "%${COLUMNS}s\n" "$ts [ Status OK ]"
 		else
-			echo -n $'\033[4;31m'
+			echo -n $'\033[4;38;5;196m'
 			printf "%${COLUMNS}s\n" "$ts [ Exception code $errnos ]"
 		fi
 		echo -n $'\033[0m'
