@@ -150,19 +150,27 @@ __do_before_command() {
         file|alias)
             # even we got alias here, it has already been resolved
             cmd_tokens[0]=$(type -P "${cmd_tokens[0]}")
+            echo -n $'\033[90m'
             ;;
         builtin)
             cmd_tokens[0]="builtin ${cmd_tokens[0]}"
+            echo -n $'\033[90m'
             ;;
         function)
             cmd_tokens[0]="function ${cmd_tokens[0]}"
+            echo -n $'\033[90m'
+            ;;
+        keyword)
+            cmd_tokens[0]="keyword ${cmd_tokens[0]}"
+            echo -n $'\033[90m'
             ;;
         *)
             cmd_tokens[0]="(?) ${cmd_tokens[0]}"
+            echo -n $'\033[38;5;88m'
             ;;
     esac
 
-    echo $'\033[90m'"[$__command_sno] -> ${cmd_tokens[@]} ($(date +"%x %X"))"$'\033[0m'
+    echo "[$__command_sno] -> ${cmd_tokens[@]} ($(date +"%x %X"))"$'\033[0m'
 }
 
 __do_after_command() {
