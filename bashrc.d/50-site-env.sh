@@ -4,8 +4,8 @@ __source_site_rc() {
     local IFS=$' \t\n'
     local rcfile
 
-    if [ -d ~/.site_env/bash ]; then
-        for rcfile in ~/.site_env/bash/*.sh ; do
+    if [ -d $HOME/.site_env/bash ]; then
+        for rcfile in $HOME/.site_env/bash/*.sh ; do
             if [ -r "$rcfile" ]; then
                 . "$rcfile"
             fi
@@ -13,4 +13,6 @@ __source_site_rc() {
     fi
 }
 __source_site_rc
+
+__prepend PATH $HOME/.site_env/exec
 

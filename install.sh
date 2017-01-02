@@ -13,6 +13,7 @@ SITE_VIM_DIR=$SITE_ENV_DIR/vim
 SITE_BASH_DIR=$SITE_ENV_DIR/bash
 SITE_CSH_DIR=$SITE_ENV_DIR/csh
 SITE_TMUX_DIR=$SITE_ENV_DIR/tmux
+SITE_EXEC_DIR=$SITE_ENV_DIR/exec
 
 #
 # ~/.site_env/*
@@ -75,6 +76,14 @@ echo "  Generated file $SITE_GITCONFIG_FILE"
 echo
 touch $SITE_TMUX_DIR/tmux.conf
 echo "Generated file $SITE_TMUX_DIR/tmux.conf"
+
+#
+# Site exec
+#
+
+echo
+mkdir -p $SITE_EXEC_DIR
+echo "Created directory $SITE_EXEC_DIR"
 
 #
 # export MY_RC_HOME
