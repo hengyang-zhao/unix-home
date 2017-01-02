@@ -39,3 +39,22 @@ __smart_make()
 		dir+=/..
 	done
 }
+
+__infinite_bash()
+{
+    true
+    while [ "$?" != 200 ]; do
+        clear
+        echo
+        echo "+============================================================+"
+        echo "|                         Bash Trap                          |"
+        echo "+------------------------------------------------------------+"
+        echo "| ** This session will be RESTARTED on normal exit.          |"
+        echo "| ** To escape, use exit code 200.                           |"
+        echo "+============================================================+"
+        echo
+        bash
+    done
+    return 0
+}
+alias bashtrap=__infinite_bash
