@@ -1,1 +1,1 @@
-__append PATH $MY_RC_HOME/exec
+__prepend PATH $MY_RC_HOME/exec
