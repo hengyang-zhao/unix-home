@@ -47,20 +47,20 @@ __connect_tmux()
     esac
 }
 
-__has ssh && alias ssh=__ssh
-__ssh()
+__has ssh && alias connect=__connect_ssh
+__connect_ssh()
 {
     command ssh -t $@ exec env TMUX_ATTACHED="'$TMUX_ATTACHED'" SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash
 }
 
-__has ssh && alias ssh-no-tmux=__ssh_no_tmux
-__ssh_no_tmux()
+__has ssh && alias connect-no-tmux=__connect_ssh_no_tmux
+__connect_ssh_no_tmux()
 {
     command ssh -t $@ exec env FORCE_TMUX=no TMUX_ATTACHED="'$TMUX_ATTACHED'" SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash
 }
 
-__has ssh && alias ssh-tmux=__ssh_tmux
-__ssh_tmux()
+__has ssh && alias connect-tmux=__connect_ssh_tmux
+__connect_ssh_tmux()
 {
     command ssh -t $@ exec env FORCE_TMUX=yes TMUX_ATTACHED="'$TMUX_ATTACHED'" SSH_CONNECTION_CHAIN="'$SSH_CONNECTION_CHAIN'" bash
 }
