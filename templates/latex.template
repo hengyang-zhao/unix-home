@@ -16,12 +16,12 @@
 \usepackage{cite}
 
 \usepackage{tikz}
-
-\usepackage[CJKchecksingle,CJKnumber]{xeCJK}
-\setCJKmainfont[BoldFont={Adobe Heiti Std},ItalicFont={Adobe Kaiti Std}]{Adobe Song Std}
-\setCJKsansfont{Adobe Heiti Std}
-\setCJKmonofont{Adobe Fangsong Std}
-\punctstyle{hangmobanjiao}
+%
+%\usepackage[CJKchecksingle,CJKnumber]{xeCJK}
+%\setCJKmainfont[BoldFont={Adobe Heiti Std},ItalicFont={Adobe Kaiti Std}]{Adobe Song Std}
+%\setCJKsansfont{Adobe Heiti Std}
+%\setCJKmonofont{Adobe Fangsong Std}
+%\punctstyle{hangmobanjiao}
 
 \makeindex
 

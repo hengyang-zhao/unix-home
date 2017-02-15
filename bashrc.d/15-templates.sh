@@ -1,19 +1,12 @@
 alias helloworld=__create_file_using_template
 __create_file_using_template() {
 
-    test $# = 0 && return 1
-
-    local fname="$1"
-
-    test -e "$fname" && return 2
-
-    local ext="${1##*.}"
+    local ext="$1"
     local tname="$MY_RC_HOME/templates/$ext.template"
 
-    test -e "$tname" || return 3
+    test -f "$tname" || return 1
 
     local lineno=$(awk '/Hello, world/ { print NR; exit }' "$tname")
 
-    cp "$tname" "$fname"
-    vim +$lineno "$fname"
+    vim -c "read $tname" +$lineno
 }
