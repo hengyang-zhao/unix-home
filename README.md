@@ -34,9 +34,9 @@ RC files are applied in 3 levels. We have the following reasons to to this:
 For example, bash uses the following source file tree:
 
   - `$HOME/.bashrc -> $UNIX_HOME/dot_files/bashrc`
-    - `$UNIX_HOME/bashrc.d/00-coreutils-aliases.sh`
+    - `$UNIX_HOME/bashrc.d/00-basic-functions.sh`
+    - `$UNIX_HOME/bashrc.d/03-coreutils-aliases.sh`
     - `$UNIX_HOME/bashrc.d/05-ps1.sh`
-    - `$UNIX_HOME/bashrc.d/10-basic-functions.sh`
     - `$UNIX_HOME/bashrc.d/15-templates.sh`
     - `$UNIX_HOME/bashrc.d/50-site-env.sh`
       - `$HOME/.site_env/bash/*.sh`
@@ -60,10 +60,11 @@ A fancy command prompt:
 
  - username@[hostname]. User name comes in green (or red if you are root).
 
-   - Host name can be customized only for bash by adding `export
-     BASH_PS1_HOSTNAME=your-host-name` in one of your site-specific RC files.
+   - Host name can be customized only for bash by adding
+     `BASH_PS1_HOSTNAME=your-host-name` in one of your site-specific RC files.
 
-   - OpenSSH session will be indicated by displaying [hostname] as a chain.
+   - When using `connect` as a substitution of `ssh`, OpenSSH session will be
+     indicated by displaying [hostname] as a chain.
 
  - Yellow flashing "&N" indicates the number of background processes, hidden if
    N == 0.
@@ -94,10 +95,10 @@ A fancy command prompt:
  - To override the hostname part in PS1, export a customized
    `BASH_PS1_HOSTNAME` in `~/.site_env/bash/*.sh`.
 
- - On some platforms (MacOS, Solaris, etc.) GNU coreutils commands are prefixed
-   by `g`. To alias them back to regular usage (e.g., `alias ls=gls` etc.),
-   export `GNU_COREUTILS_HOME=</path/to/gnu-coreutils>`. If your GNU coreutils
-   have their own prefixes other than `g`, export
+ - On many platforms (MacOS, Solaris, etc.) GNU coreutils commands are prefixed
+   by `g` by default (if installed). To alias them back to regular usage (e.g.,
+   `alias ls=gls` etc.), export `GNU_COREUTILS_HOME=</path/to/gnu-coreutils>`.
+   If your GNU coreutils have their own prefixes other than `g`, export
    `GNU_COREUTILS_PREFIX=<customized-prefix>` to override.
 
  - To attach tmux at the end of bash initialization, export `AUTO_ATTACH_TMUX`
