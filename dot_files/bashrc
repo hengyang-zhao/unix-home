@@ -35,8 +35,6 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 	. /etc/bash_completion
 fi
 
-alias __do_once='[ "$BASHRC_APPLIED" != yes ]'
-
 # Needs to know MY_RC_HOME first
 source ~/.site_env/bash/my_rc_home.sh
 
@@ -52,8 +50,6 @@ __source_repo_rc() {
     fi
 }
 __source_repo_rc
-
-__do_once && BASHRC_APPLIED=yes
 
 if __has tmux; then
     if [ "$FORCE_TMUX" = yes ] && [ -z "$TMUX" ]; then

@@ -1,1 +1,1 @@
-__prepend PATH $MY_RC_HOME/exec
+__do_once export PATH=$MY_RC_HOME/exec:$PATH

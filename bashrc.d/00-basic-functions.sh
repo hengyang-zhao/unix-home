@@ -3,6 +3,19 @@ __has() {
 	return $?
 }
 
+__do_once_func() {
+    key="$1"
+    for k in ${__did_once[@]}; do
+        if [ "$k" = "$key" ]; then
+            return 1
+        fi
+    done
+
+    __did_once+=("$key")
+    return 0
+}
+alias __do_once='__do_once_func $BASH_SOURCE:$LINENO'
+
 # Umask
 #
 # /etc/profile sets 022, removing write perms to group + others.
@@ -79,60 +92,4 @@ __verbose_cd() {
 		fi
 	fi
 	return $ret
-}
-
-alias __append='__update_export --append'
-alias __prepend='__update_export --prepend'
-__update_export()
-{
-    local IFS=$' \t\n'
-    local action
-	case "$1" in
-		--append)
-			action=append
-			shift
-			;;
-		--prepend)
-			action=prepend
-			shift
-			;;
-		--)
-			action=append
-			shift
-			;;
-		-*)
-			echo Unsupported action: $1
-			return
-			;;
-		*)
-			action=append
-			;;
-	esac
-
-	[ -z "$1" ] && return 1
-	[ -z "$2" ] && return 2
-
-	local varname="$1"
-	local newvalue="$2"
-
-	local varvalue="`eval echo '$'$varname`"
-
-	[ "$varvalue" = '$' ] && varvalue=
-
-    local i
-	for i in `echo $varvalue | sed -e 's/:/ /g'`; do
-		[ "$newvalue" = "$i" ] && return 3
-	done
-
-	if [ -z "$varvalue" ]; then
-		export $varname="$newvalue"
-	else
-		if [ $action = append ]; then
-			export $varname="$varvalue":"$newvalue"
-		elif [ $action = prepend ]; then
-			export $varname="$newvalue":"$varvalue"
-		else
-			echo __update_export is kidding you
-		fi
-	fi
 }

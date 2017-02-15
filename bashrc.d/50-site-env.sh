@@ -14,5 +14,5 @@ __source_site_rc() {
 }
 __source_site_rc
 
-__prepend PATH $HOME/.site_env/exec
+__do_once && export PATH=$HOME/.site_env/exec:$PATH
 
