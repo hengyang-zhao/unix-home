@@ -113,10 +113,19 @@ echo "  Registered MY_RC_HOME=$MY_RC_HOME in file $SITE_CSH_DIR/my_rc_home.csh"
 echo
 echo "Creating symlinks for resource files:"
 
-for f in $DOT_FILES_DIR/*; do
-	f=`basename "$f"`
-	echo "  symlink ~/.$f -> $DOT_FILES_DIR/$f"
-	(builtin cd; ln -sf $DOT_FILES_DIR/$f .${f#dot_})
+backup_suffix=$(date +".backup.%F.%T")
+for rcfile in $DOT_FILES_DIR/*; do
+	fsource=`basename "$rcfile"`
+    ftarget=".${fsource#dot_}"
+
+    if [ -f "$ftarget" ] && ! [ -L "$ftarget" ]; then
+        fbak="$ftarget$backup_suffix"
+        echo "  backup ~/$ftarget -> $DOT_FILES_DIR/$fbak"
+        (builtin cd; mv -f "$ftarget" "$fbak")
+    fi
+
+	echo "  symlink ~/$ftarget -> $DOT_FILES_DIR/$fsource"
+	(builtin cd; ln -sf "$DOT_FILES_DIR/$fsource" "$ftarget")
 done
 
 echo

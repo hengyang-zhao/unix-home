@@ -7,8 +7,8 @@ Configuration scripts of UNIX environment --- home feelings!
 ## Before installation
 
 This set of configuration scripts/rc-files are supposed to be deployed on a
-fresh created home directory. If you already have some old rc files, please
-make backups! Effected files list:
+fresh created home directory. If you already have some old rc files, they will
+be automatically backed up.  Effected files are:
 
     .bash_profile .bashrc .cshrc .gitconfig .screenrc .tmux.conf .vimrc
 
