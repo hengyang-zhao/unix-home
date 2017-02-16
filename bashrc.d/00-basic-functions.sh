@@ -4,6 +4,12 @@ __has() {
 }
 
 __do_once_func() {
+
+    if [ $# -gt 1 ]; then
+        echo "WARN: using __do_once with more than one parameters"
+        echo "WARN: parameters: $@"
+    fi
+
     key="$1"
     for k in $__DID_ONCE; do
         if [ "$k" = "$key" ]; then
