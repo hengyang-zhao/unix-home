@@ -94,6 +94,9 @@ __update_tmux_status()
     fi
 }
 
-__do_once && __update_ssh_connection_chain
-__do_once && __update_tmux_status
+__update_ssh_connection_chain
+__update_tmux_status
+
+#__do_once && __update_ssh_connection_chain
+#__do_once && __update_tmux_status
 

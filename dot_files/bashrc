@@ -24,6 +24,8 @@ HISTTIMEFORMAT="%Y-%m-%d %T  "
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+umask 077
+
 if [ -f ~/.bash_aliases ]; then
 	. ~/.bash_aliases
 fi
