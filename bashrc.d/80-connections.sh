@@ -76,10 +76,11 @@ __update_ssh_connection_chain()
 
         local ssh_conn_tokens=($SSH_CONNECTION)
         local ssh_conn_chain_tokens=($SSH_CONNECTION_CHAIN)
+        local ntok=${#ssh_conn_chain_tokens}
 
-        if [ "${#ssh_conn_chain_tokens[@]}" -gt 1 ] && [ "${ssh_conn_chain_tokens[-1]}" = "$ps1_hostname" ] \
-                && [ "${ssh_conn_chain_tokens[-2]}" = "${ssh_conn_tokens[3]}" ] \
-                && [ "${ssh_conn_chain_tokens[-3]}" = "${ssh_conn_tokens[1]}" ]; then
+        if [ "${#ssh_conn_chain_tokens[@]}" -gt 3 ] && [ "${ssh_conn_chain_tokens[ntok-1]}" = "$ps1_hostname" ] \
+                && [ "${ssh_conn_chain_tokens[ntok-2]}" = "${ssh_conn_tokens[3]}" ] \
+                && [ "${ssh_conn_chain_tokens[ntok-3]}" = "${ssh_conn_tokens[1]}" ]; then
             return
         fi
 
@@ -94,6 +95,9 @@ __update_tmux_status()
     fi
 }
 
-__do_once && __update_ssh_connection_chain
-__do_once && __update_tmux_status
+__update_ssh_connection_chain
+__update_tmux_status
+
+#__do_once && __update_ssh_connection_chain
+#__do_once && __update_tmux_status
 
