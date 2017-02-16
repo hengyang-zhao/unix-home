@@ -70,7 +70,7 @@ cwd=$(pwd -P)
 
 # if we are under schroot
 if [ -n "$debian_chroot" ]; then
-	s="($debian_chroot)"
+    s="($debian_chroot)"
 fi
 
 # if we are root, then print a red name
@@ -82,12 +82,12 @@ fi
 
 # if there are background jobs, give the total count
 if [ \j -gt 0 ]; then
-	echo -ne " \[\e[1;5;33m\]&\j\[\e[0m\]"
+    echo -ne " \[\e[1;5;33m\]&\j\[\e[0m\]"
 fi
 
 # if this is not buttom level shell, give the depth
 if [ "$SHLVL" -gt 1 ]; then
-	echo -ne " \[\e[35m\]^$((SHLVL-1))\[\e[0m\]"
+    echo -ne " \[\e[35m\]^$((SHLVL-1))\[\e[0m\]"
 fi
 
 # if we are in a (GNU) screen, print the session name
@@ -97,22 +97,22 @@ fi
 
 # git branch name ( "(.git)" is displayed if we are in the .git)
 if type git &>/dev/null; then
-	gbr=`git rev-parse --abbrev-ref HEAD 2>/dev/null`
-	if [ -n "$gbr" ]; then
-		if [ "$gbr" = HEAD ]; then
-			gbr=`git rev-parse HEAD 2>/dev/null | head -c8`
-		fi
-		groot=$(basename ///$(git rev-parse --show-toplevel) 2>/dev/null)
+    gbr=`git rev-parse --abbrev-ref HEAD 2>/dev/null`
+    if [ -n "$gbr" ]; then
+        if [ "$gbr" = HEAD ]; then
+            gbr=`git rev-parse HEAD 2>/dev/null | head -c8`
+        fi
+        groot=$(basename ///$(git rev-parse --show-toplevel) 2>/dev/null)
 
-		if [ "${#groot}" -gt 12 ]; then
-			groot="${groot: 0:8}\`${groot: -3:3}"
-		fi
-		if [ "$groot" = / ]; then
-			echo -ne " \[\e[33m\](.git)\[\e[0m\]"
-		else
-			echo -ne " \[\e[33m\]$groot[$gbr]\[\e[0m\]"
-		fi
-	fi
+        if [ "${#groot}" -gt 12 ]; then
+            groot="${groot: 0:8}\`${groot: -3:3}"
+        fi
+        if [ "$groot" = / ]; then
+            echo -ne " \[\e[33m\](.git)\[\e[0m\]"
+        else
+            echo -ne " \[\e[33m\]$groot[$gbr]\[\e[0m\]"
+        fi
+    fi
 fi
 
 # of course, print the current working directory
@@ -120,7 +120,7 @@ echo -ne " \[\e[1;34m\]\w\[\e[0m\]"
 
 # physical pwd, only shown if different from regular pwd
 if [ "$cwd" != "$(pwd)" ]; then
-	echo -ne "\n\[\e[90m\](Physical: $cwd)\[\e[0m\]"
+    echo -ne "\n\[\e[90m\](Physical: $cwd)\[\e[0m\]"
 fi
 
 # a new line
@@ -140,9 +140,9 @@ __do_before_command() {
     __command_errno="${PIPESTATUS[@]}"
 
     local IFS=$' \t\n'
-	if [ "$BASH_COMMAND" = __do_after_command ]; then
-		return
-	fi
+    if [ "$BASH_COMMAND" = __do_after_command ]; then
+        return
+    fi
     __command_sno=$(expr $__command_sno + 1)
 
     read -r -a cmd_tokens <<< "$BASH_COMMAND"
@@ -169,33 +169,33 @@ __do_before_command() {
 }
 
 __do_after_command() {
-	local errnos=$__command_errno
+    local errnos=$__command_errno
     local eno
-	local ret=OK
+    local ret=OK
     local IFS=$' \t\n'
 
-	for eno in $errnos; do
-		if [ $eno -ne 0 ]; then
-			ret=ERR
-			break
-		fi
-	done
+    for eno in $errnos; do
+        if [ $eno -ne 0 ]; then
+            ret=ERR
+            break
+        fi
+    done
 
-	local ts=$(date +"%x %X")
-	if [ $__command_sno -gt 0 ]; then
-		__command_sno=0
+    local ts=$(date +"%x %X")
+    if [ $__command_sno -gt 0 ]; then
+        __command_sno=0
 
-		# clear the previous terminal formatting
-		echo -n $'\033[0m'
+        # clear the previous terminal formatting
+        echo -n $'\033[0m'
 
-		# if the return value is not OK, tell the errno
-		if [ $ret = OK ]; then
-			echo -n $'\033[4;38;5;22m'
-			printf "%${COLUMNS}s\n" "$ts [ Status OK ]"
-		else
-			echo -n $'\033[4;38;5;196m'
-			printf "%${COLUMNS}s\n" "$ts [ Exception code $errnos ]"
-		fi
-		echo -n $'\033[0m'
-	fi
+        # if the return value is not OK, tell the errno
+        if [ $ret = OK ]; then
+            echo -n $'\033[4;38;5;22m'
+            printf "%${COLUMNS}s\n" "$ts [ Status OK ]"
+        else
+            echo -n $'\033[4;38;5;196m'
+            printf "%${COLUMNS}s\n" "$ts [ Exception code $errnos ]"
+        fi
+        echo -n $'\033[0m'
+    fi
 }

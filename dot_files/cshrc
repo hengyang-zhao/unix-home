@@ -1,6 +1,6 @@
 source ~/.site_env/csh/my_rc_home.csh
 
 foreach rc ($MY_RC_HOME/cshrc.d/*.csh)
-	source $rc
+    source $rc
 end
 

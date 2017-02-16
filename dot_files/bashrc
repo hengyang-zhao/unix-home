@@ -1,7 +1,7 @@
 # unix-home bashrc project
 
 if [ -f /etc/bashrc ]; then
-	source /etc/bashrc
+    source /etc/bashrc
 fi
 
 # If not running interactively, don't do anything
@@ -27,14 +27,14 @@ shopt -s checkwinsize
 umask 077
 
 if [ -f ~/.bash_aliases ]; then
-	. ~/.bash_aliases
+    . ~/.bash_aliases
 fi
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-	. /etc/bash_completion
+    . /etc/bash_completion
 fi
 
 # Needs to know MY_RC_HOME first
