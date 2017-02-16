@@ -58,3 +58,5 @@ __infinite_bash()
     return 0
 }
 alias bashtrap=__infinite_bash
+
+__has hub && alias git=hub
