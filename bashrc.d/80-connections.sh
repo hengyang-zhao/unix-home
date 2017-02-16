@@ -76,9 +76,9 @@ __update_ssh_connection_chain()
 
         local ssh_conn_tokens=($SSH_CONNECTION)
         local ssh_conn_chain_tokens=($SSH_CONNECTION_CHAIN)
-        local ntok=${#ssh_conn_chain_tokens}
+        local ntok=${#ssh_conn_chain_tokens[@]}
 
-        if [ "${#ssh_conn_chain_tokens[@]}" -gt 3 ] && [ "${ssh_conn_chain_tokens[ntok-1]}" = "$ps1_hostname" ] \
+        if [ "$ntok" -gt 3 ] && [ "${ssh_conn_chain_tokens[ntok-1]}" = "$ps1_hostname" ] \
                 && [ "${ssh_conn_chain_tokens[ntok-2]}" = "${ssh_conn_tokens[3]}" ] \
                 && [ "${ssh_conn_chain_tokens[ntok-3]}" = "${ssh_conn_tokens[1]}" ]; then
             return
