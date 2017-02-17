@@ -165,7 +165,10 @@ __do_before_command() {
             ;;
     esac
 
-    echo $'\033[90m'"[$__command_sno] -> ${cmd_tokens[@]} ($(date +"%x %X"))"$'\033[0m'
+    echo -n $'\033[90m'
+    echo -n "[$__command_sno] -> ${cmd_tokens[@]} ($(date +"%x %X"))" | tr '[:cntrl:]' '.'
+    echo -n $'\033[0m'
+    echo
 }
 
 __do_after_command() {
