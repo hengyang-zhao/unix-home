@@ -67,6 +67,10 @@ __connect_ssh_tmux()
 
 __update_ssh_connection_chain()
 {
+    if [ "$__ssh_connection_chain_updated" = yes ]; then
+        return
+    fi
+
     local IFS=$' \t\n'
     local ps1_hostname=$(__bash_ps1_hostname)
 
@@ -86,6 +90,8 @@ __update_ssh_connection_chain()
 
         SSH_CONNECTION_CHAIN="$SSH_CONNECTION_CHAIN ${ssh_conn_tokens[1]} ${ssh_conn_tokens[3]} $ps1_hostname"
     fi
+
+    __ssh_connection_chain_updated=yes
 }
 
 __update_tmux_status()
@@ -97,7 +103,4 @@ __update_tmux_status()
 
 __update_ssh_connection_chain
 __update_tmux_status
-
-#__do_once && __update_ssh_connection_chain
-#__do_once && __update_tmux_status
 
