@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ -n "$BASH_SOURCE" ]; then
+    echo "Please RUN this script. Do not source."
+    return 1
+fi
+
 MY_RC_HOME=$(builtin cd $(dirname "$0"); builtin pwd)
 
 DOT_FILES_DIR=$MY_RC_HOME/dot_files
