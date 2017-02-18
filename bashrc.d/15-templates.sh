@@ -7,6 +7,7 @@ __create_file_using_template() {
 
     if ! test -f "$tname"; then
 
+        echo Could not find template file $tname
         echo -n Available choices are:
 
         for f in $MY_RC_HOME/templates/*.template; do
