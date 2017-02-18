@@ -1,0 +1,62 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+
+\usepackage{bookmark}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{fontspec}
+\usepackage[explicit]{titlesec}
+\usepackage{xcolor}
+\usepackage{makeidx}
+\usepackage{fourier-orns}
+\usepackage{cite}
+
+\usepackage{tikz}
+%
+%\usepackage[CJKchecksingle,CJKnumber]{xeCJK}
+%\setCJKmainfont[BoldFont={Adobe Heiti Std},ItalicFont={Adobe Kaiti Std}]{Adobe Song Std}
+%\setCJKsansfont{Adobe Heiti Std}
+%\setCJKmonofont{Adobe Fangsong Std}
+%\punctstyle{hangmobanjiao}
+
+\makeindex
+
+\lstset{
+    basicstyle=\ttfamily,
+    stringstyle=\color{red!30!black},
+    commentstyle=\color{green!50!black},
+    keywordstyle=\color{blue!80!black},
+    identifierstyle=\color{yellow!20!purple},
+    numbers=left,
+    numberstyle=\color{black!60!white}\tiny,
+    numbersep=8pt,
+    stepnumber=1,
+    basewidth=0.5em
+}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+\title{Document Title}
+\author{Dr.~Who}
+\date{\today}
+
+\setlength\parskip{1em}
+
+\begin{document}
+
+\maketitle
+
+Hello, world!
+
+\end{document}
+
+% vim: set ft=tex tw=78 ts=4 sw=4 et spell:
