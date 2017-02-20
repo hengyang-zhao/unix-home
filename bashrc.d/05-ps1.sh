@@ -161,7 +161,6 @@ __do_before_command() {
             cmd_tokens[0]="keyword ${cmd_tokens[0]}"
             ;;
         *)
-            cmd_tokens[0]="(?) ${cmd_tokens[0]}"
             ;;
     esac
 
