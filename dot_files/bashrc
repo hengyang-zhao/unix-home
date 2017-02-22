@@ -13,9 +13,11 @@ HISTCONTROL=ignoreboth
 # append to the history file, don't overwrite it
 shopt -s histappend
 
-# unlimited command history
-HISTSIZE=
-HISTFILESIZE=
+# very large command history, virtually infinite
+# don't assign -1 for bash compatibility
+#    or assign to nothing for gdb compatibility
+HISTSIZE=999999
+HISTFILESIZE=999999
 
 # add time stamp for history command
 HISTTIMEFORMAT="%Y-%m-%d %T  "
