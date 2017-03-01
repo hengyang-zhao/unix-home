@@ -6,7 +6,7 @@ __command_errno=0
 __bash_ps1_hostname()
 {
     if [ -z "$BASH_PS1_HOSTNAME" ]; then
-        echo $(hostname -s)
+        echo $(uname -n)
     else
         echo $BASH_PS1_HOSTNAME
     fi
@@ -38,7 +38,7 @@ __pretty_ssh_connection_chain()
         reset=$'\033[0m'
     fi
 
-    local chain="$major_color$USER$reset$minor_color@$reset"
+    local chain="$major_color$(whoami)$reset$minor_color@$reset"
     chain+="$minor_color[$reset"
 
     local -i i=0
