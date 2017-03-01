@@ -6,7 +6,8 @@ __command_errno=0
 __bash_ps1_hostname()
 {
     if [ -z "$BASH_PS1_HOSTNAME" ]; then
-        echo $(uname -n)
+        local node_name=$(uname -n)
+        echo ${node_name%%.*}
     else
         echo $BASH_PS1_HOSTNAME
     fi
