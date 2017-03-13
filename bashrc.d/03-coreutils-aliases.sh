@@ -33,7 +33,4 @@ alias rm='rm -vi'
 alias cp='cp -vi'
 alias mv='mv -vi'
 alias vi='vim'
-alias emacs='emacs -nw'
-alias sudo='sudo -E'
-alias dialog='dialog --keep-tite --ascii-lines'
 
