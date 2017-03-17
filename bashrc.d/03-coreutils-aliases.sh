@@ -16,7 +16,6 @@ alias g='grep -Ein'
 alias j='jobs -l'
 alias l='ls -hltr'
 alias p='ps -ef'
-alias v='vim'
 
 # graphical open shortcut
 if [ `uname` == Linux ]; then
