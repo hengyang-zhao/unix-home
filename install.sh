@@ -134,5 +134,6 @@ for rcfile in $DOT_FILES_DIR/*; do
 done
 
 echo
-echo "Installation done."
+echo "Installation done. To apply immediately, type 'source ~/.bashrc'."
+echo "Please use command home_info for help"
 echo

@@ -1,0 +1,54 @@
+#!/bin/sh
+
+SITE_ENV_DIR=$HOME/.site_env
+
+cat << EOF
+
+Available commands and aliases:
+
+    helloworld <language>
+        Give a simple hello-world template for the given language.
+
+    connect connect-tmux connect-no-tmux
+        ssh onto a server, chaining the hostname in the command prompt.
+        tmux can be forced on/off using the dashed variants.
+
+    bashtrap
+        While true, do bash. Don't be scared --- you have your way out.
+
+    t   Attach to session "main" in tmux. Create if not exist.
+    c   Attach to session "main" in GNU screen. Create if not exist.
+    b '<expression>'
+        Quick calculator using GNU bc.
+
+Modified commands:
+    cd      auto ls and remember 10 cd histories
+    cd --   print cd history
+    cd -#   cd into history item '#'
+    -       cd ..
+    git     aliased to hub, if available
+    make    recursively find makefiles in parent directories.
+
+Special variables and functions in scripting:
+
+    BASH_PS1_HOSTNAME       Force using this as hostname info in the prompt
+    AUTO_ATTACH_TMUX        Exec tmux automatically upon a remote login
+                            Valid options: yes, no (default)
+    GNU_COREUTILS_HOME      GNU Coreutils installation path
+    GNU_COREUTILS_PREFIX    GNU Coreutils prefix (default: g)
+
+    __has <program>
+        Check if "program" is available on your system. NO stdout/stderr.
+        Returns 0 if program is available, otherwise 1.
+
+        Example:
+            __has program && alias prog='program --a-long-parameter'
+
+    __do_once
+        Check if the current line is already sourced. If yes, return 0,
+        otherwise return 0. Useful for one-time appending a variable.
+
+        Example:
+            __do_once && export PATH=\$PATH:/path/to/somewhere
+
+EOF
