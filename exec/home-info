@@ -16,26 +16,21 @@ Available commands and aliases:
     bashtrap
         While true, do bash. Don't be scared --- you have your way out.
 
+    -   cd ..
     t   Attach to session "main" in tmux. Create if not exist.
     c   Attach to session "main" in GNU screen. Create if not exist.
-    b '<expression>'
+    b   '<expression>'
         Quick calculator using GNU bc.
 
 Modified commands:
+
     cd      auto ls and remember 10 cd histories
     cd --   print cd history
     cd -#   cd into history item '#'
-    -       cd ..
     git     aliased to hub, if available
     make    recursively find makefiles in parent directories.
 
-Special variables and functions in scripting:
-
-    BASH_PS1_HOSTNAME       Force using this as hostname info in the prompt
-    AUTO_ATTACH_TMUX        Exec tmux automatically upon a remote login
-                            Valid options: yes, no (default)
-    GNU_COREUTILS_HOME      GNU Coreutils installation path
-    GNU_COREUTILS_PREFIX    GNU Coreutils prefix (default: g)
+Useful functions in $HOME/.site_env/bash/*.sh:
 
     __has <program>
         Check if "program" is available on your system. NO stdout/stderr.
@@ -50,5 +45,13 @@ Special variables and functions in scripting:
 
         Example:
             __do_once && export PATH=\$PATH:/path/to/somewhere
+
+Special variables:
+
+    BASH_PS1_HOSTNAME       Force using this as hostname info in the prompt
+    AUTO_ATTACH_TMUX        Exec tmux automatically upon a remote login
+                            Valid options: yes, no (default)
+    GNU_COREUTILS_HOME      GNU Coreutils installation path
+    GNU_COREUTILS_PREFIX    GNU Coreutils prefix (default: g)
 
 EOF
