@@ -75,7 +75,7 @@ Special variables:
     MY_FMT_STATUS_ERROR              |   and color green
     MY_FMT_CMD_EXPANSIONS            |
 
-    MY_BASH_ENABLE_HOST_CHAIN        | - Enables host chain, command expansion,
+    MY_BASH_ENABLE_HOSTCHAIN         | - Enables host chain, command expansion,
     MY_BASH_ENABLE_CMD_EXPANSION     |   status line.
     MY_BASH_ENABLE_STATUS_LINE       |   Valid options: yes (default), no.
 

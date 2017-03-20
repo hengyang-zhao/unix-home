@@ -19,7 +19,7 @@ __ps1_user_at_host() {
     __inline_echo "@"
     __resetfmt zero_width
 
-    if [ "$MY_BASH_ENABLE_HOST_CHAIN" = no ]; then
+    if [ "$MY_BASH_ENABLE_HOSTCHAIN" = no ]; then
         __ps1_hostname
     else
         __ps1_ssh_connection_chain
