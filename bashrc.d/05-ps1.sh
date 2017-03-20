@@ -10,12 +10,11 @@ __pretty_ssh_connection_chain()
     local IFS=$' \t\n'
     local items=($SSH_CONNECTION_CHAIN)
 
-    local chain="$(__setfmt ps1_username)$(whoami)$(__resetfmt)$(__setfmt ps1_hostchain_decor)@$(__resetfmt)"
     local chain="$(__setfmt ps1_hostchain_decor)[$(__resetfmt)"
 
     local -i i=0
     while [ $i -lt ${#items[@]} ]; do
-        case $(expr $i % 3) in
+        case "$(expr $i % 3)" in
             0)
                 [ $(expr $i + 1) = ${#items[@]} ] && chain+=$(__setfmt ps1_hostname_highlight)
                 chain+="$(__setfmt ps1_hostname)${items[i]}$(__resetfmt)"
@@ -116,7 +115,7 @@ __ps1_bg_indicator() {
 __ps1_shlvl_indicator() {
     if [ "$SHLVL" -gt 1 ]; then
         __setfmt ps1_shlvl_indicator
-        __inline_echo "$(expr $SHLVL - 1)"
+        __inline_echo "^$(expr $SHLVL - 1)"
         __resetfmt
         return 0
     fi
