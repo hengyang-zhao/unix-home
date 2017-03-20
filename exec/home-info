@@ -48,10 +48,37 @@ Useful functions in $HOME/.site_env/bash/*.sh:
 
 Special variables:
 
-    BASH_PS1_HOSTNAME       Force using this as hostname info in the prompt
-    AUTO_ATTACH_TMUX        Exec tmux automatically upon a remote login
-                            Valid options: yes, no (default)
-    GNU_COREUTILS_HOME      GNU Coreutils installation path
-    GNU_COREUTILS_PREFIX    GNU Coreutils prefix (default: g)
+    BASH_PS1_HOSTNAME     - Force using this as hostname info in the prompt.
+    AUTO_ATTACH_TMUX      - Exec tmux automatically upon a remote login.
+                          - Valid options: yes, no (default).
+    GNU_COREUTILS_HOME    - GNU Coreutils installation path.
+    GNU_COREUTILS_PREFIX  - GNU Coreutils prefix (default: g).
+
+    MY_FMT_PS1_HOSTNAME_ROOT         | - Override terminal color/format for
+    MY_FMT_PS1_HOSTNAME              |   bash PS1 prompt. Currently please
+    MY_FMT_PS1_USERNAME_ROOT         |   use ansi terminal control characters
+    MY_FMT_PS1_USERNAME              |   or tput instructions.
+    MY_FMT_PS1_HOSTCHAIN_DECOR_ROOT  |
+    MY_FMT_PS1_HOSTCHAIN_DECOR       | - Example:
+    MY_FMT_PS1_IFS                   |   
+    MY_FMT_PS1_IFS_VALUE             |   MY_FMT_PS1_CWD=\$'\033[32m'
+    MY_FMT_PS1_CHROOT_ROOT           |   will change the PWD section to color
+    MY_FMT_PS1_CHROOT                |   green in most color terminals
+    MY_FMT_PS1_BG_INDICATOR          |
+    MY_FMT_PS1_SHLVL_INDICATOR       |   MY_FMT_STATUS_OK=\$(tput bold)
+    MY_FMT_PS1_SCREEN_INDICATOR      |   will use bold fonts for the status
+    MY_FMT_PS1_GIT_INDICATOR         |   line
+    MY_FMT_PS1_CWD                   |
+    MY_FMT_PS1_PHYSICAL_CWD          |   MY_FMT_STATUS_ERROR= (line contd.)
+    MY_FMT_PS1_DOLLAR_HASH           |       \$(tput smul)\$(tput setaf 2)
+    MY_FMT_STATUS_OK                 |   will use a combined format: underline
+    MY_FMT_STATUS_ERROR              |   and color green
+    MY_FMT_CMD_EXPANSIONS            |
+
+    MY_BASH_ENABLE_HOST_CHAIN        | - Enables host chain, command expansion,
+    MY_BASH_ENABLE_CMD_EXPANSION     |   status line.
+    MY_BASH_ENABLE_STATUS_LINE       |   Valid options: yes (default), no.
+
+    PS1   - Now it's fully revised. Try echo "\$PS1" to see how to customize.
 
 EOF
