@@ -72,7 +72,7 @@ __update_ssh_connection_chain()
     fi
 
     local IFS=$' \t\n'
-    local ps1_hostname=$(__bash_ps1_hostname)
+    local ps1_hostname=$(__short_hostname)
 
     if [ -n "$TMUX" ] || [ -z "$SSH_CONNECTION_CHAIN" ]; then
         SSH_CONNECTION_CHAIN=$ps1_hostname

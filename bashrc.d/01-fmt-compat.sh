@@ -72,11 +72,11 @@ __setfmt()
         *)
             ;;
     esac
-    builtin echo -ne "$fmt_ctrl_seq"
+    builtin echo -n $'\001'"$fmt_ctrl_seq"$'\002'
 }
 
 __resetfmt()
 {
     local resetfmt_ctrl_seq=$'\033[0m'
-    builtin echo -ne "$resetfmt_ctrl_seq"
+    builtin echo -ne $'\001'"$resetfmt_ctrl_seq"$'\002'
 }

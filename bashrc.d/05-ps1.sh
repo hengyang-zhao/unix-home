@@ -1,21 +1,8 @@
 __command_sno=0
 __command_errno=0
 
-__bash_ps1_hostname()
-{
-    if [ -z "$BASH_PS1_HOSTNAME" ]; then
-        local node_name=$(uname -n)
-        echo ${node_name%%.*}
-    else
-        echo $BASH_PS1_HOSTNAME
-    fi
-}
-
-__pretty_non_default_ifs() {
-    if [[ "${#IFS}" == 3 && "$IFS" == *" "* && "$IFS" == *$'\t'* && "$IFS" == *$'\n'* ]]; then
-        return
-    fi
-    printf "$(__setfmt ps1_ifs)(IFS:$(__resetfmt) $(__setfmt ps1_ifs_value)%q$(__resetfmt)$(__setfmt ps1_ifs))$(__resetfmt) " "$IFS"
+__inline_echo() {
+    builtin echo -n "$@"
 }
 
 __pretty_ssh_connection_chain()
@@ -24,7 +11,7 @@ __pretty_ssh_connection_chain()
     local items=($SSH_CONNECTION_CHAIN)
 
     local chain="$(__setfmt ps1_username)$(whoami)$(__resetfmt)$(__setfmt ps1_hostchain_decor)@$(__resetfmt)"
-    chain+="$(__setfmt ps1_hostchain_decor)[$(__resetfmt)"
+    local chain="$(__setfmt ps1_hostchain_decor)[$(__resetfmt)"
 
     local -i i=0
     while [ $i -lt ${#items[@]} ]; do
@@ -45,81 +32,169 @@ __pretty_ssh_connection_chain()
 
     chain+="$(__setfmt ps1_hostchain_decor)]"
 
-    echo $(__resetfmt)$chain$(__resetfmt)
+    builtin echo $(__resetfmt)$chain$(__resetfmt)
+}
+
+__short_hostname() {
+    if [ -z "$BASH_PS1_HOSTNAME" ]; then
+        local node_name=$(uname -n)
+        __inline_echo ${node_name%%.*}
+    else
+        __inline_echo $BASH_PS1_HOSTNAME
+    fi
+}
+
+__ps1_user_at_host() {
+    __ps1_username
+
+    __setfmt ps1_hostchain_decor
+    __inline_echo "@"
+    __resetfmt
+
+    if [ "$MY_BASH_ENABLE_HOST_CHAIN" = no ]; then
+        __ps1_hostname
+    else
+        __ps1_ssh_connection_chain
+    fi
+    return 0
+}
+
+__ps1_username()
+{
+    __setfmt ps1_username
+    __inline_echo $(whoami)
+    __resetfmt
+}
+
+__ps1_hostname()
+{
+    __setfmt ps1_hostname
+    __inline_echo $(__short_hostname)
+    __resetfmt
+    return 0
+}
+
+__ps1_non_default_ifs() {
+    if [[ "${#IFS}" == 3 && "$IFS" == *" "* && "$IFS" == *$'\t'* && "$IFS" == *$'\n'* ]]; then
+        return 1
+    fi
+    printf "$(__setfmt ps1_ifs)(IFS:$(__resetfmt) $(__setfmt ps1_ifs_value)%q$(__resetfmt)$(__setfmt ps1_ifs))$(__resetfmt) " "$IFS"
+    return 0
+}
+
+__ps1_chroot() {
+    if [ -n "$debian_chroot" ]; then
+        __setfmt ps1_chroot
+        __inline_echo "($debian_chroot)"
+        __resetfmt
+        return 0
+    else
+        return 1
+    fi
+}
+
+__ps1_ssh_connection_chain() {
+    if [ "$UID" -eq 0 ]; then
+        __inline_echo "$(__pretty_ssh_connection_chain root)"
+    else
+        __inline_echo "$(__pretty_ssh_connection_chain)"
+    fi
+    return 0
+}
+
+__ps1_bg_indicator() {
+    local njobs="$1"
+    if [ "$njobs" -gt 0 ]; then
+        __setfmt ps1_bg_indicator
+        __inline_echo "&$njobs"
+        __resetfmt
+        return 0
+    fi
+    return 1
+}
+
+__ps1_shlvl_indicator() {
+    if [ "$SHLVL" -gt 1 ]; then
+        __setfmt ps1_shlvl_indicator
+        __inline_echo "$(expr $SHLVL - 1)"
+        __resetfmt
+        return 0
+    fi
+    return 1
+}
+
+__ps1_screen_indicator() {
+    if [ -n "$STY" ]; then
+        __setfmt ps1_screen_indicator
+        __inline_echo "*${STY#*.}*"
+        __resetfmt
+        return 0
+    fi
+    return 1
+}
+
+__ps1_git_indicator() {
+
+    if type git &>/dev/null; then
+        gbr=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+        if [ -n "$gbr" ]; then
+            if [ "$gbr" = HEAD ]; then
+                gbr=$(git rev-parse HEAD 2>/dev/null | head -c8)
+            fi
+            groot=$(basename ///$(git rev-parse --show-toplevel) 2>/dev/null)
+
+            if [ "${#groot}" -gt 12 ]; then
+                groot="${groot: 0:8}\`${groot: -3:3}"
+            fi
+            __setfmt ps1_git_indicator
+            if [ "$groot" = / ]; then
+                __inline_echo "(.git)"
+            else
+                __inline_echo "$groot[$gbr]"
+            fi
+            __resetfmt
+            return 0
+        fi
+    fi
+    return 1
+}
+
+__ps1_cwd() {
+    __setfmt ps1_cwd
+    __inline_echo "$1"
+    __resetfmt
+    return 0
+}
+
+__ps1_dollar_hash() {
+    __setfmt ps1_dollar_hash
+    __inline_echo "$1"
+    __resetfmt
+    return 0
+}
+
+__ps1_space() {
+    __inline_echo ' '
+    return 0
+}
+
+__ps1_newline() {
+    builtin echo
+    return 0
 }
 
 PS1='$(
-
-# record status
-cwd=$(pwd -P)
-
-# if we are under schroot
-if [ -n "$debian_chroot" ]; then
-    s="($debian_chroot)"
-fi
-
-# if we are root, then print a red name
-if [ "$UID" -eq 0 ]; then
-    echo -ne "$(__pretty_ssh_connection_chain root)\[\e[35m\]$s\[\e[0m\]"
-else
-    echo -ne "$(__pretty_ssh_connection_chain)\[\e[36m\]$s\[\e[0m\]"
-fi
-
-# if there are background jobs, give the total count
-if [ \j -gt 0 ]; then
-    echo -ne " $(__setfmt ps1_bg_indicator)&\j$(__resetfmt)"
-fi
-
-# if this is not buttom level shell, give the depth
-if [ "$SHLVL" -gt 1 ]; then
-    echo -ne " \[\e[35m\]^$((SHLVL-1))\[\e[0m\]"
-fi
-
-# if we are in a (GNU) screen, print the session name
-if [ -n "$STY" ]; then
-    echo -ne " \[\e[36m\]*${STY#*.}*\[\e[0m\]"
-fi
-
-# git branch name ( "(.git)" is displayed if we are in the .git)
-if type git &>/dev/null; then
-    gbr=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-    if [ -n "$gbr" ]; then
-        if [ "$gbr" = HEAD ]; then
-            gbr=$(git rev-parse HEAD 2>/dev/null | head -c8)
-        fi
-        groot=$(basename ///$(git rev-parse --show-toplevel) 2>/dev/null)
-
-        if [ "${#groot}" -gt 12 ]; then
-            groot="${groot: 0:8}\`${groot: -3:3}"
-        fi
-        __setfmt ps1_git_indicator
-        if [ "$groot" = / ]; then
-            echo -ne " (.git)"
-        else
-            echo -ne " $groot[$gbr]"
-        fi
-        __resetfmt
-    fi
-fi
-
-# of course, print the current working directory
-echo -ne " \[\e[1;34m\]\w\[\e[0m\]"
-
-# physical pwd, only shown if different from regular pwd
-if [ "$cwd" != "$(pwd)" ]; then
-    echo -ne "\n\[\e[90m\](Physical: $cwd)\[\e[0m\]"
-fi
-
-# a new line
-echo
-
-# finally a highlighted prompt symbol on a new line
-echo -ne "\[\e[1m\]\$\[\e[0m\] "
-
-# print IFS if it is non-default
-__pretty_non_default_ifs
-
-)' # end of my prompt
+__ps1_user_at_host && __ps1_space
+__ps1_chroot && __ps1_space
+__ps1_bg_indicator "\j" && __ps1_space
+__ps1_shlvl_indicator && __ps1_space
+__ps1_screen_indicator && __ps1_space
+__ps1_git_indicator && __ps1_space
+__ps1_cwd "\w"
+__ps1_newline
+__ps1_dollar_hash "\$" && __ps1_space
+__ps1_non_default_ifs && __ps1_space
+)'
 
 __do_before_command() {
 
@@ -131,6 +206,10 @@ __do_before_command() {
         return
     fi
     __command_sno=$(expr $__command_sno + 1)
+
+    if [ "${MY_BASH_ENABLE_CMD_EXPANSION}" = no ]; then
+        return
+    fi
 
     read -r -a cmd_tokens <<< "$BASH_COMMAND"
     case $(type -t "${cmd_tokens[0]}") in
@@ -152,12 +231,17 @@ __do_before_command() {
     esac
 
     __setfmt cmd_expansions
-    echo -n "[$__command_sno] -> ${cmd_tokens[@]} ($(date +"%x %X"))" | tr '[:cntrl:]' '.'
+    __inline_echo "[$__command_sno] -> ${cmd_tokens[@]} ($(date +"%x %X"))" | tr '[:cntrl:]' '.'
     __resetfmt
-    echo
+    builtin echo
 }
 
 __do_after_command() {
+
+    if [ "${MY_BASH_ENABLE_STATUS_LINE}" = no ]; then
+        return
+    fi
+
     local errnos=$__command_errno
     local eno
     local ret=OK
