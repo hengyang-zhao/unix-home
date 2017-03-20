@@ -10,7 +10,9 @@ __do_once_func() {
         echo "WARN: parameters: $@"
     fi
 
-    key="$1"
+    local key="$1"
+    local k
+
     for k in $__DID_ONCE; do
         if [ "$k" = "$key" ]; then
             return 1
