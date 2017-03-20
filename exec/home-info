@@ -3,12 +3,15 @@
 readonly version_str="Version 0.5.6"
 readonly output_width=78
 
-less << EOF
+header() {
+    builtin echo $'\033[1m'"* $@"$'\033[0m\n'
+}
 
+less -r << EOF
 ============================[ H O M E  I N F O ]==============================
 $(printf "%${output_width}s" "$version_str")
 
-Available commands and aliases:
+$(header Available commands and aliases)
 
     helloworld <language>
         Give a simple hello-world template for the given language.
@@ -26,7 +29,7 @@ Available commands and aliases:
     b   '<expression>'
         Quick calculator using GNU bc.
 
-Modified commands:
+$(header Modified commands)
 
     cd      auto ls and remember 10 cd histories
     cd --   print cd history
@@ -34,7 +37,7 @@ Modified commands:
     git     aliased to hub, if available
     make    recursively find makefiles in parent directories.
 
-Useful functions in $HOME/.site_env/bash/*.sh:
+$(header Useful functions in $HOME/.site_env/bash/\*.sh)
 
     __has <program>
         Check if "program" is available on your system. NO stdout/stderr.
@@ -50,7 +53,7 @@ Useful functions in $HOME/.site_env/bash/*.sh:
         Example:
             __do_once && export PATH=\$PATH:/path/to/somewhere
 
-Special variables:
+$(header Special variables)
 
     BASH_PS1_HOSTNAME     - Force using this as hostname info in the prompt.
     AUTO_ATTACH_TMUX      - Exec tmux automatically upon a remote login.
@@ -85,7 +88,7 @@ Special variables:
 
     PS1   - Now it's fully revised. Try echo "\$PS1" to see how to customize.
 
-Site specific configuration files (NOT in version control):
+$(header Site specific configuration files \(NOT in version control\))
 
     $HOME/.site_env/bash/*.sh
     $HOME/.site_env/csh/*.csh
@@ -96,5 +99,4 @@ Site specific configuration files (NOT in version control):
 
 $(printf "%${output_width}s" "$version_str")
 ----------------------------------[ E N D ]-----------------------------------
-
 EOF
