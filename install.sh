@@ -135,5 +135,5 @@ done
 
 echo
 echo "Installation done. To apply immediately, type 'source ~/.bashrc'."
-echo "Please use command home_info for help"
+echo "Please use command home_info for help."
 echo

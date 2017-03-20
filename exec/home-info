@@ -1,8 +1,12 @@
 #!/bin/sh
 
-SITE_ENV_DIR=$HOME/.site_env
+readonly version_str="Version 0.5.6"
+readonly output_width=78
 
-cat << EOF
+less << EOF
+
+============================[ H O M E  I N F O ]==============================
+$(printf "%${output_width}s" "$version_str")
 
 Available commands and aliases:
 
@@ -60,7 +64,7 @@ Special variables:
     MY_FMT_PS1_USERNAME              |   or tput instructions.
     MY_FMT_PS1_HOSTCHAIN_DECOR_ROOT  |
     MY_FMT_PS1_HOSTCHAIN_DECOR       | - Example:
-    MY_FMT_PS1_IFS                   |   
+    MY_FMT_PS1_IFS                   |
     MY_FMT_PS1_IFS_VALUE             |   MY_FMT_PS1_CWD=\$'\033[32m'
     MY_FMT_PS1_CHROOT_ROOT           |   will change the PWD section to color
     MY_FMT_PS1_CHROOT                |   green in most color terminals
@@ -80,5 +84,17 @@ Special variables:
     MY_BASH_ENABLE_STATUS_LINE       |   Valid options: yes (default), no.
 
     PS1   - Now it's fully revised. Try echo "\$PS1" to see how to customize.
+
+Site specific configuration files (NOT in version control):
+
+    $HOME/.site_env/bash/*.sh
+    $HOME/.site_env/csh/*.csh
+    $HOME/.site_env/vim/*.vim
+    $HOME/.site_env/git/gitconfig
+    $HOME/.site_env/tmux/tmux.conf
+    $HOME/.site_env/exec/*
+
+$(printf "%${output_width}s" "$version_str")
+----------------------------------[ E N D ]-----------------------------------
 
 EOF
