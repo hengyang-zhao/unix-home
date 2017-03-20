@@ -1,5 +1,3 @@
-# my verbose command line prompt
-
 __command_sno=0
 __command_errno=0
 
@@ -17,7 +15,7 @@ __pretty_non_default_ifs() {
     if [[ "${#IFS}" == 3 && "$IFS" == *" "* && "$IFS" == *$'\t'* && "$IFS" == *$'\n'* ]]; then
         return
     fi
-    printf $'\033[1m(IFS: \033[4m%q\033[24m)\033[0m ' "$IFS"
+    printf "$(__setfmt ps1_ifs)(IFS:$(__resetfmt) $(__setfmt ps1_ifs_value)%q$(__resetfmt)$(__setfmt ps1_ifs))$(__resetfmt) " "$IFS"
 }
 
 __pretty_ssh_connection_chain()
@@ -25,43 +23,29 @@ __pretty_ssh_connection_chain()
     local IFS=$' \t\n'
     local items=($SSH_CONNECTION_CHAIN)
 
-    local major_color minor_color underscored reset
-
-    if [ "$1" = root ]; then
-        major_color=$'\033[31m'
-        minor_color=$'\033[38;5;52m'
-        underscored=$'\033[4m'
-        reset=$'\033[0m'
-    else
-        major_color=$'\033[32m'
-        minor_color=$'\033[38;5;22m'
-        underscored=$'\033[4m'
-        reset=$'\033[0m'
-    fi
-
-    local chain="$major_color$(whoami)$reset$minor_color@$reset"
-    chain+="$minor_color[$reset"
+    local chain="$(__setfmt ps1_username)$(whoami)$(__resetfmt)$(__setfmt ps1_hostchain_decor)@$(__resetfmt)"
+    chain+="$(__setfmt ps1_hostchain_decor)[$(__resetfmt)"
 
     local -i i=0
     while [ $i -lt ${#items[@]} ]; do
         case $(expr $i % 3) in
             0)
-                [ $(expr $i + 1) = ${#items[@]} ] && chain+=$underscored
-                chain+="$major_color${items[i]}$reset"
+                [ $(expr $i + 1) = ${#items[@]} ] && chain+=$(__setfmt ps1_hostname_highlight)
+                chain+="$(__setfmt ps1_hostname)${items[i]}$(__resetfmt)"
                 ;;
             1)
-                chain+="${minor_color}:${items[i]}$reset"
+                chain+="$(__setfmt ps1_hostchain_decor):${items[i]}$(__resetfmt)"
                 ;;
             2)
-                chain+="${minor_color}]${reset}${major_color}->${reset}${minor_color}[${items[i]}:$reset"
+                chain+="$(__setfmt ps1_hostchain_decor)]$(__resetfmt)$(__setfmt ps1_hostname)->$(__resetfmt)$(__setfmt ps1_hostchain_decor)[${items[i]}:$(__resetfmt)"
                 ;;
         esac
         i+=1
     done
 
-    chain+="$minor_color]$reset"
+    chain+="$(__setfmt ps1_hostchain_decor)]"
 
-    echo $reset$chain$reset
+    echo $(__resetfmt)$chain$(__resetfmt)
 }
 
 PS1='$(
@@ -83,7 +67,7 @@ fi
 
 # if there are background jobs, give the total count
 if [ \j -gt 0 ]; then
-    echo -ne " \[\e[1;5;33m\]&\j\[\e[0m\]"
+    echo -ne " $(__setfmt ps1_bg_indicator)&\j$(__resetfmt)"
 fi
 
 # if this is not buttom level shell, give the depth
@@ -98,21 +82,23 @@ fi
 
 # git branch name ( "(.git)" is displayed if we are in the .git)
 if type git &>/dev/null; then
-    gbr=`git rev-parse --abbrev-ref HEAD 2>/dev/null`
+    gbr=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
     if [ -n "$gbr" ]; then
         if [ "$gbr" = HEAD ]; then
-            gbr=`git rev-parse HEAD 2>/dev/null | head -c8`
+            gbr=$(git rev-parse HEAD 2>/dev/null | head -c8)
         fi
         groot=$(basename ///$(git rev-parse --show-toplevel) 2>/dev/null)
 
         if [ "${#groot}" -gt 12 ]; then
             groot="${groot: 0:8}\`${groot: -3:3}"
         fi
+        __setfmt ps1_git_indicator
         if [ "$groot" = / ]; then
-            echo -ne " \[\e[33m\](.git)\[\e[0m\]"
+            echo -ne " (.git)"
         else
-            echo -ne " \[\e[33m\]$groot[$gbr]\[\e[0m\]"
+            echo -ne " $groot[$gbr]"
         fi
+        __resetfmt
     fi
 fi
 
@@ -165,9 +151,9 @@ __do_before_command() {
             ;;
     esac
 
-    echo -n $'\033[90m'
+    __setfmt cmd_expansions
     echo -n "[$__command_sno] -> ${cmd_tokens[@]} ($(date +"%x %X"))" | tr '[:cntrl:]' '.'
-    echo -n $'\033[0m'
+    __resetfmt
     echo
 }
 
@@ -188,17 +174,16 @@ __do_after_command() {
     if [ $__command_sno -gt 0 ]; then
         __command_sno=0
 
-        # clear the previous terminal formatting
-        echo -n $'\033[0m'
+        __resetfmt
 
         # if the return value is not OK, tell the errno
         if [ $ret = OK ]; then
-            echo -n $'\033[4;38;5;22m'
+            __setfmt status_ok
             printf "%${COLUMNS}s\n" "$ts [ Status OK ]"
         else
-            echo -n $'\033[4;38;5;196m'
+            __setfmt status_error
             printf "%${COLUMNS}s\n" "$ts [ Exception code $errnos ]"
         fi
-        echo -n $'\033[0m'
+        __resetfmt
     fi
 }
