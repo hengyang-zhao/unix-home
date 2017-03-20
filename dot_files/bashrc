@@ -44,7 +44,9 @@ source ~/.site_env/bash/my_rc_home.sh
 
 # Auxiliary scripts
 __source_repo_rc() {
+    local IFS=$' \t\n'
     local rcfile
+
     if [ -d $MY_RC_HOME/bashrc.d ]; then
         for rcfile in $MY_RC_HOME/bashrc.d/*.sh ; do
             if [ -r "$rcfile" ]; then
