@@ -1,38 +1,7 @@
 __command_sno=0
 __command_errno=0
 
-__inline_echo() {
-    builtin echo -n "$@"
-}
-
-__pretty_ssh_connection_chain()
-{
-    local IFS=$' \t\n'
-    local items=($SSH_CONNECTION_CHAIN)
-
-    local chain="$(__setfmt ps1_hostchain_decor)[$(__resetfmt)"
-
-    local -i i=0
-    while [ $i -lt ${#items[@]} ]; do
-        case "$(expr $i % 3)" in
-            0)
-                [ $(expr $i + 1) = ${#items[@]} ] && chain+=$(__setfmt ps1_hostname_highlight)
-                chain+="$(__setfmt ps1_hostname)${items[i]}$(__resetfmt)"
-                ;;
-            1)
-                chain+="$(__setfmt ps1_hostchain_decor):${items[i]}$(__resetfmt)"
-                ;;
-            2)
-                chain+="$(__setfmt ps1_hostchain_decor)]$(__resetfmt)$(__setfmt ps1_hostname)->$(__resetfmt)$(__setfmt ps1_hostchain_decor)[${items[i]}:$(__resetfmt)"
-                ;;
-        esac
-        i+=1
-    done
-
-    chain+="$(__setfmt ps1_hostchain_decor)]"
-
-    builtin echo $(__resetfmt)$chain$(__resetfmt)
-}
+alias __inline_echo='builtin echo -n'
 
 __short_hostname() {
     if [ -z "$BASH_PS1_HOSTNAME" ]; then
@@ -46,9 +15,9 @@ __short_hostname() {
 __ps1_user_at_host() {
     __ps1_username
 
-    __setfmt ps1_hostchain_decor
+    __setfmt ps1_hostchain_decor zero_width
     __inline_echo "@"
-    __resetfmt
+    __resetfmt zero_width
 
     if [ "$MY_BASH_ENABLE_HOST_CHAIN" = no ]; then
         __ps1_hostname
@@ -60,16 +29,16 @@ __ps1_user_at_host() {
 
 __ps1_username()
 {
-    __setfmt ps1_username
+    __setfmt ps1_username zero_width
     __inline_echo $(whoami)
-    __resetfmt
+    __resetfmt zero_width
 }
 
 __ps1_hostname()
 {
-    __setfmt ps1_hostname
+    __setfmt ps1_hostname zero_width
     __inline_echo $(__short_hostname)
-    __resetfmt
+    __resetfmt zero_width
     return 0
 }
 
@@ -77,15 +46,27 @@ __ps1_non_default_ifs() {
     if [[ "${#IFS}" == 3 && "$IFS" == *" "* && "$IFS" == *$'\t'* && "$IFS" == *$'\n'* ]]; then
         return 1
     fi
-    printf "$(__setfmt ps1_ifs)(IFS:$(__resetfmt) $(__setfmt ps1_ifs_value)%q$(__resetfmt)$(__setfmt ps1_ifs))$(__resetfmt) " "$IFS"
+
+    __setfmt ps1_ifs zero_width
+    __inline_echo "(IFS="
+    __resetfmt zero_width
+
+    __setfmt ps1_ifs_value zero_width
+    printf "%q" "$IFS"
+    __resetfmt zero_width
+
+    __setfmt ps1_ifs zero_width
+    __inline_echo ")"
+    __resetfmt zero_width
+
     return 0
 }
 
 __ps1_chroot() {
     if [ -n "$debian_chroot" ]; then
-        __setfmt ps1_chroot
+        __setfmt ps1_chroot zero_width
         __inline_echo "($debian_chroot)"
-        __resetfmt
+        __resetfmt zero_width
         return 0
     else
         return 1
@@ -93,20 +74,42 @@ __ps1_chroot() {
 }
 
 __ps1_ssh_connection_chain() {
-    if [ "$UID" -eq 0 ]; then
-        __inline_echo "$(__pretty_ssh_connection_chain root)"
-    else
-        __inline_echo "$(__pretty_ssh_connection_chain)"
-    fi
+    local IFS=$' \t\n'
+    local items=($SSH_CONNECTION_CHAIN)
+
+    local chain="$(__setfmt ps1_hostchain_decor zero_width)[$(__resetfmt zero_width)"
+
+    local -i i=0
+    while [ $i -lt ${#items[@]} ]; do
+        case "$(expr $i % 3)" in
+            0)
+                [ $(expr $i + 1) = ${#items[@]} ] && chain+=$(__setfmt ps1_hostname_highlight zero_width)
+                chain+="$(__setfmt ps1_hostname zero_width)${items[i]}$(__resetfmt zero_width)"
+                ;;
+            1)
+                chain+="$(__setfmt ps1_hostchain_decor zero_width):${items[i]}$(__resetfmt zero_width)"
+                ;;
+            2)
+                chain+="$(__setfmt ps1_hostchain_decor zero_width)]$(__resetfmt zero_width)"
+                chain+="$(__setfmt ps1_hostname zero_width)->$(__resetfmt zero_width)"
+                chain+="$(__setfmt ps1_hostchain_decor zero_width)[${items[i]}:$(__resetfmt zero_width)"
+                ;;
+        esac
+        i+=1
+    done
+
+    chain+="$(__setfmt ps1_hostchain_decor zero_width)]"
+
+    __inline_echo $(__resetfmt zero_width)$chain$(__resetfmt zero_width)
     return 0
 }
 
 __ps1_bg_indicator() {
     local njobs="$1"
     if [ "$njobs" -gt 0 ]; then
-        __setfmt ps1_bg_indicator
+        __setfmt ps1_bg_indicator zero_width
         __inline_echo "&$njobs"
-        __resetfmt
+        __resetfmt zero_width
         return 0
     fi
     return 1
@@ -114,9 +117,9 @@ __ps1_bg_indicator() {
 
 __ps1_shlvl_indicator() {
     if [ "$SHLVL" -gt 1 ]; then
-        __setfmt ps1_shlvl_indicator
+        __setfmt ps1_shlvl_indicator zero_width
         __inline_echo "^$(expr $SHLVL - 1)"
-        __resetfmt
+        __resetfmt zero_width
         return 0
     fi
     return 1
@@ -124,9 +127,9 @@ __ps1_shlvl_indicator() {
 
 __ps1_screen_indicator() {
     if [ -n "$STY" ]; then
-        __setfmt ps1_screen_indicator
+        __setfmt ps1_screen_indicator zero_width
         __inline_echo "*${STY#*.}*"
-        __resetfmt
+        __resetfmt zero_width
         return 0
     fi
     return 1
@@ -145,13 +148,13 @@ __ps1_git_indicator() {
             if [ "${#groot}" -gt 12 ]; then
                 groot="${groot: 0:8}\`${groot: -3:3}"
             fi
-            __setfmt ps1_git_indicator
+            __setfmt ps1_git_indicator zero_width
             if [ "$groot" = / ]; then
                 __inline_echo "(.git)"
             else
                 __inline_echo "$groot[$gbr]"
             fi
-            __resetfmt
+            __resetfmt zero_width
             return 0
         fi
     fi
@@ -159,16 +162,16 @@ __ps1_git_indicator() {
 }
 
 __ps1_cwd() {
-    __setfmt ps1_cwd
+    __setfmt ps1_cwd zero_width
     __inline_echo "$1"
-    __resetfmt
+    __resetfmt zero_width
     return 0
 }
 
 __ps1_dollar_hash() {
-    __setfmt ps1_dollar_hash
+    __setfmt ps1_dollar_hash zero_width
     __inline_echo "$1"
-    __resetfmt
+    __resetfmt zero_width
     return 0
 }
 
@@ -259,7 +262,6 @@ __do_after_command() {
 
         __resetfmt
 
-        # if the return value is not OK, tell the errno
         if [ $ret = OK ]; then
             __setfmt status_ok
             printf "%${COLUMNS}s\n" "$ts [ Status OK ]"
@@ -267,6 +269,7 @@ __do_after_command() {
             __setfmt status_error
             printf "%${COLUMNS}s\n" "$ts [ Exception code $errnos ]"
         fi
+
         __resetfmt
     fi
 }
