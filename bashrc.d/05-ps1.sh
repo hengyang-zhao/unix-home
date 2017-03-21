@@ -240,36 +240,33 @@ __do_before_command() {
 
 __do_after_command() {
 
-    if [ "${MY_BASH_ENABLE_STATUS_LINE}" = no ]; then
-        return
-    fi
-
-    local errnos=$__command_errno
-    local eno
-    local ret=OK
     local IFS=$' \t\n'
+    local eno ts
+    local ret=OK
 
-    for eno in $errnos; do
-        if [ $eno -ne 0 ]; then
-            ret=ERR
-            break
-        fi
-    done
-
-    local ts=$(date +"%x %X")
     if [ $__command_sno -gt 0 ]; then
         __command_sno=0
 
-        __resetfmt
+        if [ "${MY_BASH_ENABLE_STATUS_LINE}" = no ]; then
+            return
+        fi
 
+        ts=$(date +"%x %X")
+        for eno in $__command_errno; do
+            if [ $eno -ne 0 ]; then
+                ret=ERR
+                break
+            fi
+        done
+
+        __resetfmt
         if [ $ret = OK ]; then
             __setfmt status_ok
             printf "%${COLUMNS}s\n" "$ts [ Status OK ]"
         else
             __setfmt status_error
-            printf "%${COLUMNS}s\n" "$ts [ Exception code $errnos ]"
+            printf "%${COLUMNS}s\n" "$ts [ Exception code $__command_errno ]"
         fi
-
         __resetfmt
     fi
 }
