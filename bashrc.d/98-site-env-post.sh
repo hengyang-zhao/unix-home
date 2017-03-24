@@ -6,7 +6,7 @@ __source_site_rc() {
 
     if [ -d $HOME/.site_env/bash ]; then
         for rcfile in $HOME/.site_env/bash/*.sh ; do
-            if [ -r "$rcfile" ] && [ "${rcfile#*@}" != "pre.sh" ] && [ "${rcfile#*@}" != "post.sh" ]; then
+            if [ -r "$rcfile" ] && [ "${rcfile##*@}" = "post.sh" ]; then
                 . "$rcfile"
             fi
         done

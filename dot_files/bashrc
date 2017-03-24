@@ -40,7 +40,12 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 # Needs to know MY_RC_HOME first
-source ~/.site_env/bash/my_rc_home.sh
+MY_RC_HOME=$(perl << EOF
+    use Cwd 'realpath';
+    use File::Basename;
+    print dirname(dirname(realpath('${BASH_SOURCE[0]}')));
+EOF
+)
 
 # Auxiliary scripts
 __source_repo_rc() {
