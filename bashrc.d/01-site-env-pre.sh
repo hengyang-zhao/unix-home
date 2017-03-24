@@ -1,6 +1,6 @@
 # Site scripts
 
-__source_site_rc() {
+__source_site_rc_pre() {
     local IFS=$' \t\n'
     local rcfile
 
@@ -12,7 +12,5 @@ __source_site_rc() {
         done
     fi
 }
-__source_site_rc
-
-__do_once && export PATH=$HOME/.site_env/exec:$PATH
+__source_site_rc_pre
 
