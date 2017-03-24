@@ -90,7 +90,10 @@ $(header Special variables)
 
 $(header Site specific configuration files \(NOT in version control\))
 
-    $HOME/.site_env/bash/*.sh
+    $HOME/.site_env/bash/*.sh       - *deperacated*.
+    $HOME/.site_env/bash/*@pre.sh   - sourced before major setup.
+    $HOME/.site_env/bash/*@post.sh  - sourced after major setup.
+
     $HOME/.site_env/csh/*.csh
     $HOME/.site_env/vim/*.vim
     $HOME/.site_env/git/gitconfig
