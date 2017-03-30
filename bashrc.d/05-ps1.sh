@@ -168,6 +168,17 @@ __ps1_cwd() {
     return 0
 }
 
+__ps1_physical_cwd() {
+    local physical_cwd="$(pwd -P)"
+    if [ "$physical_cwd" != "$(pwd)" ]; then
+        __setfmt ps1_physical_cwd zero_width
+        __inline_echo "(Physical: $physical_cwd)"
+        __resetfmt zero_width
+        return 0
+    fi
+    return 1
+}
+
 __ps1_dollar_hash() {
     __setfmt ps1_dollar_hash zero_width
     __inline_echo "$1"
@@ -192,8 +203,8 @@ __ps1_bg_indicator "\j" && __ps1_space
 __ps1_shlvl_indicator && __ps1_space
 __ps1_screen_indicator && __ps1_space
 __ps1_git_indicator && __ps1_space
-__ps1_cwd "\w"
-__ps1_newline
+__ps1_cwd "\w" && __ps1_newline
+__ps1_physical_cwd && __ps1_newline
 __ps1_dollar_hash "\$" && __ps1_space
 __ps1_non_default_ifs && __ps1_space
 )'
