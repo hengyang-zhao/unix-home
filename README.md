@@ -1,6 +1,6 @@
 # unix-home: A non-trivial management of *nix rc/dot -files
 
-Configuration scripts of UNIX environment --- home feelings!
+Configuration scripts of UNIX environment.
 
 ![alt tag](https://github.com/hengyang-zhao/unix-home/blob/master/images/full-demo.gif)
 
@@ -118,7 +118,7 @@ Important remapped keys:
 
 Supports git command line aliases:
 
- - a better git log `git h`
+ - A git log alias `git h`
  
  - `git status -s # aliased to git s`
  
