@@ -243,10 +243,21 @@ __do_before_command() {
             ;;
     esac
 
-    __setfmt cmd_expansions
-    __inline_echo "[$__command_sno] -> ${cmd_tokens[@]} ($(date +"%x %X"))" | tr '[:cntrl:]' '.'
-    __resetfmt
-    builtin echo
+    local sink=${BASH_CMD_EXPANSION_SINK:-&2}
+    local proxy_fd=${BASH_CMD_EXPANSION_SINK_PROXY_FD:-99}
+
+    if [ -w "$sink" ]; then
+        eval "exec $proxy_fd>>$sink"
+    else
+        eval "exec $proxy_fd>$sink"
+    fi
+
+    [ -t "$proxy_fd" ] && eval "__setfmt cmd_expansions >&$proxy_fd"
+    eval "__inline_echo '[$__command_sno] -> ${cmd_tokens[@]} ($(date +"%x %X"))' | tr '[:cntrl:]' '.' >&$proxy_fd"
+    [ -t "$proxy_fd" ] && eval "__resetfmt >&$proxy_fd"
+    eval "__ps1_newline >&$proxy_fd"
+
+    eval "exec $proxy_fd>&-"
 }
 
 __do_after_command() {
