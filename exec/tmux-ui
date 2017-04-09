@@ -42,5 +42,14 @@ if [ "$1" = "system-load" ]; then
     exit 0
 fi
 
+if [ "$1" = "multi-attached" ]; then
+    if client_is_wide_enough; then
+        command tmux display-message -p '#{client_tty}'
+    else
+        echo M
+    fi
+    exit 0
+fi
+
 exit 1
 
