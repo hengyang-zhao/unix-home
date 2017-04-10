@@ -245,6 +245,7 @@ __do_before_command() {
 
     local sink=${BASH_CMD_EXPANSION_SINK:-&2}
     local proxy_fd=${BASH_CMD_EXPANSION_SINK_PROXY_FD:-99}
+    local stat_str="[$__command_sno] -> ${cmd_tokens[@]} ($(date +'%x %X'))"
 
     if [ -w "$sink" ]; then
         eval "exec $proxy_fd>>$sink"
@@ -253,7 +254,7 @@ __do_before_command() {
     fi
 
     [ -t "$proxy_fd" ] && eval "__setfmt cmd_expansions >&$proxy_fd"
-    eval "__inline_echo '[$__command_sno] -> ${cmd_tokens[@]} ($(date +"%x %X"))' | tr '[:cntrl:]' '.' >&$proxy_fd"
+    eval '__inline_echo "$stat_str" '"| tr '[:cntrl:]' '.' >&$proxy_fd"
     [ -t "$proxy_fd" ] && eval "__resetfmt >&$proxy_fd"
     eval "__ps1_newline >&$proxy_fd"
 
