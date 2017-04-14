@@ -70,16 +70,16 @@ $(header Special variables)
     MY_FMT_PS1_IFS                   |
     MY_FMT_PS1_IFS_VALUE             |   MY_FMT_PS1_CWD=\$'\033[32m'
     MY_FMT_PS1_CHROOT_ROOT           |   will change the PWD section to color
-    MY_FMT_PS1_CHROOT                |   green in most color terminals
+    MY_FMT_PS1_CHROOT                |   green in most color terminals.
     MY_FMT_PS1_BG_INDICATOR          |
     MY_FMT_PS1_SHLVL_INDICATOR       |   MY_FMT_STATUS_OK=\$(tput bold)
     MY_FMT_PS1_SCREEN_INDICATOR      |   will use bold fonts for the status
-    MY_FMT_PS1_GIT_INDICATOR         |   line
+    MY_FMT_PS1_GIT_INDICATOR         |   line.
     MY_FMT_PS1_CWD                   |
     MY_FMT_PS1_PHYSICAL_CWD          |   MY_FMT_STATUS_ERROR= (line contd.)
     MY_FMT_PS1_DOLLAR_HASH           |       \$(tput smul)\$(tput setaf 2)
     MY_FMT_STATUS_OK                 |   will use a combined format: underline
-    MY_FMT_STATUS_ERROR              |   and color green
+    MY_FMT_STATUS_ERROR              |   and color green.
     MY_FMT_STATUS_HRULE              |
     MY_FMT_CMD_EXPANSIONS            |
 
@@ -88,8 +88,10 @@ $(header Special variables)
                                      |   terminal character effect which is
                                      |   not so-widely supported.
                                      |
-                                     |   Set MY_BASH_THICK_SEPARATOR to 'yes'
-                                     |   to enable. Default char is '~'
+                                     |   MY_BASH_THICK_SEPARATOR is enabled if
+                                     |   terminal 'linux' is observed, or could
+                                     |   be forced by setting to 'yes'. Default
+                                     |   char used in the separator is '~'.
 
     MY_BASH_ENABLE_HOSTCHAIN         | - Enables host chain, command expansion,
     MY_BASH_ENABLE_CMD_EXPANSION     |   status line.
