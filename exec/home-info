@@ -1,6 +1,6 @@
 #!/bin/sh
 
-readonly version_str="Version 0.5.6"
+readonly version_str="Version 0.5.7"
 readonly output_width=78
 
 header() {
