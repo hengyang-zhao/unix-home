@@ -62,10 +62,16 @@ __setfmt()
                 fmt_ctrl_seq+=${MY_FMT_PS1_DOLLAR_HASH:-$'\033[1m'}
                 ;;
             status_ok)
-                fmt_ctrl_seq+=${MY_FMT_STATUS_OK:-$'\033[4;38;5;22m'}
+                fmt_ctrl_seq+=${MY_FMT_STATUS_OK:-$'\033[38;5;22m'}
                 ;;
             status_error)
-                fmt_ctrl_seq+=${MY_FMT_STATUS_ERROR:-$'\033[4;38;5;196m'}
+                fmt_ctrl_seq+=${MY_FMT_STATUS_ERROR:-$'\033[38;5;196m'}
+                ;;
+            underline)
+                fmt_ctrl_seq+=$'\033[4m'
+                ;;
+            horizontal_rule)
+                fmt_ctrl_seq+=${MY_FMT_STATUS_HRULE:-$'\033[1m'}
                 ;;
             cmd_expansions)
                 fmt_ctrl_seq+=${MY_FMT_CMD_EXPANSIONS:-$'\033[90m'}
@@ -79,6 +85,8 @@ __setfmt()
     [ "$zero_width_wrapper" = yes ] && builtin echo -n $'\001'
     builtin echo -n "$fmt_ctrl_seq"
     [ "$zero_width_wrapper" = yes ] && builtin echo -n $'\002'
+
+    return 0
 }
 
 __resetfmt()
@@ -88,5 +96,7 @@ __resetfmt()
     [ "$1" = zero_width ] && builtin echo -n $'\001'
     builtin echo -n "$resetfmt_ctrl_seq"
     [ "$1" = zero_width ] && builtin echo -n $'\002'
+
+    return 0
 }
 

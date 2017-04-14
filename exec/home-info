@@ -80,7 +80,16 @@ $(header Special variables)
     MY_FMT_PS1_DOLLAR_HASH           |       \$(tput smul)\$(tput setaf 2)
     MY_FMT_STATUS_OK                 |   will use a combined format: underline
     MY_FMT_STATUS_ERROR              |   and color green
+    MY_FMT_STATUS_HRULE              |
     MY_FMT_CMD_EXPANSIONS            |
+
+    MY_BASH_THICK_SEPARATOR          | - Use an extra line to display the
+    MY_BASH_THICK_SEPARATOR_CHAR     |   separator rather than underscored
+                                     |   terminal character effect which is
+                                     |   not so-widely supported.
+                                     |
+                                     |   Set MY_BASH_THICK_SEPARATOR to 'yes'
+                                     |   to enable. Default char is '~'
 
     MY_BASH_ENABLE_HOSTCHAIN         | - Enables host chain, command expansion,
     MY_BASH_ENABLE_CMD_EXPANSION     |   status line.

@@ -283,6 +283,7 @@ __do_after_command() {
         done
 
         __resetfmt
+        [ "$MY_BASH_THICK_SEPARATOR" = yes ] || __setfmt underline
         if [ $ret = OK ]; then
             __setfmt status_ok
             printf "%${COLUMNS}s\n" "$ts [ Status OK ]"
@@ -291,5 +292,11 @@ __do_after_command() {
             printf "%${COLUMNS}s\n" "$ts [ Exception code $__command_errno ]"
         fi
         __resetfmt
+
+        if [ "$MY_BASH_THICK_SEPARATOR" = yes ]; then
+            __setfmt horizontal_rule
+            printf "%${COLUMNS}s\n" "" | tr " " "${MY_BASH_THICK_SEPARATOR_CHAR:-~}"
+            __resetfmt
+        fi
     fi
 }
