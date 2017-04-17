@@ -18,6 +18,7 @@
     re = remote -v
     cl = clone --recursive
     wdiff = diff --color-words
+    vimdiff = difftool -y -t vimdiff
 
 [push]
     default = current
