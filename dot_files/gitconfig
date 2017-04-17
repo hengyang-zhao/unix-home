@@ -2,27 +2,27 @@
 #
 
 [color]
-    ui = auto
+	ui = auto
 
 [core]
-    editor = vim
+	editor = vim
 
 [alias]
-    b = branch
-    br = branch -a -vv
-    co = checkout
-    h = log --pretty=format:'%C(bold)%s%C(reset)%C(auto)%d%C(reset)%n%C(yellow)%h%C(reset) -- %C(bold blue)%an (%ar)%C(reset)%n' --graph --abbrev-commit
-    hi = log --graph
-    s = status -s
-    cb = checkout -b
-    re = remote -v
-    cl = clone --recursive
-    wdiff = diff --color-words
-    vimdiff = difftool -y -t vimdiff
+	b = branch
+	br = branch -a -vv
+	co = checkout
+	h = log --pretty=format:'%C(bold)%s%C(reset)%C(auto)%d%C(reset)%n%C(yellow)%h%C(reset) -- %C(bold blue)%an (%ar)%C(reset)%n' --graph --abbrev-commit --date-order
+	hi = log --pretty=format:'%C(bold)%s%C(reset)%C(auto)%d%C(reset)%n%C(yellow)%h%C(reset) -- %C(bold blue)%an (%ad, %ar)%C(reset)%n' --graph --abbrev-commit --date-order --stat
+	s = status -s
+	cb = checkout -b
+	re = remote -v
+	cl = clone --recursive
+	wdiff = diff --color-words
+	vimdiff = difftool -y -t vimdiff
 
 [push]
-    default = current
+	default = current
 
 [include]
-    path = ~/.site_env/git/user
-    path = ~/.site_env/git/gitconfig
+	path = ~/.site_env/git/user
+	path = ~/.site_env/git/gitconfig
