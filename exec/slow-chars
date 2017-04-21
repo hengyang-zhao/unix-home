@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 IFS=
 PERIOD=${1:-0.0083}
