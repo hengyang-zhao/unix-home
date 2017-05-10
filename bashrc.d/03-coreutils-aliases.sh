@@ -31,5 +31,5 @@ fi
 alias rm='rm -vi'
 alias cp='cp -vi'
 alias mv='mv -vi'
-alias vi='vim'
+__has vim && alias vi='vim'
 
