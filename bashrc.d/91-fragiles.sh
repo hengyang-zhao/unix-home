@@ -27,7 +27,13 @@ __smart_make()
     while true; do
         echo "** Attempting make in $(builtin cd "$dir"; pwd)"
         if [ -f $dir/Makefile ] || [ -f $dir/makefile ] || [ -f $dir/GNUmakefile ]; then
-            command make -C "$dir" $@
+
+            ncores=$(system-info --cpu-logical-cores)
+            if [ $? = 0 ]; then
+                __verbose_do command make -C "$dir" -j$ncores $@
+            else
+                __verbose_do command make -C "$dir" $@
+            fi
             return $?
         fi
 
