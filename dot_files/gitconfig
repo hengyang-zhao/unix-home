@@ -23,6 +23,9 @@
 [push]
 	default = current
 
+[diff]
+	statGraphWidth = 20
+
 [include]
 	path = ~/.site_env/git/user
 	path = ~/.site_env/git/gitconfig
