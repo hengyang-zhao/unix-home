@@ -245,7 +245,7 @@ __do_before_command() {
 
     local sink=${BASH_CMD_EXPANSION_SINK:-&2}
     local proxy_fd=${BASH_CMD_EXPANSION_SINK_PROXY_FD:-99}
-    local stat_str="[$__command_sno] -> ${cmd_tokens[@]} ($(date +'%m/%d/%Y %I:%M:%S %p'))"
+    local stat_str="[$__command_sno] -> ${cmd_tokens[@]} ($(date +'%m/%d/%Y %H:%M:%S'))"
 
     if [ -w "$sink" ]; then
         eval "exec $proxy_fd>>$sink"
@@ -274,7 +274,7 @@ __do_after_command() {
             return
         fi
 
-        ts=$(date +"%m/%d/%Y %I:%M:%S %p")
+        ts=$(date +"%m/%d/%Y %H:%M:%S")
         for eno in $__command_errno; do
             if [ $eno -ne 0 ]; then
                 ret=ERR
