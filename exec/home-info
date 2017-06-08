@@ -1,6 +1,6 @@
 #!/bin/sh
 
-readonly version_str="Version 0.5.7"
+readonly version_str=$(builtin cd $MY_RC_HOME; git describe)
 readonly output_width=78
 
 header() {
