@@ -17,21 +17,9 @@ __bc_calc()
 {
     if [ $# -eq 0 ]; then
         bc -l
-        return
+    else
+        echo "$@" | bc -lq
     fi
-    if [ "$1" = "-h" ]; then
-        echo "obase=16;ibase=16;$2" | bc -lq
-        return
-    fi
-    if [ "$1" = "-h2d" ]; then
-        echo "ibase=16;$2" | bc -lq
-        return
-    fi
-    if [ "$1" = "-d2h" ]; then
-        echo "obase=16;$2" | bc -lq
-        return
-    fi
-    echo "$1" | bc -lq
 }
 
 __has vboxmanage && alias lsvm='__query_vm'
