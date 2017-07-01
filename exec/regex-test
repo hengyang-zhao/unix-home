@@ -2,34 +2,57 @@
 
 set -euo pipefail
 
-if [ $# -lt 2 ]; then
-    echo "Usage: $0 <regex> <string> [<string> ...]"
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 <regex> [<string> ...]"
     exit 1
 fi
 
 pattern="$1"
 shift
 
-RED=$'\033[31m'
-GREEN=$'\033[32m'
-BRIGHT=$'\033[1m'
-DIM=$'\033[90m'
-RESET=$'\033[0m'
+if [ -t 1 ]; then
+    RED=$'\033[31m'
+    GREEN=$'\033[32m'
+    BRIGHT=$'\033[1m'
+    DIM=$'\033[90m'
+    RESET=$'\033[0m'
+else
+    RED=
+    GREEN=
+    BRIGHT=
+    DIM=
+    RESET=
+fi
 
 len() {
     echo "${DIM}(len ${#1})${RESET}"
 }
 
-echo "${BRIGHT}PATTERN${RESET}: '$pattern' $(len "${pattern}")"
+process() {
+    local text="$1"
+    local i
 
-for text in $@; do
     if [[ "$text" =~ $pattern ]]; then
-        echo "  ${BRIGHT}${GREEN}MATCH${RESET}: '$text' $(len ${text})"
+        echo "  ${BRIGHT}${GREEN}MATCH${RESET}: '$text' $(len "${text}")"
         for (( i=0; i<${#BASH_REMATCH[@]}; i++ )); do
-            echo "    ${GREEN}[$i]${RESET}: '${BASH_REMATCH[i]}' $(len ${BASH_REMATCH[i]})"
+            echo "    ${GREEN}[$i]${RESET}: '${BASH_REMATCH[i]}' $(len "${BASH_REMATCH[i]}")"
         done
     else
-        echo "${BRIGHT}${RED}NOMATCH${RESET}: '$text' $(len ${text})"
+        echo "${BRIGHT}${RED}NOMATCH${RESET}: '$text' $(len "${text}")"
     fi
-done
+}
+
+echo "${BRIGHT}PATTERN${RESET}: '$pattern' $(len "${pattern}")"
+
+IFS=
+if [ $# = 0 ]; then
+    while read -r -p "> " text; do
+        process "$text"
+    done
+    [ -t 0 ] && echo
+else
+    for text in $@; do
+        process "$text"
+    done
+fi
 
