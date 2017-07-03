@@ -30,3 +30,5 @@ nmap <Right> 4zl
 
 imap <C-f> <C-o>l
 imap <C-b> <C-o>h
+
+set scrolloff=8
