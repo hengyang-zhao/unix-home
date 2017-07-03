@@ -4,5 +4,5 @@ IFS=
 PERIOD=${1:-0.0083}
 while read -rN1 c; do
     echo -n "$c"
-    sleep $PERIOD
+    sleep "$PERIOD"
 done
