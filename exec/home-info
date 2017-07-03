@@ -1,10 +1,10 @@
 #!/bin/sh
 
-readonly version_str=$(builtin cd $MY_RC_HOME; git describe)
+readonly version_str=$(cd "$MY_RC_HOME" && git describe || echo "(unknown version)")
 readonly output_width=78
 
 header() {
-    builtin echo $'\033[1m'"* $@"$'\033[0m\n'
+    echo "[1m* $*[0m"
 }
 
 less -r << EOF
@@ -37,7 +37,7 @@ $(header Modified commands)
     git     aliased to hub, if available
     make    recursively find makefiles in parent directories.
 
-$(header Useful functions in $HOME/.site_env/bash/\*.sh)
+$(header Useful functions in "$HOME/.site_env/bash/*.sh")
 
     __has <program>
         Check if "program" is available on your system. NO stdout/stderr.
