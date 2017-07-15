@@ -3,13 +3,13 @@ highlight CursorLine ctermbg=None cterm=None
 set cursorline
 
 function! EnterInsertModeHighlight()
-    let &colorcolumn="78,80,".join(range(100, 120), ",")
-    highlight CursorLineNr ctermfg=White ctermbg=Magenta
+    let &colorcolumn = "78,80,".join(range(100, 120), ",")
+    highlight CursorLineNr cterm=Bold ctermfg=White ctermbg=Magenta
 endfunction
 
 function! EnterNormalModeHighlight()
-    set colorcolumn=
-    highlight CursorLineNr ctermfg=Yellow ctermbg=DarkGray
+    let &colorcolumn = ""
+    highlight CursorLineNr cterm=Bold ctermfg=Yellow ctermbg=DarkGray
 endfunction
 
 autocmd InsertEnter * call EnterInsertModeHighlight()
