@@ -1,0 +1,13 @@
+#!/bin/sh
+
+PROMPT=${1:-Confirm?}
+
+read -n 1 -p "$PROMPT [y|N] " ANSWER
+echo
+
+if [ "$ANSWER" = y ] || [ "$ANSWER" = Y ]; then
+    exit 0
+else
+    exit 1
+fi
+
