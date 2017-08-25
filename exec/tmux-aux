@@ -131,16 +131,21 @@ elif [ "$1" = "--distinct-users-list" ]; then
 
 elif [ "$1" = "--tiny-host-name" ]; then
 
+    HOSTNAME="$BASH_PS1_HOSTNAME"
     if IS_LINUX || IS_CYGWIN; then
-        HOSTNAME=$(hostname -s)
+        if [ -z "$HOSTNAME" ]; then
+            HOSTNAME=$(hostname -s)
+        fi
         if [ "$(expr length "$HOSTNAME")" -gt 10 ]; then
             echo "$HOSTNAME" | sed 's/^\(.\{6\}\).*\(.\{3\}\)$/\1`\2/g'
         else
             echo "$HOSTNAME"
         fi
     elif IS_DARWIN; then
-        HOSTNAME=$(hostname -s)
-        if [ ${#HOSTNAME} -gt 11 ]; then
+        if [ -z "$HOSTNAME" ]; then
+            HOSTNAME=$(hostname -s)
+        fi
+        if [ ${#HOSTNAME} -gt 10 ]; then
             echo "$HOSTNAME" | sed -E 's/^(.{6}).*(.{3})$/\1`\2/g'
         else
             echo "$HOSTNAME"
