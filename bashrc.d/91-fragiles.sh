@@ -28,7 +28,7 @@ __smart_make()
         echo "** Attempting make in $(builtin cd "$dir"; pwd)"
         if [ -f $dir/Makefile ] || [ -f $dir/makefile ] || [ -f $dir/GNUmakefile ]; then
 
-            ncores=$(system-info --cpu-logical-cores)
+            ncores=$(nproc)
             if [ $? = 0 ]; then
                 __verbose_do command make -C "$dir" -j$ncores $@
             else
