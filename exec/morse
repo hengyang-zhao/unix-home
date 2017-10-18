@@ -1,0 +1,80 @@
+#!/bin/bash
+
+#
+# https://en.wikipedia.org/wiki/Morse_code
+#
+let FREQ=440
+let DOT=80
+let DASH=DOT*3
+let PART_SEP=DOT
+let LETTER_SEP=DOT*3
+let WORD_SEP=DOT*7
+
+declare -A MORSE
+MORSE[A]="._"     ;MORSE[J]=".___"   ;MORSE[S]="..."    ;MORSE[1]=".____"
+MORSE[B]="_..."   ;MORSE[K]="._._"   ;MORSE[T]="_"      ;MORSE[2]="..___"
+MORSE[C]="_._."   ;MORSE[L]="._.."   ;MORSE[U]=".._"    ;MORSE[3]="...__"
+MORSE[D]="_.."    ;MORSE[M]="__"     ;MORSE[V]="..._"   ;MORSE[4]="...._"
+MORSE[E]="."      ;MORSE[N]="_."     ;MORSE[W]=".__"    ;MORSE[5]="....."
+MORSE[F]=".._."   ;MORSE[O]="___"    ;MORSE[X]="_.._"   ;MORSE[6]="_...."
+MORSE[G]="__."    ;MORSE[P]=".__."   ;MORSE[Y]="_.__"   ;MORSE[7]="__..."
+MORSE[H]="...."   ;MORSE[Q]="__._"   ;MORSE[Z]="__.."   ;MORSE[8]="___.."
+MORSE[I]=".."     ;MORSE[R]="._."    ;MORSE[0]="_____"  ;MORSE[9]="____."
+
+text2morse() {
+    local morse text c parts
+    for text in $*; do
+        text="${text^^}"
+        for ((i=0; i<${#1}; i++)); do
+            if [ "$i" -gt 0 ]; then
+                morse+=' '
+            fi
+            c=${text:$i:1}
+            parts=${MORSE[$c]}
+            if [ -n "$parts" ]; then
+                morse+=$parts
+            fi
+        done
+        morse+='|'
+    done
+    echo "$morse"
+}
+
+morse2params() {
+    local c prev_c cmd first=yes
+    for ((i=0; i<${#1}; i++)); do
+        prev_c=$c
+        c=${1:$i:1}
+
+        if [ "$c" = '.' ] || [ "$c" = '_' ]; then
+            if [ -n "$prev_c" ]; then
+                cmd+=' '
+            fi
+            if [ "$prev_c" = '.' ] || [ "$prev_c" == '_' ]; then
+                cmd+="-D$PART_SEP "
+            elif [ "$prev_c" = ' ' ]; then
+                cmd+="-D$LETTER_SEP "
+            elif [ "$prev_c" = '|' ]; then
+                cmd+="-D$WORD_SEP "
+            fi
+        else
+            continue
+        fi
+
+        if [ $first = no ]; then
+            cmd+='-n '
+        else
+            first=no
+        fi
+        if [ "$c" = '.' ]; then
+            cmd+="-f$FREQ -l$DOT"
+        elif [ "$c" = '_' ]; then
+            cmd+="-f$FREQ -l$DASH"
+        fi
+    done
+
+    echo "$cmd"
+}
+
+sudo beep $(morse2params "$(text2morse $@)")
+
