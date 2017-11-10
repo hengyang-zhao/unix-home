@@ -2,8 +2,12 @@ highlight ColorColumn ctermbg=DarkGray
 highlight CursorLine ctermbg=None cterm=None
 set cursorline
 
+if !exists("g:colorcolumn_in_edit")
+    let g:colorcolumn_in_edit = "78,80,".join(range(100, 120), ",")
+endif
+
 function! EnterInsertModeHighlight()
-    let &colorcolumn = "78,80,".join(range(100, 120), ",")
+    let &colorcolumn = g:colorcolumn_in_edit
     highlight CursorLineNr cterm=Bold ctermfg=White ctermbg=Magenta
 endfunction
 
