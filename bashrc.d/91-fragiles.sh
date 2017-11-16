@@ -132,3 +132,8 @@ __verbose_cd() {
     fi
     return $ret
 }
+
+__adjust_clock() {
+    sudo ntpdate "time.nist.gov"
+}
+__has ntpdate && alias adjustclock=__adjust_clock
