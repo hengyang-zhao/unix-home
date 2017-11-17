@@ -111,11 +111,11 @@ echo "Creating symlinks for resource files:"
 backup_suffix=$(date +".backup.%F.%T")
 for rcfile in $DOT_FILES_DIR/*; do
     fsource=$(basename "$rcfile")
-    ftarget=".${fsource#dot_}"
+    ftarget=".${fsource}"
 
-    if [ -f "$ftarget" ] && ! [ -L "$ftarget" ]; then
+    if [ -f "$HOME/$ftarget" ] && ! [ -L "$HOME/$ftarget" ]; then
         fbak="$ftarget$backup_suffix"
-        echo "  backup ~/$ftarget -> $DOT_FILES_DIR/$fbak"
+        echo "  backup ~/$ftarget -> ~/$fbak"
         (builtin cd; mv -f "$ftarget" "$fbak")
     fi
 
