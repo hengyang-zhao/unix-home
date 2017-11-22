@@ -11,8 +11,8 @@
 	b = branch
 	br = branch -a -vv
 	co = checkout
-	h = log --pretty=format:'%C(bold)%s%C(reset)%C(auto)%d%C(reset)%n%C(yellow)%h%C(reset) -- %C(bold blue)%an (%ar)%C(reset)%n' --graph --abbrev-commit --date-order
-	hi = log --pretty=format:'%C(yellow ul)%h%C(reset) %C(bold ul)%s%C(reset)%C(auto)%d%C(reset)%n%C(bold blue)%an, %ar %C(nobold)(%ad)%C(reset)%n' --graph --abbrev=10 --date-order --stat
+	h = log --pretty=format:'%C(bold)%s%C(reset)%C(auto)%d%C(reset)%n%C(yellow)%h%C(reset) -- %C(bold blue)%an, %ar%C(reset)%n' --graph --abbrev-commit --date-order
+	hi = log --pretty=format:'%C(yellow ul)%h%C(reset) %C(bold ul)%s%n%C(bold blue)%an, %ar%C(reset) %C(blue)(%ad)%C(reset)%C(reset)%C(auto)%+D%C(reset)%n' --graph --abbrev=10 --date-order --stat
 	s = status -s
 	cb = checkout -b
 	re = remote -v
