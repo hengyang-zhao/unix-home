@@ -36,13 +36,13 @@ __connect_tmux()
 {
     case "_$1" in
         _)
-            [ "$TMUX_ATTACHED" != yes ] && tmux new -As main
+            [ "$TMUX_ATTACHED" != yes ] && tmux new -c ~ -As main
             ;;
         _:)
             tmux ls
             ;;
         *)
-            [ "$TMUX_ATTACHED" != yes ] && tmux new -As "$1"
+            [ "$TMUX_ATTACHED" != yes ] && tmux new -c ~ -As "$1"
             ;;
     esac
 }
