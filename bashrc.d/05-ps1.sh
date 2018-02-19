@@ -325,4 +325,9 @@ __do_after_command() {
             __resetfmt
         fi
     fi
+
+    # On macOS, the path will be tweaked by /usr/libexec/path_helper.
+    # We save the current path every time so subshells can bypass the tweak by
+    # reading it back.
+    export __macos_path_helper_bypass="$PATH"
 }
