@@ -3,6 +3,28 @@ __command_errno=0
 
 alias __inline_echo='builtin echo -n'
 
+__cursor_xpos() {
+    local saved_state xpos dummy
+    saved_state=$(stty -g)
+    stty -echo
+    echo -ne "\033[6n" > /dev/tty; read -s -d ';' dummy; read -s -dR xpos
+    echo "$xpos"
+    stty $saved_state 2>/dev/null
+}
+
+__force_newline() {
+    if [ "$(__cursor_xpos)" != 1 ]; then
+        __resetfmt zero_width
+        __setfmt force_newline zero_width
+        __inline_echo ":EoF:"
+        __resetfmt zero_width
+
+        if [ "$(__cursor_xpos)" != 1 ]; then
+            builtin echo
+        fi
+    fi
+}
+
 __short_hostname() {
     if [ -z "$BASH_PS1_HOSTNAME" ]; then
         local node_name=$(uname -n)
@@ -253,6 +275,8 @@ __do_before_command() {
         eval "exec $proxy_fd>$sink"
     fi
 
+    __force_newline
+
     [ -t "$proxy_fd" ] && eval "__setfmt cmd_expansions >&$proxy_fd"
     eval '__inline_echo "$stat_str" '"| tr '[:cntrl:]' '.' >&$proxy_fd"
     [ -t "$proxy_fd" ] && eval "__resetfmt >&$proxy_fd"
@@ -266,6 +290,8 @@ __do_after_command() {
     local IFS=$' \t\n'
     local eno ts
     local ret=OK
+
+    __force_newline
 
     if [ $__command_sno -gt 0 ]; then
         __command_sno=0

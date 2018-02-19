@@ -76,6 +76,9 @@ __setfmt()
             cmd_expansions)
                 fmt_ctrl_seq+=${MY_FMT_CMD_EXPANSIONS:-$'\033[90m'}
                 ;;
+            force_newline)
+                fmt_ctrl_seq+=${MY_FMT_FORCE_NEWLINE:-$'\033[33;7;1m'}
+                ;;
             zero_width)
                 zero_width_wrapper=yes
                 ;;

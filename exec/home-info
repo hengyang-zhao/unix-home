@@ -80,6 +80,7 @@ $(header Special variables)
     MY_FMT_STATUS_ERROR              |   and color green.
     MY_FMT_STATUS_HRULE              |
     MY_FMT_CMD_EXPANSIONS            |
+    MY_FMT_FORCE_NEWLINE             |
 
     MY_BASH_THICK_SEPARATOR          | - Use an extra line to display the
     MY_BASH_THICK_SEPARATOR_CHAR     |   separator rather than underscored
