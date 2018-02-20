@@ -47,8 +47,8 @@ $(header Useful functions in "$HOME/.site_env/bash/*.sh")
             __has program && alias prog='program --a-long-parameter'
 
     __do_once
-        Check if the current line is already sourced. If yes, return 0,
-        otherwise return 1. Useful for one-time appending a variable.
+        Check if the current line is already sourced. If yes, return 1,
+        otherwise return 0. Useful for one-time appending a variable.
 
         Example:
             __do_once && export PATH=\$PATH:/path/to/somewhere
