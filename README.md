@@ -1,6 +1,6 @@
-# unix-home: A non-trivial management of *nix rc/dot -files
+# unix-home: An easy management system of Unix rc/dot -files
 
-Configuration scripts of UNIX environment.
+Configuration scripts of Unix environment.
 
 ![alt tag](https://github.com/hengyang-zhao/unix-home/blob/master/images/full-demo.gif)
 
