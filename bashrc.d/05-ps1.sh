@@ -14,10 +14,10 @@ __cursor_xpos() {
 
 __force_newline() {
     if [ "$(__cursor_xpos)" != 1 ]; then
-        __resetfmt zero_width
-        __setfmt force_newline zero_width
+        __resetfmt
+        __setfmt force_newline
         __inline_echo ":EoF:"
-        __resetfmt zero_width
+        __resetfmt
 
         if [ "$(__cursor_xpos)" != 1 ]; then
             builtin echo
