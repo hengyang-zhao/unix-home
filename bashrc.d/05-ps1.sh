@@ -7,12 +7,16 @@ __cursor_xpos() {
     local saved_state xpos dummy
     saved_state=$(stty -g)
     stty -echo
-    echo -ne "\033[6n" > /dev/tty; read -s -d ';' dummy; read -s -dR xpos
+    echo -n $'\033[6n' > /dev/tty; read -s -d ';' dummy; read -s -dR xpos
     echo "$xpos"
     stty $saved_state 2>/dev/null
 }
 
 __force_newline() {
+    if ! [ "$MY_BASH_ENABLE_EXPLICIT_EOF" = yes ]; then
+        return
+    fi
+
     if [ "$(__cursor_xpos)" != 1 ]; then
         __resetfmt
         __setfmt force_newline

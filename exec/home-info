@@ -96,6 +96,11 @@ $(header Special variables)
     MY_BASH_ENABLE_CMD_EXPANSION     |   status line.
     MY_BASH_ENABLE_STATUS_LINE       |   Valid options: yes (default), no.
 
+    MY_BASH_ENABLE_EXPLICIT_EOF - Enables explicit EoF. Bash will print a EoF
+                                  indicator when the previous output does not
+                                  terminate with a newline.
+                                  Valid options: yes, no (default).
+
     PS1   - Now it's fully revised. Try echo "\$PS1" to see how to customize.
 
     BASH_CMD_EXPANSION_SINK - Controls the target when printing command 
