@@ -100,6 +100,7 @@ $(header Special variables)
                                   indicator when the previous output does not
                                   terminate with a newline.
                                   Valid options: yes, no (default).
+                                  (EXPERIMENTAL. Please use with caution.)
 
     PS1   - Now it's fully revised. Try echo "\$PS1" to see how to customize.
 
