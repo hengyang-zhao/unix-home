@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ "$(basename -- "$0")" != "$(basename -- "${BASH_SOURCE[0]}")" ]; then
     echo "Please RUN this script. Do not source."
