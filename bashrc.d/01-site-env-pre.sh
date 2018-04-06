@@ -2,7 +2,7 @@
 
 # On macOS, the path might be tweaked by /usr/libexec/path_helper.
 # If we see a saved PATH we restore it so the tweak can be bypassed.
-if [ -n "$__macos_path_helper_bypass" ]; then
+if [ "$(uname -s)" ] && [ -n "$__macos_path_helper_bypass" ]; then
     export PATH="$__macos_path_helper_bypass"
 fi
 

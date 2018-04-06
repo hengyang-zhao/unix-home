@@ -16,4 +16,4 @@ __source_site_rc_post
 
 # On macOS, the path will be tweaked by /usr/libexec/path_helper.
 # We save the current path so subshells can bypass the tweak by reading it back.
-export __macos_path_helper_bypass="$PATH"
+[ "$(uname -s)" = Darwin ] && export __macos_path_helper_bypass="$PATH"
