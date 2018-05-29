@@ -27,4 +27,7 @@ if &term =~ "xterm" || &term =~ "putty"
     highlight Comment cterm=Italic
 endif
 
+highlight clear SpellBad
+highlight SpellBad ctermbg=magenta ctermfg=white
+
 let g:loaded_matchparen = 0
