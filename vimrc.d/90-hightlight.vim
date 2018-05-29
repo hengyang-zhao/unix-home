@@ -27,7 +27,18 @@ if &term =~ "xterm" || &term =~ "putty"
     highlight Comment cterm=Italic
 endif
 
+" Mangenta background for bad spells
 highlight clear SpellBad
 highlight SpellBad ctermbg=magenta ctermfg=white
+
+" Highlight tabs and trailing spaces
+highlight TrailingWhiteChars ctermbg=darkgray
+highlight HardTabs ctermbg=darkblue
+call matchadd('TrailingWhiteChars', "[\x0d \t]\\+$", 10)
+call matchadd('HardTabs', "\t", 9)
+
+" To remove these highlights:
+" highlight clear TrailingWhiteChars
+" highlight clear HardTabs
 
 let g:loaded_matchparen = 0

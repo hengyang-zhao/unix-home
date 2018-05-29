@@ -3,8 +3,7 @@ nmap <C-n> :tabnext<CR>
 
 nmap <Leader>x :close<CR>
 
-nmap <Leader>sd :%s/\s\+$//g<CR>
-nmap <Leader>ss /\s\+$<CR>
+nmap <Leader>sd :%s/[ \t\x0d]\+$//g<CR>
 
 nmap <Leader>t~ :tabedit ~/<CR>
 nmap <Leader>t. :tabedit .<CR>
