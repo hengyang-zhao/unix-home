@@ -8,20 +8,8 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{hyperref}
-\usepackage{fontspec}
-\usepackage[explicit]{titlesec}
 \usepackage{xcolor}
-\usepackage{makeidx}
-\usepackage{fourier-orns}
 \usepackage{cite}
-
-\usepackage{tikz}
-%
-%\usepackage[CJKchecksingle,CJKnumber]{xeCJK}
-%\setCJKmainfont[BoldFont={Adobe Heiti Std},ItalicFont={Adobe Kaiti Std}]{Adobe Song Std}
-%\setCJKsansfont{Adobe Heiti Std}
-%\setCJKmonofont{Adobe Fangsong Std}
-%\punctstyle{hangmobanjiao}
 
 \makeindex
 
