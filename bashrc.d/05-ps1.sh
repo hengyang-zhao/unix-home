@@ -20,7 +20,7 @@ __force_newline() {
     if [ "$(__cursor_xpos)" != 1 ]; then
         __resetfmt
         __setfmt force_newline
-        __inline_echo ":EoF:"
+        __inline_echo ":no_eol:"
         __resetfmt
 
         if [ "$(__cursor_xpos)" != 1 ]; then
